@@ -42,6 +42,10 @@ class Player extends FlxSprite
 		animation.add("walk_north", [2, 6, 10, 14], 8);
 		animation.add("walk_east",  [3, 7, 11, 15], 8);
 		animation.add("idle", [0]);
+		animation.add("stick", [16, 17], 8);
+		animation.add("axe", [18, 19], 8);
+		animation.add("pick", [20, 21], 8);
+		animation.add("fish", [22,23,24,25,26,27], 8);
 		animation.play("idle");
 
 		dustparticles = new MyParticleSystem();

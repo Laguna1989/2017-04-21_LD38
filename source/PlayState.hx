@@ -20,7 +20,10 @@ class PlayState extends FlxState
 
 	public var _craftHud    : CraftHud;
 	public var ShowCraftHud : Bool;
-
+	
+	private var _flakes : Flakes;
+	private var _vignette : Vignette;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -39,6 +42,12 @@ class PlayState extends FlxState
 		ShowCraftHud  = false;
 		
 		FlxG.camera.follow(_player);
+		
+		
+		_flakes = new Flakes(FlxG.camera);
+		
+		_vignette = new Vignette(FlxG.camera);
+		_vignette.scrollFactor.set();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -51,6 +60,9 @@ class PlayState extends FlxState
 		_player.update(elapsed);
 		_inventory.update(elapsed);
 		_craftHud.update(elapsed);
+		_flakes.update(elapsed);
+		
+		FlxG.collide(_player, _level.collisionTiles);
 	}
 	
 	override public function draw()
@@ -58,6 +70,10 @@ class PlayState extends FlxState
 		super.draw();
 		_level.draw();
 		_player.draw();
+		_level.drawAbovePlayer();
+		_flakes.draw();
+		_vignette.draw();
+
 		_inventory.draw();
 		_craftHud.draw();
 	}

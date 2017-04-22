@@ -12,7 +12,6 @@ class GP
 	public static var rng             : FlxRandom = new FlxRandom();
     public static var TileSize        : Int       = 16;
 
-
     // ################################################################
     // # Player #######################################################
     // ################################################################
@@ -22,13 +21,16 @@ class GP
     public static var PlayerMovementDashCooldown  : Float    = 1.0;
 	public static var PlayerMovementMaxDashLength : Float    = 40.0;
 	public static var PlayerHealthMaxDefault      : Float    = 1.0;
-	
-	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150,150, 150);
-	static public var WorldSizeInTiles			  : Int = 64;
-	static public var WorldWaterLevel			  : Float = 0.23;
-	static public var WorldStoneLevel			  : Float = 0.8;
-	static public var WorldLengthScale  		  : Float = 0.2;
 	static public var PlayerViewRange			  : Float = 4* GP.TileSize;
-
-    
+	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150, 150, 150);
+	
+	// ################################################################
+    // # World  #######################################################
+    // ################################################################	
+	static public var WorldSizeInTiles			  : Int = 64;
+	static public var WorldWaterLevel			  : Float = 0.25;
+	static public var WorldStoneLevel			  : Float = 0.77;
+	static public var WorldLengthScale  		  : Float = 0.2;
+	static public var WorldWoodCount			  : Int = 200;
+	static public var WorldRockCount			  : Int = 80;
 }
