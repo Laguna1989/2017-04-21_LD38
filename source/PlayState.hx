@@ -30,6 +30,7 @@ class PlayState extends FlxState
 		MyInput.update();
 		
 		_level.update(elapsed);
+		_level.updateVisibility(_player);
 		_player.update(elapsed);
 		
 	}

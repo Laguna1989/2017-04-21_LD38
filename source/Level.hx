@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import hxnoise.Perlin;
@@ -35,9 +36,9 @@ class Level extends FlxObject
 		for (j in 0 ... GP.WorldSizeInTiles)
 		{
 			var idx = i + GP.WorldSizeInTiles * j;
-			var fi : Float = i / 0.2;
-			var fj : Float = j / 0.2;
-			arr.push(perlin.perlin(fi/GP.WorldSizeInTiles, fj /GP.WorldSizeInTiles, 1));
+			var fi : Float = i / GP.WorldLengthScale;
+			var fj : Float = j / GP.WorldLengthScale;
+			arr.push(perlin.perlin(fi / GP.WorldSizeInTiles, fj / GP.WorldSizeInTiles, 1));
 		}
 		
 		var min : Float = 1000;
@@ -55,16 +56,6 @@ class Level extends FlxObject
 			arr[i] = (arr[i] - min) / (max - min);
 			
 		}
-		
-		min = 1000;
-		max = -1;
-		
-		for (h in arr)
-		{
-			min = (h < min) ? h : min;
-			max = (h > max) ? h : max;
-		}
-		trace(min + " " + max);
 		
 		var stonecount : Int = 0;
 		var watercount : Int = 0;
@@ -112,5 +103,24 @@ class Level extends FlxObject
 	{
 		super.update(elapsed);
 		tiles.update(elapsed);
+	}
+	
+	public inline function updateVisibility(p:Player) 
+	{
+		for (t in tiles)
+		{
+			if (t.visited) continue;
+			var dx : Float = t.x - p.x;
+			if (dx > GP.PlayerViewRange) continue;
+			
+			var dy : Float = t.y - p.y;
+			if (dy > GP.PlayerViewRange) continue;
+			
+			var l = dx * dx + dy * dy;
+			if ( l < GP.PlayerViewRange * GP.PlayerViewRange)
+			{
+				t.visitMe(); 
+			}
+		}
 	}
 }

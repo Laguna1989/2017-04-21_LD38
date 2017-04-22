@@ -1,5 +1,7 @@
 package;
+import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 /**
@@ -9,6 +11,7 @@ import flixel.util.FlxColor;
 class Tile extends FlxSprite
 {
 	public var type : TileType;
+	public var visited : Bool = false;
 	
 	public function new(t : TileType, xi : Int, yi : Int)
 	{
@@ -34,6 +37,17 @@ class Tile extends FlxSprite
 		{
 			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
 		}
+		this.alpha = 0;
+	}
+	
+	public inline function visitMe()
+	{
+		alpha = 1;
+	}
+	
+	override public function draw():Void 
+	{
+		super.draw();
 	}
 	
 }
