@@ -44,7 +44,7 @@ class Tile extends FlxSprite
 		else if (type == TileType.STONE)
 		{
 			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
-			this.animation.add("idle", [FlxG.random.int(9,17)], 1, true);
+			this.animation.add("idle", [13], 1, true);
 		}
 		this.animation.play("idle");
 		this.alpha = 0;
@@ -52,7 +52,7 @@ class Tile extends FlxSprite
 	
 	public function addAutoTileID(id :Int) : Void
 	{
-		if (type != TileType.WATER) return;
+		if (type != TileType.WATER && type != TileType.STONE) return;
 		autoTileID += id;
 		
 	}
@@ -70,8 +70,8 @@ class Tile extends FlxSprite
 	
 	public function SelectAutoTile() 
 	{
-		if (type != TileType.WATER) return;
-		var animID : Int = 18;
+		if (type != TileType.WATER && type != TileType.STONE) return;
+		var animID : Int = (type == TileType.WATER? 18 : 45);
 		
 		if ( autoTileID == 11 || autoTileID == 15 ||  autoTileID == 75 || autoTileID == 79 )
 		{
@@ -85,7 +85,7 @@ class Tile extends FlxSprite
 		{
 			animID += 2;
 		}
-		else if (autoTileID == 9|| autoTileID == 73)
+		else if (autoTileID == 9|| autoTileID == 72|| autoTileID == 73)
 		{
 			animID += 3;
 		}
@@ -97,7 +97,7 @@ class Tile extends FlxSprite
 		{
 			animID += 5;
 		}
-		else if (autoTileID == 456 || autoTileID == 457)
+		else if (autoTileID == 200 || autoTileID == 201 ||autoTileID == 456 || autoTileID == 457)
 		{
 			animID += 6;
 		}
@@ -140,7 +140,7 @@ class Tile extends FlxSprite
 		{
 			animID += 19;
 		}
-		else if (autoTileID == 488)
+		else if (autoTileID == 488 || autoTileID == 489)
 		{
 			animID += 20;
 		}
@@ -163,7 +163,7 @@ class Tile extends FlxSprite
 		{
 			animID += 22;
 		}
-		else if (autoTileID == 320)
+		else if (autoTileID == 320 )
 		{
 			animID += 25;
 		}

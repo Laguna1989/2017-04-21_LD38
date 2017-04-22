@@ -116,7 +116,7 @@ class Level extends FlxObject
 		for (j in 0... GP.WorldSizeInTiles)
 		{
 			var t = getTileAtIntPosition(i, j);
-			if (t.type == TileType.WATER)
+			if (t.type == TileType.WATER ||t.type == TileType.STONE )
 			{
 				var tlt : Tile = getTileAtIntPositionUnsafe(i-1, j - 1);
 				var tct : Tile = getTileAtIntPositionUnsafe(i,   j - 1);
@@ -130,39 +130,39 @@ class Level extends FlxObject
 				var tcb : Tile = getTileAtIntPositionUnsafe(i,   j + 1);
 				var trb : Tile = getTileAtIntPositionUnsafe(i+1, j + 1);
 				
-				if (tlt != null && tlt.type != TileType.WATER)
+				if (tlt != null && tlt.type != t.type)
 				{
 					t.addAutoTileID(1);
 				}
-				if (tct != null && tct.type != TileType.WATER)
+				if (tct != null && tct.type != t.type)
 				{
 					t.addAutoTileID(2);
 				}
-				if (trt != null && trt.type != TileType.WATER)
+				if (trt != null && trt.type != t.type)
 				{
 					t.addAutoTileID(4);
 				}
-				if (tlc != null && tlc.type != TileType.WATER)
+				if (tlc != null && tlc.type != t.type)
 				{
 					t.addAutoTileID(8);
 				}
-				if (tcc != null && tcc.type != TileType.WATER)
+				if (tcc != null && tcc.type != t.type)
 				{
 					t.addAutoTileID(16);
 				}
-				if (trc != null && trc.type != TileType.WATER)
+				if (trc != null && trc.type != t.type)
 				{
 					t.addAutoTileID(32);
 				}
-				if (tlb != null && tlb.type != TileType.WATER)
+				if (tlb != null && tlb.type != t.type)
 				{
 					t.addAutoTileID(64);
 				}
-				if (tcb != null && tcb.type != TileType.WATER)
+				if (tcb != null && tcb.type != t.type)
 				{
 					t.addAutoTileID(128);
 				}
-				if (trb != null && trb.type != TileType.WATER)
+				if (trb != null && trb.type != t.type)
 				{
 					t.addAutoTileID(256);
 				}
