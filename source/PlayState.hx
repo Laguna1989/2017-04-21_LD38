@@ -20,6 +20,8 @@ class PlayState extends FlxState
 		
 		_player = new Player(this);
 		//add(_player);
+		
+		FlxG.camera.follow(_player);
 	}
 
 	override public function update(elapsed:Float):Void

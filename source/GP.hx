@@ -24,7 +24,9 @@ class GP
 	public static var PlayerHealthMaxDefault      : Float    = 1.0;
 	
 	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150,150, 150);
-	static public var WorldSizeInTiles			  : Int = 32;
+	static public var WorldSizeInTiles			  : Int = 64;
+	static public var WorldWaterLevel			  : Float = 0.23;
+	static public var WorldStoneLevel			  : Float = 0.8;
 
     
 }

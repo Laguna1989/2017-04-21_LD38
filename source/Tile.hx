@@ -30,7 +30,7 @@ class Tile extends FlxSprite
 		{
 			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.BLUE);
 		}
-		else if (type == TileType.WATER)
+		else if (type == TileType.STONE)
 		{
 			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
 		}
