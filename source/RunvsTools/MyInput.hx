@@ -14,8 +14,8 @@ class MyInput
 	public static var yVal : Float = 0;
 	
 	public static var DashButtonJustPressed      : Bool;
-	public static var JumpButtonJustPressed    : Bool;
-	public static var AttackButtonJustPressed   : Bool;
+	public static var JumpButtonJustPressed      : Bool;
+	public static var InteractButtonJustPressed    : Bool;
 	public static var SpecialButtonPressed       : Bool;
 	public static var InventoryButtonJustPressed : Bool;
 	
@@ -24,14 +24,14 @@ class MyInput
 	public static function reset()
 	{
 		xVal = yVal =0;
-		DashButtonJustPressed = JumpButtonJustPressed = AttackButtonJustPressed = SpecialButtonPressed = InventoryButtonJustPressed = false;
+		DashButtonJustPressed = JumpButtonJustPressed = InteractButtonJustPressed = SpecialButtonPressed = InventoryButtonJustPressed = false;
 	}
 	
 	public static function update ()
 	{
 		DashButtonJustPressed      = false;
 		JumpButtonJustPressed    = false;
-		AttackButtonJustPressed   = false;
+		InteractButtonJustPressed   = false;
 		InventoryButtonJustPressed = false;
 		GamePadConnected = false;
 		
@@ -44,8 +44,8 @@ class MyInput
 			xVal = gp.getXAxis(FlxGamepadInputID.LEFT_ANALOG_STICK);
 			yVal = gp.getYAxis(FlxGamepadInputID.LEFT_ANALOG_STICK);
 			DashButtonJustPressed = gp.justPressed.X;
-			JumpButtonJustPressed = gp.justPressed.A;
-			AttackButtonJustPressed = gp.justPressed.B;
+			JumpButtonJustPressed = gp.justPressed.B;
+			InteractButtonJustPressed = gp.justPressed.A;
 			SpecialButtonPressed = gp.pressed.B;
 			InventoryButtonJustPressed = gp.justPressed.Y;
 		}
@@ -75,9 +75,9 @@ class MyInput
 		{
 			JumpButtonJustPressed= true;
 		}
-		if (FlxG.keys.justPressed.V)
+		if (FlxG.keys.justPressed.X)
 		{
-			AttackButtonJustPressed = true;
+			InteractButtonJustPressed = true;
 		}
 		if(FlxG.keys.justPressed.F)
 		{

@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import hxnoise.Perlin;
 
@@ -19,12 +20,15 @@ class Level extends FlxObject
 	
 	public var collisionTiles : FlxSpriteGroup;
 	
+	public var trees : FlxTypedGroup<Tree>;
+	
 	public function new() 
 	{
 		super();
 		
 		tiles = new FlxTypedGroup<Tile>();
 		collisionTiles = new FlxSpriteGroup();
+		trees = new FlxTypedGroup<Tree>();
 		CreateLevel();
 	}
 	
@@ -93,13 +97,76 @@ class Level extends FlxObject
 			tiles.add(t);
 		}
 		
-		
+		CreateObjects();
 		
 		trace("Water: " + watercount);
 		trace("Stone: " + stonecount);
 		trace("Grass: " + grasscount);
 		
 		CreateCollisionTiles();
+	}
+	
+	function SpawnPostionOnMap () : FlxPoint
+	{
+		return new FlxPoint(FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize), FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize));
+	}
+	
+	function CreateObjects() 
+	{
+		
+		while(true)
+		{	
+			if (trees.length >= GP.WorldWoodCount)
+			{
+				break;
+			}
+			
+			var ix : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			var iy : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			
+			var tile : Tile = getTileAtIntPosition(ix, iy);
+			if (tile == null) continue;
+			if (tile.type == TileType.GRASS)
+			{
+				var t : Tree = new Tree(ix * GP.TileSize, iy * GP.TileSize);
+				trees.add(t);
+				collisionTiles.add(t.collisionSprite);
+			}
+		}
+		// sort trees for correct drawing order
+		trees.members.sort(function(a, b) : Int {
+			if (a.y < b.y) return -1;
+			else if (a.y > b.y ) return 1;
+			else return 0;
+		});
+	}
+	
+	public function getTileAtPosition(X : Float, Y : Float) : Tile
+	{
+		if (X < 0 || X > GP.TileSize * (GP.WorldSizeInTiles + 1)) 
+			throw ("Error: Cannot get Tile at position : " + Std.string(X) + " " + Std.string(Y));
+		if (Y < 0 || Y > GP.TileSize * (GP.WorldSizeInTiles + 1)) 
+			throw ("Error: Cannot get Tile at position : " + Std.string(X) + " " + Std.string(Y));
+			
+		var ix : Int = Std.int(X / GP.TileSize);
+		var iy : Int = Std.int(Y / GP.TileSize);
+		
+		var idx = iy + GP.WorldSizeInTiles * ix;
+		
+		return tiles.members[idx];
+	}
+	
+	public function getTileAtIntPosition(X : Int, Y : Int) : Tile
+	{
+		if (X < 0 || X >= (GP.WorldSizeInTiles)) 
+			throw ("Error: Cannot get Tile at position : " + Std.string(X) + " " + Std.string(Y));
+		if (Y < 0 || Y >= GP.TileSize * (GP.WorldSizeInTiles)) 
+			throw ("Error: Cannot get Tile at position : " + Std.string(X) + " " + Std.string(Y));
+			
+		
+		var idx = Y + GP.WorldSizeInTiles * X;
+		
+		return tiles.members[idx];
 	}
 	
 	function CreateCollisionTiles() 
@@ -120,6 +187,12 @@ class Level extends FlxObject
 	{
 		super.draw();
 		tiles.draw();
+
+	}
+	
+	public function drawAbovePlayer()
+	{
+		trees.draw();
 	}
 	
 	
@@ -128,6 +201,7 @@ class Level extends FlxObject
 		super.update(elapsed);
 		tiles.update(elapsed);
 		collisionTiles.update(elapsed);
+		trees.update(elapsed);
 	}
 	
 	public inline function updateVisibility(p:Player) 
@@ -143,6 +217,22 @@ class Level extends FlxObject
 			
 			var l = dx * dx + dy * dy;
 			if ( l < GP.PlayerViewRange * GP.PlayerViewRange)
+			{
+				t.visitMe(); 
+			}
+		}
+		
+		for (t in trees)
+		{
+			if (t.visited) continue;
+			var dx : Float = t.x - p.x;
+			if (dx > GP.PlayerViewRange * 1.2) continue;
+			
+			var dy : Float = t.y - p.y;
+			if (dy > GP.PlayerViewRange * 1.2) continue;
+			
+			var l = dx * dx + dy * dy;
+			if ( l < GP.PlayerViewRange * GP.PlayerViewRange * 1.2 * 1.2)
 			{
 				t.visitMe(); 
 			}

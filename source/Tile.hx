@@ -45,6 +45,7 @@ class Tile extends FlxSprite
 	public inline function visitMe()
 	{
 		alpha = 1;
+		visited = true;
 	}
 	
 	override public function draw():Void 

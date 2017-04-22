@@ -59,5 +59,6 @@ class PlayState extends FlxState
 		super.draw();
 		_level.draw();
 		_player.draw();
+		_level.drawAbovePlayer();
 	}
 }
