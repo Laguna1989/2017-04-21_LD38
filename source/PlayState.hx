@@ -14,6 +14,9 @@ class PlayState extends FlxState
 {
 	public var _level : Level;
 	public var _player : Player;
+	
+	private var _vignette : Vignette;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -39,6 +42,8 @@ class PlayState extends FlxState
 		_player = new Player(this);
 		
 		FlxG.camera.follow(_player);
+		_vignette = new Vignette(FlxG.camera);
+		_vignette.scrollFactor.set();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -60,5 +65,6 @@ class PlayState extends FlxState
 		_level.draw();
 		_player.draw();
 		_level.drawAbovePlayer();
+		_vignette.draw();
 	}
 }
