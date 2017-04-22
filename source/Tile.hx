@@ -14,6 +14,8 @@ class Tile extends FlxSprite
 	public var visited : Bool = false;
 	public var blocking : Bool = false;
 	
+	private var autoTileID : Int = 0;
+	
 	public function new(t : TileType, xi : Int, yi : Int)
 	{
 		super();
@@ -30,22 +32,29 @@ class Tile extends FlxSprite
 		
 		if (type == TileType.GRASS)
 		{
-			this.animation.add("idle", [FlxG.random.int(81, 89, [85])], 1, true);
+			this.animation.add("idle", [FlxG.random.int(0, 8)], 1, true);
 			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GREEN);
 		}
 		else if (type == TileType.WATER)
 		{
 			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.BLUE);
-			this.animation.add("idle", [58], 1, true);
+			this.animation.add("idle", [22], 1, true);
 			blocking = true;
 		}
 		else if (type == TileType.STONE)
 		{
 			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
-			this.animation.add("idle", [FlxG.random.int(0,9)], 1, true);
+			this.animation.add("idle", [FlxG.random.int(9,17)], 1, true);
 		}
 		this.animation.play("idle");
 		this.alpha = 0;
+	}
+	
+	public function addAutoTileID(id :Int) : Void
+	{
+		if (type != TileType.WATER) return;
+		autoTileID += id;
+		
 	}
 	
 	public inline function visitMe()
@@ -57,6 +66,56 @@ class Tile extends FlxSprite
 	override public function draw():Void 
 	{
 		super.draw();
+	}
+	
+	public function SelectAutoTile() 
+	{
+		if (type != TileType.WATER) return;
+		var animID : Int = 18;
+		
+		if ( autoTileID == 11 || autoTileID == 15 ||  autoTileID == 75 || autoTileID == 79 )
+		{
+			animID += 0;
+		}
+		else if (autoTileID == 3 || autoTileID == 6 || autoTileID == 7)
+		{
+			animID += 1;
+		}
+		else if (autoTileID == 39 || autoTileID == 38 || autoTileID == 138 || autoTileID == 139  || autoTileID == 294 || autoTileID == 295)
+		{
+			animID += 2;
+		}
+		else if (autoTileID == 9|| autoTileID == 73)
+		{
+			animID += 3;
+		}
+		else if (autoTileID == 0)
+		{
+			animID += 4;
+		}
+		else if (autoTileID == 36|| autoTileID == 292)
+		{
+			animID += 5;
+		}
+		else if (autoTileID == 456 || autoTileID == 457)
+		{
+			animID += 6;
+		}
+		else if (autoTileID == 192|| autoTileID == 384  ||autoTileID == 448)
+		{
+			animID += 7;
+		}
+		else if (autoTileID == 420 || autoTileID == 480 || autoTileID == 484)
+		{
+			animID += 8;
+		}
+		else 
+		{
+			animID += 4;
+		}
+		
+		this.animation.add("autotile", [animID]);
+		this.animation.play("autotile");
 	}
 	
 }
