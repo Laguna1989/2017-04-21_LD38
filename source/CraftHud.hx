@@ -55,7 +55,7 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         var xPos = 8 + 3 * GP.TileSize + 2 * 4 + 8;
         var yPos = _sprBG.y + 8 + GP.TileSize + 4;
 
-        _craftButton = new SpriteButton(xPos - _sprBG.width, yPos, AssetPaths.CraftButton__png);
+        _craftButton = new SpriteButton(xPos - _sprBG.width, yPos, AssetPaths.CraftButton__png, craft);
         _craftButton.scrollFactor.set();
         _craftButtonInitialPosition = new FlxPoint(xPos, yPos);
         add(_craftButton);
@@ -63,8 +63,13 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         ResultSlot = new CraftSlot(cast xPos + 24, cast yPos, cast _sprBG.width, cast _sprBG.height);
         add(ResultSlot);
     }
+    
+    private function craft() : Void
+    {
+        trace("Crafting!");
+    }
 
-    public override function update(elapsed: Float)
+    public override function update(elapsed: Float) : Void
     {
         super.update(elapsed);
         handleInput();
