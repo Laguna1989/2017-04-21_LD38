@@ -9,7 +9,7 @@ import flixel.util.FlxColor;
  * ...
  * @author 
  */
-class Tree extends FlxSprite
+class Tree extends FlashSprite
 {
 	public var visited : Bool = false;
 	public var collisionSprite : FlxSprite;
@@ -17,8 +17,6 @@ class Tree extends FlxSprite
 	public function new(X : Float, Y : Float ) 
 	{
 		super(X, Y);
-		
-		//this.makeGraphic(Std.int(GP.TileSize / 2), GP.TileSize, FlxColor.BROWN);
 		
 		var r : Int = FlxG.random.int(1, 6);
 		

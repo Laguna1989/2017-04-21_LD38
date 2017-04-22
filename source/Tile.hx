@@ -1,6 +1,7 @@
 package;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
@@ -59,7 +60,10 @@ class Tile extends FlxSprite
 	
 	public inline function visitMe()
 	{
-		alpha = 1;
+		//alpha = 1;
+		this.scale.set();
+		FlxTween.tween(this.scale, { x:1, y:1 }, 0.30);
+		FlxTween.tween(this, { alpha:1 }, 0.35);
 		visited = true;
 	}
 	
@@ -77,7 +81,7 @@ class Tile extends FlxSprite
 		{
 			animID += 0;
 		}
-		else if (autoTileID == 3 || autoTileID == 6 || autoTileID == 7)
+		else if (autoTileID == 3 || autoTileID == 6 || autoTileID == 7|| autoTileID == 263)
 		{
 			animID += 1;
 		}
@@ -93,7 +97,7 @@ class Tile extends FlxSprite
 		{
 			animID += 4;
 		}
-		else if (autoTileID == 36|| autoTileID == 292)
+		else if (autoTileID == 36|| autoTileID == 292 || autoTileID == 288)
 		{
 			animID += 5;
 		}
@@ -105,7 +109,7 @@ class Tile extends FlxSprite
 		{
 			animID += 7;
 		}
-		else if (autoTileID == 420 || autoTileID == 480 || autoTileID == 484)
+		else if (autoTileID == 416 || autoTileID == 420 || autoTileID == 480 || autoTileID == 484)
 		{
 			animID += 8;
 		}
@@ -144,7 +148,7 @@ class Tile extends FlxSprite
 		{
 			animID += 20;
 		}
-		else if (autoTileID == 422)
+		else if (autoTileID == 422 ||autoTileID == 423 )
 		{
 			animID += 21;
 		}

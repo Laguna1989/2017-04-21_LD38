@@ -3,6 +3,8 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
@@ -39,10 +41,10 @@ class PlayState extends FlxState
 		
 		_level = new Level();
 		
-		
 		_player = new Player(this);
 		
 		FlxG.camera.follow(_player);
+		FlxG.camera.setScrollBoundsRect(0, 0, GP.TileSize * GP.WorldSizeInTiles, GP.TileSize * GP.WorldSizeInTiles);
 		
 		
 		_flakes = new Flakes(FlxG.camera);

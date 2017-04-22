@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
@@ -8,6 +9,7 @@ import flixel.text.FlxText;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -30,6 +32,8 @@ class Player extends FlxSprite
 	var dustTime : Float = 0;
 	
 	var healthMax : Float = 1;
+	
+	var inInteractionAnim : Float = 0;
 
 	
     public function new(playState: PlayState)
@@ -43,8 +47,8 @@ class Player extends FlxSprite
 		animation.add("walk_east",  [3, 7, 11, 15], 8);
 		animation.add("idle", [0]);
 		animation.add("stick", [16, 17], 8);
-		animation.add("axe", [18, 19], 8);
-		animation.add("pick", [20, 21], 8);
+		animation.add("axe", [18, 19], 4);
+		animation.add("pick", [20, 21], 4);
 		animation.add("fish", [22,23,24,25,26,27], 8);
 		animation.play("idle");
 
@@ -65,6 +69,8 @@ class Player extends FlxSprite
 		setPosition(8 * GP.TileSize, 2 * GP.TileSize);
 		
 		health = healthMax = GP.PlayerHealthMaxDefault;
+		
+		
     }
 
     //#################################################################
@@ -72,61 +78,76 @@ class Player extends FlxSprite
     public override function update(elapsed: Float)
     {
         super.update(elapsed);
+		
+		keepPlayerOnMap();	
+		
 		dustparticles.update(elapsed);
-
+		
+		inInteractionAnim -= elapsed;
+		
 		switch _facing
 		{
 			case Facing.EAST:
 				_hitArea.setPosition(x + GP.TileSize, y);
-				animation.play("walk_east", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_east", false);
 				
 				
 			case Facing.WEST:
 				_hitArea.setPosition(x - GP.TileSize, y);
-				animation.play("walk_west", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_west", false);
 				
 				
 			case Facing.NORTH:
 				_hitArea.setPosition(x, y - GP.TileSize);
-				animation.play("walk_north", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTH:
 				_hitArea.setPosition(x, y + GP.TileSize);
-				animation.play("walk_south", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_south", false);
 				
 			
 			case Facing.NORTHEAST:
 				_hitArea.setPosition(x + GP.TileSize / 2, y - GP.TileSize / 2);
-				animation.play("walk_north", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_north", false);
 				
 			case Facing.NORTHWEST:
 				_hitArea.setPosition(x - GP.TileSize / 2, y - GP.TileSize / 2);
-				animation.play("walk_north", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTHEAST:
 				_hitArea.setPosition(x + GP.TileSize / 2, y + GP.TileSize / 2);
-				animation.play("walk_south", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_south", false);
 			
 				
 			case Facing.SOUTHWEST:
 				_hitArea.setPosition(x - GP.TileSize / 2, y + GP.TileSize / 2);
-				animation.play("walk_south", false);
+				if(inInteractionAnim <= 0)
+					animation.play("walk_south", false);
 				
 			
 		}
 
-        handleInput();
+        
 		var l : Float = velocity.distanceTo(new FlxPoint());
-		if (l <= GP.PlayerMovementMaxVelocity.x / 8 )
+		if (l <= GP.PlayerMovementMaxVelocity.x / 8 && inInteractionAnim <= 0 )
 		{
-			animation.play("idle", true);
+			animation.play("idle", false);
 		}
 		else
 		{
 			CreateDustParticles();
 		}
+		
+		handleInput();
     }
 
     //#################################################################
@@ -159,6 +180,40 @@ class Player extends FlxSprite
 			}
 		}
 		acceleration.set(vx, vy);
+		
+		
+		
+		if (MyInput.InteractButtonJustPressed)
+		{
+			var r : Rock = _playState._level.getRockInRange(this);
+			if (r != null)
+			{
+				r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+				this.animation.play("pick", true);
+				inInteractionAnim = 0.5;
+				if (r.x < x) 
+				{
+					this.scale.set( -1, 1);
+					new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+				}
+				return;
+			}
+			
+			var t : Tree = _playState._level.getTreeInRange(this);
+			if (t != null)
+			{
+				t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+				this.animation.play("axe", true);
+				inInteractionAnim = 0.5;
+				if (t.x < x) 
+				{
+					this.scale.set( -1, 1);
+					new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+				}
+				return;
+			}
+			
+		}
     }
 
 
@@ -169,12 +224,12 @@ class Player extends FlxSprite
 		if (dustTime <= 0)
 		{
 			dustTime += 0.25;
-			dustparticles.Spawn( 3,
+			dustparticles.Spawn( 4,
 			function (s : FlxSprite) : Void
 			{
 				s.alive = true;
 				var T : Float = 1.25;
-				s.setPosition(x + GP.rng.float(0, this.width) , y + height + GP.rng.float( 0, 1) );
+				s.setPosition(x + GP.rng.float(0, this.width) , y + height + GP.rng.float( -2, 2) );
 				s.alpha = GP.rng.float(0.125, 0.35);
 				FlxTween.tween(s, { alpha:0 }, T, { onComplete: function(t:FlxTween) : Void { s.alive = false; } } );
 				var v : Float = GP.rng.float(0.75, 1.0);
@@ -183,10 +238,18 @@ class Player extends FlxSprite
 			},
 			function(s:FlxSprite) : Void 
 			{
-				s.makeGraphic(7, 7, FlxColor.TRANSPARENT);
-				s.drawCircle(4, 4, 3, GP.ColorDustParticles);
+				s.makeGraphic(5, 5, FlxColor.TRANSPARENT);
+				s.drawCircle(3, 3, 2, GP.ColorDustParticles);
 			});
 		}
+	}
+	
+	function keepPlayerOnMap():Void 
+	{
+		if (x < 0) x = 0;
+		if (x > GP.TileSize * GP.WorldSizeInTiles - this.width) x = GP.TileSize * GP.WorldSizeInTiles - this.width;
+		if (y < 0) y = 0;
+		if (y > GP.TileSize * GP.WorldSizeInTiles - this.height) y = GP.TileSize * GP.WorldSizeInTiles - this.height;
 	}
 
  

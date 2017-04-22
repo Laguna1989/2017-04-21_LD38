@@ -172,6 +172,44 @@ class Level extends FlxObject
 		}
 	}
 	
+	public function getTreeInRange(p : Player) : Tree
+	{
+		for (t in trees)
+		{
+			var dx: Float = t.x - p.x;
+			if (dx > GP.TileSize * 2) continue;
+			
+			var dy: Float = t.y - p.y;
+			if (dy > GP.TileSize * 2) continue;
+			
+			var l : Float = dx * dx  + dy * dy;
+			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
+			{
+				return t;
+			}
+		}
+		return null;
+	}
+	
+	public function getRockInRange(p : Player) : Rock
+	{
+		for (r in rocks)
+		{
+			var dx: Float = r.x - p.x;
+			if (dx > GP.TileSize * 2) continue;
+			
+			var dy: Float = r.y - p.y;
+			if (dy > GP.TileSize * 2) continue;
+			
+			var l : Float = dx * dx  + dy * dy;
+			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
+			{
+				return r;
+			}
+		}
+		return null;
+	}
+	
 	function SpawnPostionOnMap () : FlxPoint
 	{
 		return new FlxPoint(FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize), FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize));
