@@ -109,6 +109,29 @@ class Tile extends FlxSprite
 		{
 			animID += 8;
 		}
+		
+		
+		
+		
+		
+		else if (autoTileID == 256)
+		{
+			animID += 9;
+		}
+		else if (autoTileID == 64)
+		{
+			animID += 11;
+		}
+		else if (autoTileID == 4)
+		{
+			animID += 15;
+		}
+		else if (autoTileID == 1)
+		{
+			animID += 17;
+		}
+		
+		
 		else 
 		{
 			animID += 4;
