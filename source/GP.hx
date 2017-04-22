@@ -4,7 +4,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRandom;
 import flixel.util.FlxColor;
 
-class GameProperties
+class GP
 {
     // ################################################################
     // # General ######################################################
@@ -24,6 +24,7 @@ class GameProperties
 	public static var PlayerHealthMaxDefault      : Float    = 1.0;
 	
 	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150,150, 150);
+	static public var WorldSizeInTiles			  : Int = 32;
 
     
 }

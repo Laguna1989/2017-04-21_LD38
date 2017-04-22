@@ -52,15 +52,15 @@ class Player extends FlxSprite
 		_hitArea.alpha = 0;
 		_facing = Facing.SOUTH;
 		
-		_accelFactor = GameProperties.PlayerMovementAcceleration;
-		drag         = GameProperties.PlayerMovementDrag;
-		maxVelocity  = GameProperties.PlayerMovementMaxVelocity;
+		_accelFactor = GP.PlayerMovementAcceleration;
+		drag         = GP.PlayerMovementDrag;
+		maxVelocity  = GP.PlayerMovementMaxVelocity;
 
 		_playState = playState;
 
-		setPosition(8 * GameProperties.TileSize, 2 * GameProperties.TileSize);
+		setPosition(8 * GP.TileSize, 2 * GP.TileSize);
 		
-		health = healthMax = GameProperties.PlayerHealthMaxDefault;
+		health = healthMax = GP.PlayerHealthMaxDefault;
     }
 
     //#################################################################
@@ -73,41 +73,41 @@ class Player extends FlxSprite
 		switch _facing
 		{
 			case Facing.EAST:
-				_hitArea.setPosition(x + GameProperties.TileSize, y);
+				_hitArea.setPosition(x + GP.TileSize, y);
 				animation.play("walk_east", false);
 				
 				
 			case Facing.WEST:
-				_hitArea.setPosition(x - GameProperties.TileSize, y);
+				_hitArea.setPosition(x - GP.TileSize, y);
 				animation.play("walk_west", false);
 				
 				
 			case Facing.NORTH:
-				_hitArea.setPosition(x, y - GameProperties.TileSize);
+				_hitArea.setPosition(x, y - GP.TileSize);
 				animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTH:
-				_hitArea.setPosition(x, y + GameProperties.TileSize);
+				_hitArea.setPosition(x, y + GP.TileSize);
 				animation.play("walk_south", false);
 				
 			
 			case Facing.NORTHEAST:
-				_hitArea.setPosition(x + GameProperties.TileSize / 2, y - GameProperties.TileSize / 2);
+				_hitArea.setPosition(x + GP.TileSize / 2, y - GP.TileSize / 2);
 				animation.play("walk_north", false);
 				
 			case Facing.NORTHWEST:
-				_hitArea.setPosition(x - GameProperties.TileSize / 2, y - GameProperties.TileSize / 2);
+				_hitArea.setPosition(x - GP.TileSize / 2, y - GP.TileSize / 2);
 				animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTHEAST:
-				_hitArea.setPosition(x + GameProperties.TileSize / 2, y + GameProperties.TileSize / 2);
+				_hitArea.setPosition(x + GP.TileSize / 2, y + GP.TileSize / 2);
 				animation.play("walk_south", false);
 			
 				
 			case Facing.SOUTHWEST:
-				_hitArea.setPosition(x - GameProperties.TileSize / 2, y + GameProperties.TileSize / 2);
+				_hitArea.setPosition(x - GP.TileSize / 2, y + GP.TileSize / 2);
 				animation.play("walk_south", false);
 				
 			
@@ -115,7 +115,7 @@ class Player extends FlxSprite
 
         handleInput();
 		var l : Float = velocity.distanceTo(new FlxPoint());
-		if (l <= GameProperties.PlayerMovementMaxVelocity.x / 8 )
+		if (l <= GP.PlayerMovementMaxVelocity.x / 8 )
 		{
 			animation.play("idle", true);
 		}
@@ -170,17 +170,17 @@ class Player extends FlxSprite
 			{
 				s.alive = true;
 				var T : Float = 1.25;
-				s.setPosition(x + GameProperties.rng.float(0, this.width) , y + height + GameProperties.rng.float( 0, 1) );
-				s.alpha = GameProperties.rng.float(0.125, 0.35);
+				s.setPosition(x + GP.rng.float(0, this.width) , y + height + GP.rng.float( 0, 1) );
+				s.alpha = GP.rng.float(0.125, 0.35);
 				FlxTween.tween(s, { alpha:0 }, T, { onComplete: function(t:FlxTween) : Void { s.alive = false; } } );
-				var v : Float = GameProperties.rng.float(0.75, 1.0);
+				var v : Float = GP.rng.float(0.75, 1.0);
 				s.scale.set(v, v);
 				FlxTween.tween(s.scale, { x: 2.5, y:2.5 }, T);
 			},
 			function(s:FlxSprite) : Void 
 			{
 				s.makeGraphic(7, 7, FlxColor.TRANSPARENT);
-				s.drawCircle(4, 4, 3, GameProperties.ColorDustParticles);
+				s.drawCircle(4, 4, 3, GP.ColorDustParticles);
 			});
 		}
 	}
