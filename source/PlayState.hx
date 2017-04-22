@@ -37,7 +37,6 @@ class PlayState extends FlxState
 		
 		
 		_player = new Player(this);
-		//add(_player);
 		
 		FlxG.camera.follow(_player);
 	}

@@ -22,6 +22,7 @@
     <class path="C:\HaxeToolkit\haxe\lib\hxNoise" />
     <class path="source" />
     <class path="source\RunvsTools" />
+    <class path="source\tools" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\3,6,1\extern" />
     <class path="export\windows\cpp\haxe" />
   </classpaths>
