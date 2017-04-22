@@ -33,6 +33,8 @@ class PlayState extends FlxState
 		_level.updateVisibility(_player);
 		_player.update(elapsed);
 		
+		FlxG.collide(_player, _level.collisionTiles);
+		
 	}
 	
 	override public function draw()

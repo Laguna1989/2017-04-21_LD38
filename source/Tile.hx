@@ -12,6 +12,7 @@ class Tile extends FlxSprite
 {
 	public var type : TileType;
 	public var visited : Bool = false;
+	public var blocking : Bool = false;
 	
 	public function new(t : TileType, xi : Int, yi : Int)
 	{
@@ -32,6 +33,7 @@ class Tile extends FlxSprite
 		else if (type == TileType.WATER)
 		{
 			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.BLUE);
+			blocking = true;
 		}
 		else if (type == TileType.STONE)
 		{

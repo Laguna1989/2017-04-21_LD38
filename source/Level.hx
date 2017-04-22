@@ -2,7 +2,10 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxRect;
 import hxnoise.Perlin;
 
 /**
@@ -13,20 +16,23 @@ class Level extends FlxObject
 {
 	
 	public var tiles : FlxTypedGroup<Tile>;
-
+	
+	public var collisionTiles : FlxSpriteGroup;
 	
 	public function new() 
 	{
 		super();
 		
 		tiles = new FlxTypedGroup<Tile>();
-		
+		collisionTiles = new FlxSpriteGroup();
 		CreateLevel();
-		
 	}
+	
+	
 	
 	function CreateLevel() 
 	{
+		FlxG.worldBounds.set(0, 0, GP.TileSize * GP.WorldSizeInTiles, GP.TileSize * GP.WorldSizeInTiles);
 		
 		var perlin : Perlin = new Perlin();
 		tiles.clear();
@@ -87,9 +93,27 @@ class Level extends FlxObject
 			tiles.add(t);
 		}
 		
+		
+		
 		trace("Water: " + watercount);
 		trace("Stone: " + stonecount);
 		trace("Grass: " + grasscount);
+		
+		CreateCollisionTiles();
+	}
+	
+	function CreateCollisionTiles() 
+	{
+		for (t in tiles)
+		{
+			if (t.blocking)
+			{
+				var s : FlxSprite = new FlxSprite(t.x, t.y);
+				s.makeGraphic(GP.TileSize, GP.TileSize);
+				s.immovable = true;
+				collisionTiles.add(s);
+			}
+		}
 	}
 	
 	public override function draw ()
@@ -103,6 +127,7 @@ class Level extends FlxObject
 	{
 		super.update(elapsed);
 		tiles.update(elapsed);
+		collisionTiles.update(elapsed);
 	}
 	
 	public inline function updateVisibility(p:Player) 
