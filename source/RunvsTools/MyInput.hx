@@ -30,8 +30,8 @@ class MyInput
 	public static function update ()
 	{
 		DashButtonJustPressed      = false;
-		JumpButtonJustPressed    = false;
-		AttackButtonJustPressed   = false;
+		JumpButtonJustPressed      = false;
+		AttackButtonJustPressed    = false;
 		InventoryButtonJustPressed = false;
 		GamePadConnected = false;
 		
