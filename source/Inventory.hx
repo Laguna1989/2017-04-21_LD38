@@ -97,26 +97,38 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         {
             _state.ShowInventory = !_state.ShowInventory;
 
-            if(_state.ShowInventory)
-            {
-                if(_tweenHide != null) _tweenHide.cancel();
-                _tweenShow = FlxTween.tween(_sprBG, { y : FlxG.height - _sprBG.height }, 0.25);
+            if(_state.ShowInventory) show();
+            else hide();
 
-                for(slot in Slots)
-                {
-                    slot.show();
-                }
-            }
-            else
-            {
-                if(_tweenShow != null) _tweenShow.cancel();
-                _tweenHide = FlxTween.tween(_sprBG, { y : FlxG.height }, 0.25);
-
-                for(slot in Slots)
-                {
-                    slot.hide();
-                }
-            }
+            if(_state.PlayerIsNearWorkbench) _state._craftHud.show();
         }
+    }
+
+    public function show() : Void
+    {
+        _state.ShowInventory = true;
+
+        if(_tweenHide != null) _tweenHide.cancel();
+        _tweenShow = FlxTween.tween(_sprBG, { y : FlxG.height - _sprBG.height }, 0.25);
+
+        for(slot in Slots)
+        {
+            slot.show();
+        }
+    }
+
+    public function hide() : Void
+    {
+        _state.ShowInventory = false;
+
+        if(_tweenShow != null) _tweenShow.cancel();
+        _tweenHide = FlxTween.tween(_sprBG, { y : FlxG.height }, 0.25);
+
+        for(slot in Slots)
+        {
+            slot.hide();
+        }
+
+        if(_state.ShowCraftHud) _state._craftHud.hide();
     }
 }
