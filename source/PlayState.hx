@@ -25,6 +25,9 @@ class PlayState extends FlxState
 	
 	private var _flakes : Flakes;
 	private var _vignette : Vignette;
+
+	private var _workbench : Workbench;
+	public var PlayerIsNearWorkbench : Bool;
 	
 	override public function create():Void
 	{
@@ -51,6 +54,8 @@ class PlayState extends FlxState
 		
 		_vignette = new Vignette(FlxG.camera);
 		_vignette.scrollFactor.set();
+
+		_workbench = new Workbench(32, 32, this);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -64,6 +69,7 @@ class PlayState extends FlxState
 		_inventory.update(elapsed);
 		_craftHud.update(elapsed);
 		_flakes.update(elapsed);
+		_workbench.update(elapsed);
 		
 		FlxG.collide(_player, _level.collisionTiles);
 	}
@@ -72,6 +78,7 @@ class PlayState extends FlxState
 	{
 		super.draw();
 		_level.draw();
+		_workbench.draw();
 		_player.draw();
 		_level.drawAbovePlayer();
 		_flakes.draw();
