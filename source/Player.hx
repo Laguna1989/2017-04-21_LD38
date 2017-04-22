@@ -17,8 +17,6 @@ class Player extends FlxSprite
 {
     //#################################################################
 
-	
-
     var _accelFactor    : Float;
 
 	var _playState      : PlayState;
@@ -182,37 +180,41 @@ class Player extends FlxSprite
 		acceleration.set(vx, vy);
 		
 		
-		
-		if (MyInput.InteractButtonJustPressed)
+		if (inInteractionAnim < 0)
 		{
-			var r : Rock = _playState._level.getRockInRange(this);
-			if (r != null)
+			if (MyInput.InteractButtonPressed)
 			{
-				r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
-				this.animation.play("pick", true);
-				inInteractionAnim = 0.5;
-				if (r.x < x) 
+				var r : Rock = _playState._level.getRockInRange(this);
+				if (r != null)
 				{
-					this.scale.set( -1, 1);
-					new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+					this.animation.play("pick", true);
+					inInteractionAnim = 0.5;
+					r.takeDamage(0.2);
+					if (r.x < x) 
+					{
+						this.scale.set( -1, 1);
+						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					}
+					return;
 				}
-				return;
-			}
-			
-			var t : Tree = _playState._level.getTreeInRange(this);
-			if (t != null)
-			{
-				t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
-				this.animation.play("axe", true);
-				inInteractionAnim = 0.5;
-				if (t.x < x) 
+				
+				var t : Tree = _playState._level.getTreeInRange(this);
+				if (t != null)
 				{
-					this.scale.set( -1, 1);
-					new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+					this.animation.play("axe", true);
+					inInteractionAnim = 0.5;
+					t.takeDamage(0.2);
+					if (t.x < x) 
+					{
+						this.scale.set( -1, 1);
+						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					}
+					return;
 				}
-				return;
+				
 			}
-			
 		}
     }
 

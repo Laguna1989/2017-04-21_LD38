@@ -6,4 +6,9 @@ class Resource extends Item
     {
         super(name, displayName, stackSize, imageName);
     }
+	
+	public override function clone () : Resource
+	{
+		return new Resource(Name, DisplayName, StackSize, ImageName);
+	}
 }
