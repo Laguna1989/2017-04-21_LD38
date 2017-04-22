@@ -26,19 +26,25 @@ class Tile extends FlxSprite
 	
 	function loadGraphicFromType() 
 	{
+		this.loadGraphic(AssetPaths.Tileset__png, true, 16, 16);
+		
 		if (type == TileType.GRASS)
 		{
-			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GREEN);
+			this.animation.add("idle", [FlxG.random.int(81, 89, [85])], 1, true);
+			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GREEN);
 		}
 		else if (type == TileType.WATER)
 		{
-			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.BLUE);
+			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.BLUE);
+			this.animation.add("idle", [58], 1, true);
 			blocking = true;
 		}
 		else if (type == TileType.STONE)
 		{
-			this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
+			//this.makeGraphic(GP.TileSize, GP.TileSize, FlxColor.GRAY);
+			this.animation.add("idle", [FlxG.random.int(0,9)], 1, true);
 		}
+		this.animation.play("idle");
 		this.alpha = 0;
 	}
 	
