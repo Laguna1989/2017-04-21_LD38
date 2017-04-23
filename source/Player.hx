@@ -225,7 +225,7 @@ class Player extends FlxSprite
 		{
 			if (MyInput.InteractButtonPressed)
 			{
-				var r : Rock = _playState._level.getRockInRange(this);
+				var r : Destroyables = _playState._level.getDestroyableInRange(this);
 				if (r != null)
 				{
 					r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
@@ -239,22 +239,6 @@ class Player extends FlxSprite
 					}
 					return;
 				}
-				
-				var t : Tree = _playState._level.getTreeInRange(this);
-				if (t != null)
-				{
-					t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
-					this.animation.play("axe", true);
-					inInteractionAnim = 0.5;
-					t.takeDamage(0.2);
-					if (t.x < x) 
-					{
-						this.scale.set( -1, 1);
-						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
-					}
-					return;
-				}
-				
 			}
 		}
 	}

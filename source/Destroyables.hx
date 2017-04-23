@@ -32,8 +32,6 @@ class Destroyables extends FlashSprite
 		if (health <= 0)
 		{
 			this.alive = false;
-		
-			
 		}
 	}
 	

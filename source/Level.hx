@@ -20,8 +20,7 @@ class Level extends FlxObject
 	
 	public var collisionTiles : FlxSpriteGroup;
 	
-	public var trees : FlxTypedGroup<Tree>;
-	public var rocks : FlxTypedGroup<Rock>;
+	public var destroables : FlxTypedGroup<Destroyables>;
 	
 	private var _state : PlayState;
 	
@@ -34,8 +33,7 @@ class Level extends FlxObject
 		
 		tiles = new FlxTypedGroup<Tile>();
 		collisionTiles = new FlxSpriteGroup();
-		trees = new FlxTypedGroup<Tree>();
-		rocks = new FlxTypedGroup<Rock>();
+		destroables = new FlxTypedGroup<Destroyables>();
 		CreateLevel();
 		
 		resources = new FlxTypedGroup<Resource>();
@@ -179,39 +177,20 @@ class Level extends FlxObject
 		}
 	}
 	
-	public function getTreeInRange(p : Player) : Tree
+	public function getDestroyableInRange(p : Player) : Destroyables
 	{
-		for (t in trees)
+		for (d in destroables)
 		{
-			var dx: Float = t.x - p.x - 8;
+			var dx: Float = d.x - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = t.y - p.y - 8;
+			var dy: Float = d.y - p.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;
 			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
 			{
-				return t;
-			}
-		}
-		return null;
-	}
-	
-	public function getRockInRange(p : Player) : Rock
-	{
-		for (r in rocks)
-		{
-			var dx: Float = r.x - p.x - 8;
-			if (dx > GP.TileSize * 2) continue;
-			
-			var dy: Float = r.y - p.y - 8;
-			if (dy > GP.TileSize * 2) continue;
-			
-			var l : Float = dx * dx  + dy * dy;
-			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
-			{
-				return r;
+				return d;
 			}
 		}
 		return null;
@@ -258,20 +237,22 @@ class Level extends FlxObject
 	
 	function CreateObjects() 
 	{
-		
+		CreateRocks();
 		CreateTrees();
 		
-		CreateRocks();
-		
-		
-		
+		// sort destroyables for correct drawing order
+		destroables.members.sort(function(a, b) : Int {
+			if (a.y < b.y) return -1;
+			else if (a.y > b.y ) return 1;
+			else return 0;
+		});
 	}
 	
 	function CreateRocks() 
 	{
 		while(true)
 		{	
-			if (rocks.length >= GP.WorldRockCount)
+			if (destroables.length >= GP.WorldRockCount)
 			{
 				break;
 			}
@@ -284,23 +265,17 @@ class Level extends FlxObject
 			if (tile.type == TileType.STONE)
 			{
 				var r : Rock = new Rock(ix * GP.TileSize , iy * GP.TileSize);
-				rocks.add(r);
+				destroables.add(r);
 				collisionTiles.add(r);
 			}
 		}
-		// sort trees for correct drawing order
-		trees.members.sort(function(a, b) : Int {
-			if (a.y < b.y) return -1;
-			else if (a.y > b.y ) return 1;
-			else return 0;
-		});
 	}
 	
 	function CreateTrees():Void 
 	{
 		while(true)
 		{	
-			if (trees.length >= GP.WorldWoodCount)
+			if (destroables.length - GP.WorldRockCount >= GP.WorldWoodCount)
 			{
 				break;
 			}
@@ -313,16 +288,11 @@ class Level extends FlxObject
 			if (tile.type == TileType.GRASS)
 			{
 				var t : Tree = new Tree((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
-				trees.add(t);
+				destroables.add(t);
 				collisionTiles.add(t.collisionSprite);
 			}
 		}
-		// sort trees for correct drawing order
-		trees.members.sort(function(a, b) : Int {
-			if (a.y < b.y) return -1;
-			else if (a.y > b.y ) return 1;
-			else return 0;
-		});
+		
 	}
 	
 	public function getTileAtPosition(X : Float, Y : Float) : Tile
@@ -393,8 +363,7 @@ class Level extends FlxObject
 	
 	public function drawAbovePlayer()
 	{
-		trees.draw();
-		rocks.draw();
+		destroables.draw();
 	}
 	
 	
@@ -404,8 +373,7 @@ class Level extends FlxObject
 		super.update(elapsed);
 		tiles.update(elapsed);
 		collisionTiles.update(elapsed);
-		trees.update(elapsed);
-		rocks.update(elapsed);
+		destroables.update(elapsed);
 		resources.update(elapsed);
 		ResourceMagnet();
 	}
@@ -428,7 +396,7 @@ class Level extends FlxObject
 			}
 		}
 		
-		for (t in trees)
+		for (t in destroables)
 		{
 			if (t.visited) continue;
 			var dx : Float = t.x - p.x;
@@ -441,22 +409,6 @@ class Level extends FlxObject
 			if ( l < GP.PlayerViewRange * GP.PlayerViewRange * 1.2 * 1.2)
 			{
 				t.visitMe(); 
-			}
-		}
-		
-		for (r in rocks)
-		{
-			if (r.visited) continue;
-			var dx : Float = r.x - p.x;
-			if (dx > GP.PlayerViewRange * 1.2) continue;
-			
-			var dy : Float = r.y - p.y;
-			if (dy > GP.PlayerViewRange * 1.2) continue;
-			
-			var l = dx * dx + dy * dy;
-			if ( l < GP.PlayerViewRange * GP.PlayerViewRange * 1.2 * 1.2)
-			{
-				r.visitMe(); 
 			}
 		}
 	}
@@ -473,8 +425,8 @@ class Level extends FlxObject
 	private function cleanUp()
 	{
 		{
-			var tl : FlxTypedGroup<Tree> = new FlxTypedGroup<Tree>();
-			for (t in trees)
+			var tl : FlxTypedGroup<Destroyables> = new FlxTypedGroup<Destroyables>();
+			for (t in destroables)
 			{
 				if (t.alive)
 					tl.add(t);
@@ -484,22 +436,7 @@ class Level extends FlxObject
 					t.destroy();
 				}
 			}
-			trees = tl;
-		}
-		
-		{
-			var rl : FlxTypedGroup<Rock> = new FlxTypedGroup<Rock>();
-			for (r in rocks)
-			{
-				if (r.alive)
-					rl.add(r);
-				else
-				{
-					r.destroyMe(_state);
-					r.destroy();
-				}
-			}
-			rocks = rl;
+			destroables = tl;
 		}
 		
 		{
