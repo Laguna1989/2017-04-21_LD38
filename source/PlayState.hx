@@ -114,6 +114,7 @@ class PlayState extends FlxState
 						pickUpItem(s);
 					}
 					pickUpItem(_craftHud.ResultSlot);
+					pickUpItem(_inventory.ActiveSlot);
 				}
 				else
 				{
@@ -128,6 +129,7 @@ class PlayState extends FlxState
 					{
 						DropItem(s);
 					}
+					DropItem(_inventory.ActiveSlot);
 				}
 			}
 			if (FlxG.mouse.justPressedRight)
@@ -140,6 +142,7 @@ class PlayState extends FlxState
 				{
 					DropItem(s, false);
 				}
+				DropItem(_inventory.ActiveSlot,false);
 			}
 		}
 	}

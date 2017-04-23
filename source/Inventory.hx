@@ -14,6 +14,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
     private var _tweenHide : FlxTween;
 
     public var Slots : Array<InventorySlot>;
+	public var ActiveSlot : InventorySlot;
 	
 
     public function new()
@@ -44,6 +45,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
             add(slot);
             Slots.push(slot);
         }
+		ActiveSlot = new InventorySlot(cast(_sprBG.x + 128), cast( 8 + FlxG.height - _sprBG.height), cast _sprBG.width, cast _sprBG.height);
+		add(ActiveSlot);
     }
 
     public function hasFreeSlot(item : Item) : Bool
@@ -97,6 +100,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         {
             slot.show();
         }
+		ActiveSlot.show();
     }
 
     public function hide() : Void
@@ -108,11 +112,12 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         {
             slot.hide();
         }
+		ActiveSlot.hide();
     }
 	
 	public function getActiveTool() : Item
 	{
-		return null;
+		return ActiveSlot.Item;
 	}
 	
 	
