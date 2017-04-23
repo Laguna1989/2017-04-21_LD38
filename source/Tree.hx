@@ -19,7 +19,7 @@ class Tree extends Destroyables
 		super(X, Y);
 		
 		dropItem = cast ItemManager.getItem("Wood");
-		toolUsage = 0.1;
+		toolUsage = 0.025;
 		
 		var r : Int = FlxG.random.int(1, 6);
 

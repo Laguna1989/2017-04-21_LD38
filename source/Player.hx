@@ -262,8 +262,8 @@ class Player extends FlxSprite
 		{
 			if (MyInput.InteractButtonPressed)
 			{
-				var r : Destroyables = _state._level.getDestroyableInRange(this);
-				if (r != null)
+				var d : Destroyables = _state._level.getDestroyableInRange(this);
+				if (d != null)
 				{
 					this.animation.play("pick", true);
 					inInteractionAnim = 0.5;
@@ -275,15 +275,15 @@ class Player extends FlxSprite
 					{
 						var t : Tool = cast i;
 						quality = t.toolQuality;
-						t.toolLifeTime -= r.toolUsage;
+						t.toolLifeTime -= d.toolUsage * 0.75;
 					}
 					
-					r.takeDamage(0.2 * quality);
+					d.takeDamage(0.2 * quality);
 					getTired((1 - quality) * GP.ExhaustionFactor);
 					getHungry((1 - quality) * GP.HungerFactor);
 					getCold((1 - quality) * -GP.WarmthFactor);
 					
-					if (r.x < x) 
+					if (d.x < x) 
 					{
 						this.scale.set( -1, 1);
 						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );

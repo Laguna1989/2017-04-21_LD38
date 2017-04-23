@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -15,6 +16,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 
     public var Slots : Array<InventorySlot>;
 	public var ActiveSlot : InventorySlot;
+	
+	public var _activeToolLifeTime : HudBar;
 	
 
     public function new()
@@ -45,6 +48,11 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         }
 		ActiveSlot = new InventorySlot(cast(_sprBG.x + 128), cast( 8 + FlxG.height - _sprBG.height), cast _sprBG.width, cast _sprBG.height);
 		add(ActiveSlot);
+		
+		_activeToolLifeTime = new HudBar(_sprBG.x + 128, 8 + FlxG.height - _sprBG.height - 6, 16, 4, false, FlxColor.WHITE);
+		_activeToolLifeTime.scrollFactor.set();
+		
+		//add(_activeToolLifeTime);
     }
 
     public function hasFreeSlot(item : Item) : Bool
@@ -91,7 +99,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
     public function show() : Void
     {
         if(_tweenHide != null) _tweenHide.cancel();
-        _tweenShow = FlxTween.tween(_sprBG, { y : FlxG.height - _sprBG.height }, 0.25);
+        _tweenShow = FlxTween.tween(_sprBG, { y : FlxG.height - _sprBG.height }, 0.25, { onComplete:function(t) { _activeToolLifeTime.alpha = _activeToolLifeTime._background.alpha = 1; }} );
 
         for(slot in Slots)
         {
@@ -102,7 +110,10 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 
     public function hide() : Void
     {
-        if(_tweenShow != null) _tweenShow.cancel();
+        if (_tweenShow != null) _tweenShow.cancel();
+		
+		_activeToolLifeTime.alpha = _activeToolLifeTime._background.alpha = 0;
+		
         _tweenHide = FlxTween.tween(_sprBG, { y : FlxG.height }, 0.25);
 
         for(slot in Slots)
@@ -121,6 +132,37 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
+		//trace("inventory.update");
+		handleActiveItem(elapsed);
+	}
+	
+	override public function draw():Void 
+	{
+		super.draw();
+		//_activeToolLifeTime.draw();
+	}
+	
+	public function hasValidTool() : Bool
+	{
+		return Std.is(ActiveSlot.Item, Tool);
+	}
+	function handleActiveItem(elapsed : Float):Void 
+	{
+		if (!hasValidTool()) return;
+		var t : Tool = cast ActiveSlot.Item;
+		
+		_activeToolLifeTime.health = (t.toolLifeTime);
+		_activeToolLifeTime.update(elapsed);
+		
+		
+		t.update(elapsed);
+		
+		if (!t.alive)
+		{
+			trace("item destroyed 2");
+			ActiveSlot.Item = null;
+			ActiveSlot.Quantity = 0;
+		}
 		
 	}
 }
