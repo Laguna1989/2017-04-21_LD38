@@ -1,8 +1,8 @@
 {
     "recipe": [
         "Stone", "Stone", "Stone",
-        null, "Wood", null,
-        null, "Wood", null
+        null, "WoodenStick", null,
+        null, "WoodenStick", null
     ],
     "result": "StonePickaxe",
     "quantity": 1
