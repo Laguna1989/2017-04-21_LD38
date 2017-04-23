@@ -25,6 +25,7 @@ class Level extends FlxObject
 	private var _state : PlayState;
 	
 	private var resources : FlxTypedGroup<Resource>;
+	private var placeables : FlxTypedGroup<Placeable>;
 	
 	public function new(state:PlayState) 
 	{
@@ -34,6 +35,7 @@ class Level extends FlxObject
 		tiles = new FlxTypedGroup<Tile>();
 		collisionTiles = new FlxSpriteGroup();
 		destroables = new FlxTypedGroup<Destroyables>();
+		placeables = new FlxTypedGroup<Placeable>();
 		CreateLevel();
 		
 		resources = new FlxTypedGroup<Resource>();
@@ -191,6 +193,26 @@ class Level extends FlxObject
 			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
 			{
 				return d;
+			}
+		}
+		return null;
+	}
+	
+	public function getPlaceableInRange(pl : Player) : Placeable
+	{
+		for (p in placeables)
+		{
+			
+			var dx: Float = p.x  - p.x - 8;
+			if (dx > GP.TileSize * 2) continue;
+			
+			var dy: Float = p.y - p.y - 8;
+			if (dy > GP.TileSize * 2) continue;
+			
+			var l : Float = dx * dx  + dy * dy;
+			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
+			{
+				return p;
 			}
 		}
 		return null;
@@ -383,6 +405,7 @@ class Level extends FlxObject
 		super.draw();
 		tiles.draw();
 		resources.draw();
+		placeables.draw();
 
 	}
 	
@@ -401,6 +424,11 @@ class Level extends FlxObject
 		destroables.update(elapsed);
 		resources.update(elapsed);
 		ResourceMagnet();
+		placeables.update(elapsed);
+		for (p in placeables)
+		{
+			p.ApplySourroundingEffect(_state._player);
+		}
 	}
 	
 	public inline function updateVisibility(p:Player) 
@@ -444,6 +472,15 @@ class Level extends FlxObject
 		if (r != null)
 		{
 			resources.add(r);
+		}
+	}
+	
+	public function addPlaceable(p : Placeable)
+	{
+		if (p != null)
+		{
+			trace("add placeable");
+			placeables.add(p);
 		}
 	}
 	

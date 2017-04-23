@@ -19,7 +19,7 @@ class Player extends FlxSprite
 
     var _accelFactor    : Float;
 
-	var _state      : PlayState;
+	public var _state      : PlayState;
 
 	var _facing         : Facing;
 	
@@ -270,13 +270,16 @@ class Player extends FlxSprite
 				}
 				else if (Std.is(i, Tool))
 				{
+					trace("u have tool");
 					var t : Tool = cast i;
 					if (t.toolCanBeUsedWithDestroyable)
 					{
+						//trace("destroyable");
 						interactWithWorld(t);
 					}
 					else if (t.toolCanBePlacedInWorld)
 					{
+						trace("place out");
 						PlaceItemInWorld(t);
 					}
 				}
@@ -292,22 +295,38 @@ class Player extends FlxSprite
 	{
 		if (t == null || !t.toolCanBePlacedInWorld) return;
 		
+		trace("placeItem");
 		_state._inventory.ActiveSlot.Item = null;
 		_state._inventory.ActiveSlot.Quantity = 0;
 		
-		
+		t.UseTool(this);
+
 	}
 	
 	function interactWithWorld(t : Tool):Void 
+	{
+		InteractWithDestroyables(t);
+		InteractWithPlayceables();
+	}
+	
+	function InteractWithPlayceables() 
+	{
+		var p : Placeable = _state._level.getPlaceableInRange(this);
+		if (p == null) return;
+		
+		p.Use(this);
+		
+	}
+	function InteractWithDestroyables(t : Tool):Void 
 	{
 		var d : Destroyables = _state._level.getDestroyableInRange(this);
 		if (d == null) return;
 		
 		this.animation.play("pick", true);
 		inInteractionAnim = 0.5;
-
+	
 		var quality : Float = 0.5;
-
+	
 		if (t != null)
 		{
 			quality = t.toolQuality;
@@ -345,6 +364,8 @@ class Player extends FlxSprite
 		this.scale.set( -1, 1);
 		new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
 	}
+	
+	
  
 	public override function draw() 
 	{

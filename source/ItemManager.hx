@@ -15,6 +15,7 @@ class ItemManager
 
         _tools = new Array<Tool>();
         _tools.push(new StonePickaxe());
+		_tools.push(new Tent());
 
         // Read resources from JSON files
         var list : Array<String> = FileList.getFileList("assets/data/", "resource.json");

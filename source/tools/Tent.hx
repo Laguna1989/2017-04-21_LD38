@@ -1,6 +1,5 @@
 package;
 
-import flixel.system.debug.interaction.tools.Tool;
 
 /**
  * ...
@@ -16,6 +15,17 @@ class Tent extends Tool
 		toolCanBePlacedInWorld = true;
 		toolQuality = 1;
 		toolLifeTime = 1;
+	}
+	public override function clone() : Tent
+	{
+		return new Tent();
+	}
+	
+	public override function UseTool(p : Player) : Void
+	{
+		trace("place tent");
+		var t : PlaceableTent = new PlaceableTent(p.x + 16, p.y);
+		p._state._level.addPlaceable(t);
 	}
 	
 }

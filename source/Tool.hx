@@ -17,7 +17,10 @@ class Tool extends Item
 	
 	public override function clone() : Tool
 	{
-		return new Tool(Name, DisplayName, StackSize, ImageName);
+		var t : Tool = new Tool(Name, DisplayName, StackSize, ImageName);
+		t.toolCanBePlacedInWorld = toolCanBePlacedInWorld;
+		t.toolCanBeUsedWithDestroyable = toolCanBeUsedWithDestroyable;
+		return t;
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -29,6 +32,11 @@ class Tool extends Item
 			trace("item destroyed 1");
 			alive = false;
 		}
+	}
+	
+	public function UseTool(p : Player) : Void
+	{
+		
 	}
 	
 }
