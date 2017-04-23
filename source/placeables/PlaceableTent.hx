@@ -20,7 +20,7 @@ class PlaceableTent extends Placeable
 	{
 		//trace("use tent");
 		p.Flash(0.25, FlxColor.fromRGB(0,255,0,10));
-		p.Exhaustion = 1;
+		p.getTired( -1 );
 		
 	}
 	

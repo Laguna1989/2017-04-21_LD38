@@ -10,7 +10,6 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import ItemManager;
 import CraftManager;
-import Resource;
 
 class PlayState extends FlxState
 {

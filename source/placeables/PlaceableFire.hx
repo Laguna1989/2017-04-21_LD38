@@ -20,8 +20,8 @@ class PlaceableFire extends Placeable
 	
 	public override function doAppplySourroundingEffect(p : Player)
 	{
-		p.Warmth += 0.3 * FlxG.elapsed;
-		if (p.Warmth > 1) p.Warmth = 1;
+		
+		p.getCold( - 0.1 * FlxG.elapsed);
 		p.Flash(0.25, FlxColor.fromRGB(255,150,150,10));
 	}
 }

@@ -6,12 +6,12 @@ import Tool;
 
 class ItemManager
 {
-    private static var _resources : Array<Resource>;
+    private static var _resources : Array<Item>;
     private static var _tools     : Array<Tool>;
 
     public static function init()
     {
-        _resources = new Array<Resource>();
+        _resources = new Array<Item>();
 
         _tools = new Array<Tool>();
 		
@@ -29,7 +29,7 @@ class ItemManager
             var data:ParseResouce = Json.parse(Assets.getText(r));
 
 			trace(r);
-            _resources.push(new Resource(data.name, data.displayName, data.stackSize, data.imageName));
+            _resources.push(new Item(data.name, data.displayName, data.stackSize, data.imageName));
         }
     }
 
@@ -46,7 +46,7 @@ class ItemManager
         return  item;
     }
 
-    private static function getResource(resourceName : String) : Resource
+    private static function getResource(resourceName : String) : Item
     {
         if(resourceName == null) return null;
         

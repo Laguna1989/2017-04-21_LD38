@@ -57,6 +57,7 @@ class Destroyables extends FlashSprite
 		{
 			//trace("destroyable: destroyME: Drop item" );
 			//trace("destroyable: destroyME: Drop item Name: " + dropItem );
+			if (dropItem == null) throw "ERROR: cannot clone null item!";
 			var r : Item = dropItem.clone();
 			r.x = x;
 			r.y = y;
@@ -65,7 +66,7 @@ class Destroyables extends FlashSprite
 			r.velocity.set(Math.cos(a) * 150, Math.sin(a) * 150);
 			r.drag.set(500, 500);
 			
-			//trace("dropresource");
+			trace("dropresource");
 			state._level.dropResourceInLevel(r);
 		}
 		

@@ -1,8 +1,8 @@
 {
     "recipe": [
         null, null, "Fabric",
-        null, "Fabric", "WoodenStick",
-        "Fabric", null, "WoodenStick"
+        null, "Fabric", "WoodenSticks",
+        "Fabric", null, "WoodenSticks"
     ],
     "result": "Tent",
     "quantity": 1

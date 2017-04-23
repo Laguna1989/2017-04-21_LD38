@@ -345,19 +345,23 @@ class Player extends FlashSprite
 		}
 	}
 	
-	private function getTired(amount : Float) : Void
+	public function getTired(amount : Float) : Void
 	{
 		Exhaustion -= amount;
+		if (Exhaustion > 1 ) Exhaustion = 1;
+		
 	}
 
-	private function getHungry(amount : Float) : Void
+	public function getHungry(amount : Float) : Void
 	{
 		Hunger -= amount;
+		if (Hunger > 1 ) Hunger = 1;
 	}
 
-	private function getCold(amount : Float) : Void
+	public function getCold(amount : Float) : Void
 	{
 		Warmth -= amount;
+		if (Warmth > 1 ) Warmth = 1;
 	}
 	
 	function TurnPlayerLeftForInteraction():Void 

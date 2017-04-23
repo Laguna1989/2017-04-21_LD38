@@ -26,8 +26,7 @@ class Berry extends Tool
 	{
 		trace("use food");
 		p.Flash(0.2, FlxColor.fromRGB(200, 200, 200, 10));
-		p.Hunger += 0.1;
-		if (p.Hunger > 1) p.Hunger = 1;
+		p.getHungry( -0.1);
 	}
 	
 	override public function update(elapsed:Float):Void 
