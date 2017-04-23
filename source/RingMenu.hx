@@ -124,15 +124,17 @@ class RingMenu extends FlxSpriteGroup
 	
 	function getInput() 
 	{
-		if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S)
+		if (MyInput.DownButtonJustPressed)
 		{
 			MoveSelectorDown();
 		}
-		else if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W)
+		else if (MyInput.UpButtonJustPressed)
 		{
 			MoveSelectorUp();
 		}
-		else if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+		else if(MyInput.InteractButtonJustPressed
+		     || MyInput.SpaceButtonJustPressed
+			 || MyInput.EnterButtonJustPressed)
 		{
 			Proceed();
 		}

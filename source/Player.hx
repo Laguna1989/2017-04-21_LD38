@@ -197,7 +197,6 @@ class Player extends FlxSprite
 
 		if (l >= 25)
 		{
-
 			if(vx > 0)
 			{
 				_facing = Facing.EAST;
