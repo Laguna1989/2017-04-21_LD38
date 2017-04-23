@@ -29,6 +29,9 @@ class PlayState extends FlxState
 	private var _workbench : Workbench;
 	public var PlayerIsNearWorkbench : Bool;
 	
+	private var _draggingItem : Item = null;
+	private var _draggingItemQuantity : Int = 0;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -64,6 +67,11 @@ class PlayState extends FlxState
 		MyInput.update();
 		handleInput();
 		
+		if (_draggingItem != null)
+		{
+			_draggingItem.setPosition(FlxG.mouse.getScreenPosition().x, FlxG.mouse.getScreenPosition().y);
+		}
+		
 		_level.update(elapsed);
 		_level.updateVisibility(_player);
 		_player.update(elapsed);
@@ -76,6 +84,41 @@ class PlayState extends FlxState
 	}
 
 	private function handleInput()
+	{
+		InventoryOpenClose();
+		
+		ItemDragging();
+		
+	}
+	
+	function ItemDragging() 
+	{
+		if (ShowInventory)
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				if (_draggingItem == null)
+				{
+					// pick up item
+					pickUpItem(_inventory.Slots);
+					pickUpItemCraft(_craftHud.Slots);
+				}
+				else
+				{
+					// drop Item
+					DropItem(_inventory.Slots);
+					DropItemCraft(_craftHud.Slots);
+				}
+			}
+			if (FlxG.mouse.justPressedRight)
+			{
+				DropItem(_inventory.Slots, false);
+				DropItemCraft(_craftHud.Slots, false);
+			}
+		}
+	}
+
+	function InventoryOpenClose():Void 
 	{
 		if(MyInput.InventoryButtonJustPressed)
 		{
@@ -100,11 +143,11 @@ class PlayState extends FlxState
 				}
 			}
 		}
-
+	
 		if(MyInput.InteractButtonJustPressed && PlayerIsNearWorkbench)
 		{
 			ShowCraftHud = !ShowCraftHud;
-
+	
 			if(ShowCraftHud)
 			{
 				_craftHud.show();
@@ -124,7 +167,7 @@ class PlayState extends FlxState
 				}
 			}
 		}
-
+	
 		if(ShowCraftHud && !PlayerIsNearWorkbench)
 		{
 			ShowCraftHud = false;
@@ -132,6 +175,91 @@ class PlayState extends FlxState
 		}
 	}
 	
+	function pickUpItem(arr: Array<InventorySlot>):Void 
+	{
+		for (s in arr)
+		{
+			if (s.Item == null) continue;	// cant pickup nothing
+			
+			if (s.isMouseOver())
+			{
+				_draggingItem = s.Item;
+				_draggingItemQuantity = s.Quantity;
+				s.Item = null;
+				s.Quantity = 0;
+				return;
+			}
+		}
+	}
+	function pickUpItemCraft(arr: Array<CraftSlot>):Void 
+	{
+		for (s in arr)
+		{
+			if (s.Item == null) continue;	// cant pickup nothing
+			
+			if (s.isMouseOver())
+			{
+				_draggingItem = s.Item;
+				_draggingItemQuantity = s.Quantity;
+				s.Item = null;
+				s.Quantity = 0;
+				return;
+			}
+		}
+	}
+	
+	function DropItem(arr:Array<InventorySlot>, full : Bool = true) 
+	{
+		for (s in arr)
+		{
+			if (s.Item != null) continue;	// cant pickup nothing
+			
+			if (s.isMouseOver())
+			{
+				if (full || _draggingItemQuantity < 2)
+				{
+					s.Item = _draggingItem;
+					s.Quantity = _draggingItemQuantity;
+					_draggingItem = null;
+					_draggingItemQuantity = 0;
+				}
+				else
+				{
+					s.Item = _draggingItem.clone();
+					s.Quantity = Std.int(_draggingItemQuantity / 2);
+					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
+				}
+				return;
+			}
+		}
+	}
+	
+	function DropItemCraft(arr:Array<CraftSlot>, full : Bool = true) 
+	{
+		for (s in arr)
+		{
+			if (s.Item != null) continue;	// cant pickup nothing
+			
+			if (s.isMouseOver())
+			{
+				if (full || _draggingItemQuantity < 2)
+				{
+					s.Item = _draggingItem;
+					s.Quantity = _draggingItemQuantity;
+					_draggingItem = null;
+					_draggingItemQuantity = 0;
+				}
+				else
+				{
+					s.Item = _draggingItem.clone();
+					s.Quantity = Std.int(_draggingItemQuantity / 2);
+					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
+				}
+				return;
+			}
+		}
+	}
+		
 	override public function draw()
 	{
 		super.draw();
@@ -144,5 +272,13 @@ class PlayState extends FlxState
 
 		_inventory.draw();
 		_craftHud.draw();
+		
+		if (ShowInventory)
+		{
+			if (_draggingItem != null)
+			{
+				_draggingItem.draw();
+			}
+		}
 	}
 }

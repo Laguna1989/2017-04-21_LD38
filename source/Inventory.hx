@@ -15,7 +15,6 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 
     public var Slots : Array<InventorySlot>;
 	
-	
 
     public function new()
     {
@@ -114,5 +113,12 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 	public function getActiveTool() : Item
 	{
 		return null;
+	}
+	
+	
+	override public function update(elapsed:Float):Void 
+	{
+		super.update(elapsed);
+		
 	}
 }
