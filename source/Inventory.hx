@@ -63,6 +63,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         // Look first for stacks to fill up...
         for(slot in Slots)
         {
+			if (slot == null || slot.Item == null) continue;
             if(slot.Item.Name == item.Name && slot.Quantity < slot.Item.StackSize)
             {
                 slot.Quantity++;

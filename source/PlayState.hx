@@ -36,7 +36,7 @@ class PlayState extends FlxState
 		ItemManager.init();
 		CraftManager.init();
 		
-		_level = new Level();
+		_level = new Level(this);
 		
 		_player = new Player(this);
 

@@ -8,14 +8,14 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
  * ...
  * @author 
  */
-class Rock extends FlashSprite
+class Rock extends Destroyables
 {
-
-	public var visited : Bool = false;
 	
-	public function new(X : Float, Y : Float ) 
+	public function new( X : Float, Y : Float ) 
 	{
-		super(X, Y);
+		super( X, Y);
+		
+		dropItem = cast ItemManager.getItem("Stone");
 		
 		var r2 : Int = FlxG.random.int(0, 7);
 		this.loadGraphic(AssetPaths.Rockset_small__png, true, 16, 16);
@@ -24,12 +24,8 @@ class Rock extends FlashSprite
 
 		this.immovable = true;
 		this.alpha = 0;
-	}
-	
-	public inline function visitMe()
-	{
-		alpha = 1;
-		visited = true;
+		dropQuantity = 3;
+		health = 1.1;
 	}
 	
 }

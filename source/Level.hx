@@ -23,15 +23,22 @@ class Level extends FlxObject
 	public var trees : FlxTypedGroup<Tree>;
 	public var rocks : FlxTypedGroup<Rock>;
 	
-	public function new() 
+	private var _state : PlayState;
+	
+	private var resources : FlxTypedGroup<Resource>;
+	
+	public function new(state:PlayState) 
 	{
 		super();
+		_state = state;
 		
 		tiles = new FlxTypedGroup<Tile>();
 		collisionTiles = new FlxSpriteGroup();
 		trees = new FlxTypedGroup<Tree>();
 		rocks = new FlxTypedGroup<Rock>();
 		CreateLevel();
+		
+		resources = new FlxTypedGroup<Resource>();
 	}
 	
 	
@@ -176,10 +183,10 @@ class Level extends FlxObject
 	{
 		for (t in trees)
 		{
-			var dx: Float = t.x - p.x;
+			var dx: Float = t.x - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = t.y - p.y;
+			var dy: Float = t.y - p.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;
@@ -195,10 +202,10 @@ class Level extends FlxObject
 	{
 		for (r in rocks)
 		{
-			var dx: Float = r.x - p.x;
+			var dx: Float = r.x - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = r.y - p.y;
+			var dy: Float = r.y - p.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;
@@ -208,6 +215,40 @@ class Level extends FlxObject
 			}
 		}
 		return null;
+	}
+	
+	public function ResourceMagnet()
+	{
+		var p : Player = _state._player;
+		for (r in resources)
+		{
+			var dx: Float = r.x - p.x - 8;
+			if (dx > GP.PlayerMagnetRange) continue;
+			
+			var dy: Float = r.y - p.y - 8;
+			if (dy > GP.PlayerMagnetRange) continue;
+			
+			var l : Float = dx * dx  + dy * dy;
+			
+			if (l < GP.TileSize * GP.TileSize * 0.25)
+			{
+				r.velocity.set();
+				// touching
+				if (_state._inventory.hasFreeSlot(r))
+				{
+					r.alive = false;
+					_state._inventory.pickupItem(r);
+				}
+			}
+			
+			if (l < GP.PlayerMagnetRange * GP.PlayerMagnetRange)
+			{
+				l = Math.sqrt(l);
+				
+				r.velocity.set( -dx/l * 100, -dy/l*100);
+			}
+			
+		}
 	}
 	
 	function SpawnPostionOnMap () : FlxPoint
@@ -242,9 +283,38 @@ class Level extends FlxObject
 			if (tile == null) continue;
 			if (tile.type == TileType.STONE)
 			{
-				var r : Rock = new Rock(ix * GP.TileSize, iy * GP.TileSize);
+				var r : Rock = new Rock(ix * GP.TileSize , iy * GP.TileSize);
 				rocks.add(r);
 				collisionTiles.add(r);
+			}
+		}
+		// sort trees for correct drawing order
+		trees.members.sort(function(a, b) : Int {
+			if (a.y < b.y) return -1;
+			else if (a.y > b.y ) return 1;
+			else return 0;
+		});
+	}
+	
+	function CreateTrees():Void 
+	{
+		while(true)
+		{	
+			if (trees.length >= GP.WorldWoodCount)
+			{
+				break;
+			}
+			
+			var ix : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			var iy : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			
+			var tile : Tile = getTileAtIntPosition(ix, iy);
+			if (tile == null) continue;
+			if (tile.type == TileType.GRASS)
+			{
+				var t : Tree = new Tree((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
+				trees.add(t);
+				collisionTiles.add(t.collisionSprite);
 			}
 		}
 		// sort trees for correct drawing order
@@ -298,6 +368,7 @@ class Level extends FlxObject
 	
 	function CreateCollisionTiles() 
 	{
+		//collisionTiles.clear();
 		for (t in tiles)
 		{
 			if (t.blocking)
@@ -310,40 +381,13 @@ class Level extends FlxObject
 		}
 	}
 	
-	function CreateTrees():Void 
-	{
-		while(true)
-		{	
-			if (trees.length >= GP.WorldWoodCount)
-			{
-				break;
-			}
-			
-			var ix : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
-			var iy : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
-			
-			var tile : Tile = getTileAtIntPosition(ix, iy);
-			if (tile == null) continue;
-			if (tile.type == TileType.GRASS)
-			{
-				var t : Tree = new Tree(ix * GP.TileSize, iy * GP.TileSize);
-				trees.add(t);
-				collisionTiles.add(t.collisionSprite);
-			}
-		}
-		// sort trees for correct drawing order
-		trees.members.sort(function(a, b) : Int {
-			if (a.y < b.y) return -1;
-			else if (a.y > b.y ) return 1;
-			else return 0;
-		});
-	}
+	
 	
 	public override function draw ()
 	{
 		super.draw();
 		tiles.draw();
-		
+		resources.draw();
 
 	}
 	
@@ -356,11 +400,14 @@ class Level extends FlxObject
 	
 	public override function update (elapsed : Float)
 	{
+		cleanUp();
 		super.update(elapsed);
 		tiles.update(elapsed);
 		collisionTiles.update(elapsed);
 		trees.update(elapsed);
 		rocks.update(elapsed);
+		resources.update(elapsed);
+		ResourceMagnet();
 	}
 	
 	public inline function updateVisibility(p:Player) 
@@ -412,5 +459,61 @@ class Level extends FlxObject
 				r.visitMe(); 
 			}
 		}
+	}
+	
+	
+	public function dropResourceInLevel(r:Resource)
+	{
+		if (r != null)
+		{
+			resources.add(r);
+		}
+	}
+	
+	private function cleanUp()
+	{
+		{
+			var tl : FlxTypedGroup<Tree> = new FlxTypedGroup<Tree>();
+			for (t in trees)
+			{
+				if (t.alive)
+					tl.add(t);
+				else
+				{
+					t.destroyMe(_state);
+					t.destroy();
+				}
+			}
+			trees = tl;
+		}
+		
+		{
+			var rl : FlxTypedGroup<Rock> = new FlxTypedGroup<Rock>();
+			for (r in rocks)
+			{
+				if (r.alive)
+					rl.add(r);
+				else
+				{
+					r.destroyMe(_state);
+					r.destroy();
+				}
+			}
+			rocks = rl;
+		}
+		
+		{
+			var il : FlxTypedGroup<Resource> = new FlxTypedGroup<Resource>();
+			for (i in resources)
+			{
+				if (i.alive)
+					il.add(i);
+				else
+					i.destroy();
+			}
+			resources = il;
+		}
+		
+		
 	}
 }
