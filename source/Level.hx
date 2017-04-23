@@ -202,11 +202,10 @@ class Level extends FlxObject
 	{
 		for (p in placeables)
 		{
-			
-			var dx: Float = p.x  - p.x - 8;
+			var dx: Float = p.x  - pl.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = p.y - p.y - 8;
+			var dy: Float = p.y - pl.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;

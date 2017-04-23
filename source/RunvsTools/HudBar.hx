@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 /**
@@ -12,8 +13,9 @@ class HudBar extends FlxSprite
 
 	var _vertical : Bool;
 	public var _background : FlxSprite;
+	public var _text : FlxText;
 	
-	public function new(X:Float=0, Y:Float=0, w : Float, h : Float, vertical: Bool =true, col: FlxColor) 
+	public function new(X:Float=0, Y:Float=0, w : Float, h : Float, vertical: Bool =true, col: FlxColor, text :String = "") 
 	{
 		super();
 		x = X;
@@ -35,8 +37,12 @@ class HudBar extends FlxSprite
 		}
 		else
 		{
-			SpriteFunctions.createHorizontalBar(this,Std.int(w), Std.int(h), Std.int(h/6.0), col);
+			SpriteFunctions.createHorizontalBar(this, Std.int(w), Std.int(h), Std.int(h / 6.0), col);
+			this.origin.set(0, height);
 		}
+		
+		_text = new FlxText(x, y, 0, text, 8);
+		_text.scrollFactor.set();
 	}
 	
 	override public function update(elapsed:Float):Void
@@ -61,6 +67,7 @@ class HudBar extends FlxSprite
 		//trace("draw");
 		_background.draw();
 		super.draw();
+		_text.draw();
 	}
 	
 }

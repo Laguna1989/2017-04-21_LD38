@@ -78,9 +78,10 @@ class Player extends FlxSprite
 		Warmth     = 0.8;
 		
 		var barWidth = 60;
-		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GRAY );
-		_hungerBar     = new HudBar(FlxG.width - barWidth, 10, barWidth, 10, false, FlxColor.GREEN);
-		_warmthBar     = new HudBar(FlxG.width - barWidth, 20, barWidth, 10, false, FlxColor.RED  );
+		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GRAY , "stamina");
+		_hungerBar     = new HudBar(FlxG.width - barWidth, 12, barWidth, 10, false, FlxColor.GREEN, "hunger");
+		_warmthBar     = new HudBar(FlxG.width - barWidth, 24, barWidth, 10, false, FlxColor.RED  , "warmth");
+		
 
 		_exhaustionTimer = GP.ExhaustionTimer;
 		_hungerTimer = GP.HungerTimer;
@@ -306,10 +307,10 @@ class Player extends FlxSprite
 	function interactWithWorld(t : Tool):Void 
 	{
 		InteractWithDestroyables(t);
-		InteractWithPlayceables();
+		InteractWithPlaceables();
 	}
 	
-	function InteractWithPlayceables() 
+	function InteractWithPlaceables() 
 	{
 		var p : Placeable = _state._level.getPlaceableInRange(this);
 		if (p == null) return;
