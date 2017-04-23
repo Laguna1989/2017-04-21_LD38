@@ -29,7 +29,9 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         Slots = new Array<CraftSlot>();
 
         var backgroundColor = FlxColor.fromRGB(200, 200, 200, 255);
-        _sprBG = new FlxSprite().makeGraphic(120, 72, backgroundColor);
+        //_sprBG = new FlxSprite().makeGraphic(120, 72, backgroundColor);
+		_sprBG = new FlxSprite();
+		_sprBG.loadGraphic(AssetPaths.Itemslots1__png, false, 120, 72);
         _sprBG.scrollFactor.set();
         _sprBG.setPosition(-_sprBG.width, FlxG.height - 80 - 16 - _sprBG.height);
         add(_sprBG);
