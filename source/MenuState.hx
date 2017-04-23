@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 import flash.system.System;
+import flixel.util.FlxColor;
 
 class MenuState extends FlxState
 {
@@ -36,7 +37,7 @@ class MenuState extends FlxState
 	
 	public function startGame() : Bool
 	{
-		FlxG.switchState(new PlayState());
+		FlxG.camera.fade(FlxColor.BLACK, 0.75, false, function () {FlxG.switchState(new PlayState()); } );
 		return true;
 	}
 

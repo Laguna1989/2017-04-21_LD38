@@ -101,6 +101,8 @@ class Player extends FlashSprite
 		
 		inInteractionAnim -= elapsed;
 		
+		CheckHealthCondition();
+		
 		switch _facing
 		{
 			case Facing.EAST:
@@ -188,6 +190,11 @@ class Player extends FlashSprite
 		_warmthBar.health = Warmth;
 		_warmthBar.update(elapsed);
     }
+	
+	function CheckHealthCondition() 
+	{
+		alive = (Exhaustion > 0 && Warmth > 0 && Hunger > 0);
+	}
 
     //#################################################################
 

@@ -6,10 +6,12 @@ import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import ItemManager;
 import CraftManager;
+import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
@@ -30,6 +32,11 @@ class PlayState extends FlxState
 	
 	private var _draggingItem : Item = null;
 	private var _draggingItemQuantity : Int = 0;
+	
+	private var _ending : Bool = false; 
+	private var _overlay : FlxSprite;
+	
+	
 	
 	override public function create():Void
 	{
@@ -58,53 +65,59 @@ class PlayState extends FlxState
 		_vignette.scrollFactor.set();
 
 		_workbench = new Workbench(32, 32, this);
-		
-		for (i in 0...24)
-		{
-			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
-		}
-
-		for (i in 0...24)
-		{
-			_inventory.pickupItem(ItemManager.getItem("Stone").clone());
-		}
-
-		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
-		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
-		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
-		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
-		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
 
 		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
-		_inventory.pickupItem(ItemManager.getItem("Tent").clone());
-		_inventory.pickupItem(ItemManager.getItem("Food").clone());
+		
+		
 
 		FlxG.mouse.visible = false;
+		
+		_overlay = new FlxSprite(0, 0);
+		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		_overlay.scrollFactor.set();
+		_overlay.alpha = 0;
+		_overlay.alpha = 1;
+		//_ending = true;
+		FlxTween.tween(_overlay, { alpha : 0 }, 0.25, { onComplete:function(t) { _ending = false; }} );
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);	
-		MyInput.update();
-		handleInput();
-		
-		if (_draggingItem != null)
+		if (!_ending)
 		{
-			_draggingItem.setPosition(
-				FlxG.mouse.getScreenPosition().x - GP.TileSize / 2,
-				FlxG.mouse.getScreenPosition().y - GP.TileSize / 2
-			);
+			MyInput.update();
+			handleInput();
+			
+			if (_player.alive == false)
+			{
+				EndGame();
+			}
+			
+			if (_draggingItem != null)
+			{
+				_draggingItem.setPosition(
+					FlxG.mouse.getScreenPosition().x - GP.TileSize / 2,
+					FlxG.mouse.getScreenPosition().y - GP.TileSize / 2
+				);
+			}
+			
+			_level.update(elapsed);
+			_level.updateVisibility(_player);
+			_player.update(elapsed);
+			_inventory.update(elapsed);
+			_craftHud.update(elapsed);
+			_flakes.update(elapsed);
+			_workbench.update(elapsed);
+			
+			FlxG.collide(_player, _level.collisionTiles);
 		}
-		
-		_level.update(elapsed);
-		_level.updateVisibility(_player);
-		_player.update(elapsed);
-		_inventory.update(elapsed);
-		_craftHud.update(elapsed);
-		_flakes.update(elapsed);
-		_workbench.update(elapsed);
-		
-		FlxG.collide(_player, _level.collisionTiles);
+	}
+	
+	function EndGame() 
+	{
+		_ending = true;
+		FlxG.camera.fade(FlxColor.BLACK, 1, false, function() { FlxG.switchState(new MenuState()); } );
 	}
 
 	private function handleInput()
@@ -324,5 +337,6 @@ class PlayState extends FlxState
 			if (_inventory.hasValidTool())
 				_inventory._activeToolLifeTime.draw();
 		}
+		_overlay.draw();
 	}
 }
