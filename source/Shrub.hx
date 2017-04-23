@@ -25,8 +25,20 @@ class Shrub extends Destroyables
 		this.animation.add("fruit", [idx + 4]);
 	
 		fruitTimer = FlxG.random.floatNormal(20, 10);
-		dropItem = cast ItemManager.getItem("Wood");
-		dropQuantity = 1;
+		
+		if(FlxG.random.bool())
+		{
+			//trace("fibres");
+			dropItem = cast ItemManager.getItem("Berry");
+			dropQuantity = FlxG.random.int(3,5);
+		}
+		else
+		{
+			//trace("berry");
+			dropItem = cast ItemManager.getItem("Berry");
+			dropQuantity = 2;
+		}
+		
 		toolUsage = 0;
 		
 	}
@@ -57,16 +69,19 @@ class Shrub extends Destroyables
 	
 	private function pickFruit()
 	{
+		trace("pickFruit:" + this.dropItem.Name);
 		health = 1.0;
 		alive = true;
 		fruitTimer = FlxG.random.floatNormal(40, 10);
 		hasFruit = false;
 		this.scale.set(0.8, 0.8);
 		FlxTween.tween(this.scale, { x:1, y:1 }, 0.25 );
+		
 	}
 	
 	public override function destroyMe(state:PlayState) : Bool
 	{
+		trace("drop:" + this.dropItem.Name);
 		if (hasFruit)
 		{
 			super.destroyMe(state);

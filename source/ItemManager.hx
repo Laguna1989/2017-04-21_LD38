@@ -1,6 +1,5 @@
 package;
 
-import FileList;
 import haxe.Json;
 import openfl.Assets;
 import Tool;
@@ -15,10 +14,12 @@ class ItemManager
         _resources = new Array<Resource>();
 
         _tools = new Array<Tool>();
-        _tools.push(new StonePickaxe());
-		_tools.push(new Tent());
+		_tools.push(new Berry());
 		_tools.push(new Fire());
 		_tools.push(new Food());
+		_tools.push(new Pie());
+        _tools.push(new StonePickaxe());
+		_tools.push(new Tent());
 
         // Read resources from JSON files
         var list : Array<String> = FileList.getFileList("assets/data/", "resource.json");
@@ -26,6 +27,7 @@ class ItemManager
         {
             var data:ParseResouce = Json.parse(Assets.getText(r));
 
+			trace(r);
             _resources.push(new Resource(data.name, data.displayName, data.stackSize, data.imageName));
         }
     }
