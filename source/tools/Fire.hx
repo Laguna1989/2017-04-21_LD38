@@ -7,9 +7,12 @@ package;
 class Fire extends Tool
 {
 
-public function new() 
+	public function new() 
 	{
 		super("Fire", "Fire", 1, "assets/images/dummy.png");
+		this.loadGraphic(AssetPaths.fire__png, true, 16, 16);
+		this.animation.add("idle", [0]);
+		this.animation.play("idle");
 		toolCanBeUsedWithDestroyable = false;
 		toolCanBePlacedInWorld = true;
 		toolQuality = 1;
@@ -25,9 +28,6 @@ public function new()
 		trace("place fire");
 		var t : PlaceableFire = new PlaceableFire(p.x + 16, p.y);
 		p._state._level.addPlaceable(t);
-		
-		
-		
 	}
 	
 }

@@ -10,7 +10,7 @@ class Tent extends Tool
 
 	public function new() 
 	{
-		super("Tent", "Tent", 1, "assets/images/dummy.png");
+		super("Tent", "Tent", 1, "assets/images/Tent_Icon.png");
 		toolCanBeUsedWithDestroyable = false;
 		toolCanBePlacedInWorld = true;
 		toolQuality = 1;

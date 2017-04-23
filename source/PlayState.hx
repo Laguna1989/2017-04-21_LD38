@@ -66,6 +66,8 @@ class PlayState extends FlxState
 		}
 		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
 		_inventory.pickupItem(ItemManager.getItem("Tent").clone());
+		_inventory.pickupItem(ItemManager.getItem("Food").clone());
+		_inventory.pickupItem(ItemManager.getItem("Fire").clone());
 	}
 
 	override public function update(elapsed:Float):Void
