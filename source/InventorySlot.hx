@@ -29,7 +29,7 @@ class InventorySlot extends FlxSprite
         _quantityText = new FlxText(xPos, yPos, 0, Std.string(Quantity), 8);
         _quantityText.scrollFactor.set();
 
-        var slotColor = FlxColor.fromRGB(180, 180, 180, 255);
+        var slotColor = FlxColor.fromRGB(255, 180, 180, 255);
         makeGraphic(GP.TileSize, GP.TileSize, slotColor);
         scrollFactor.set();
         setPosition(xPos, yPos + parentHeight);
@@ -39,7 +39,7 @@ class InventorySlot extends FlxSprite
 
     public override function draw()
     {
-        //super.draw();
+       // super.draw();
 
         if(Item != null)
         {
@@ -49,6 +49,7 @@ class InventorySlot extends FlxSprite
                 _quantityText.draw();
             }
         }
+		
     }
 
     public override function update(elapsed : Float)
