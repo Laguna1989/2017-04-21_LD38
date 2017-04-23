@@ -5,7 +5,8 @@ class Tool extends Item
     public var toolQuality : Float = 0;
 	public var toolLifeTime : Float = 1;
 	
-	public var toolCanBeUsedForChopping : Bool = false;
+	public var toolCanBeUsedWithDestroyable : Bool = false;
+	public var toolCanBePlacedInWorld : Bool = false;
 	
 	public function new(name : String, displayName : String, stackSize : Int, imageName : String)
     {
