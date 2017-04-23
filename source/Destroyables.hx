@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 /**
@@ -15,6 +16,8 @@ class Destroyables extends FlashSprite
 	public var dropItem : Resource = null;
 	public var dropQuantity : Int = 4;
 	
+	public var toolUsage : Float = 0;
+	
 	public function new( X : Float, Y : Float) 
 	{
 		super(X, Y);
@@ -25,7 +28,10 @@ class Destroyables extends FlashSprite
 	
 	public inline function visitMe()
 	{
-		alpha = 1;
+		//alpha = 1;
+		this.scale.set(0.5, 0.5);
+		FlxTween.tween(this, { alpha : 1 }, 0.5);
+		FlxTween.tween(this.scale, { x: 1, y:1 }, 0.3);
 		visited = true;
 	}
 	
@@ -55,6 +61,7 @@ class Destroyables extends FlashSprite
 			
 			state._level.dropResourceInLevel(r);
 		}
+		
 		return false;
 	}
 	

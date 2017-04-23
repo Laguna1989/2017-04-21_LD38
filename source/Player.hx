@@ -19,9 +19,8 @@ class Player extends FlxSprite
 
     var _accelFactor    : Float;
 
-	var _playState      : PlayState;
+	var _state      : PlayState;
 
-	var _hitArea        : FlxSprite;
 	
 	var _facing         : Facing;
 	
@@ -53,16 +52,13 @@ class Player extends FlxSprite
 		dustparticles = new MyParticleSystem();
 		dustparticles.mySize = 500;
 
-		_hitArea = new FlxSprite();
-		_hitArea.makeGraphic(16, 16, flixel.util.FlxColor.fromRGB(255, 255, 255, 64));
-		_hitArea.alpha = 0;
 		_facing = Facing.SOUTH;
 		
 		_accelFactor = GP.PlayerMovementAcceleration;
 		drag         = GP.PlayerMovementDrag;
 		maxVelocity  = GP.PlayerMovementMaxVelocity;
 
-		_playState = playState;
+		_state = playState;
 
 		setPosition(8 * GP.TileSize, 2 * GP.TileSize);
 		
@@ -86,48 +82,40 @@ class Player extends FlxSprite
 		switch _facing
 		{
 			case Facing.EAST:
-				_hitArea.setPosition(x + GP.TileSize, y);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_east", false);
 				
 				
 			case Facing.WEST:
-				_hitArea.setPosition(x - GP.TileSize, y);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_west", false);
 				
 				
 			case Facing.NORTH:
-				_hitArea.setPosition(x, y - GP.TileSize);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTH:
-				_hitArea.setPosition(x, y + GP.TileSize);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_south", false);
 				
 			
 			case Facing.NORTHEAST:
-				_hitArea.setPosition(x + GP.TileSize / 2, y - GP.TileSize / 2);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_north", false);
 				
 			case Facing.NORTHWEST:
-				_hitArea.setPosition(x - GP.TileSize / 2, y - GP.TileSize / 2);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_north", false);
 				
 				
 			case Facing.SOUTHEAST:
-				_hitArea.setPosition(x + GP.TileSize / 2, y + GP.TileSize / 2);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_south", false);
 			
 				
 			case Facing.SOUTHWEST:
-				_hitArea.setPosition(x - GP.TileSize / 2, y + GP.TileSize / 2);
 				if(inInteractionAnim <= 0)
 					animation.play("walk_south", false);
 				
@@ -136,9 +124,10 @@ class Player extends FlxSprite
 
         
 		var l : Float = velocity.distanceTo(new FlxPoint());
-		if (l <= GP.PlayerMovementMaxVelocity.x / 8 && inInteractionAnim <= 0 )
+		if (l <= GP.PlayerMovementMaxVelocity.x / 8)
 		{
-			animation.play("idle", false);
+			if( inInteractionAnim <= 0 )
+				animation.play("idle", false);
 		}
 		else
 		{
@@ -191,15 +180,15 @@ class Player extends FlxSprite
 		if (dustTime <= 0)
 		{
 			dustTime += 0.25;
-			dustparticles.Spawn( 4,
+			dustparticles.Spawn( 5,
 			function (s : FlxSprite) : Void
 			{
 				s.alive = true;
-				var T : Float = 1.25;
-				s.setPosition(x + GP.rng.float(0, this.width) , y + height + GP.rng.float( -2, 2) );
+				var T : Float = 0.85;
+				s.setPosition(x + GP.rng.float(0, this.width) , y + height + GP.rng.float( -4, 0) );
 				s.alpha = GP.rng.float(0.125, 0.35);
 				FlxTween.tween(s, { alpha:0 }, T, { onComplete: function(t:FlxTween) : Void { s.alive = false; } } );
-				var v : Float = GP.rng.float(0.75, 1.0);
+				var v : Float = GP.rng.float(0.75, 1.2);
 				s.scale.set(v, v);
 				FlxTween.tween(s.scale, { x: 2.5, y:2.5 }, T);
 			},
@@ -225,12 +214,24 @@ class Player extends FlxSprite
 		{
 			if (MyInput.InteractButtonPressed)
 			{
-				var r : Destroyables = _playState._level.getDestroyableInRange(this);
+				var r : Destroyables = _state._level.getDestroyableInRange(this);
 				if (r != null)
 				{
 					this.animation.play("pick", true);
 					inInteractionAnim = 0.5;
-					r.takeDamage(0.2);
+					
+					var quality : Float = 0.5;
+					
+					var i : Item  = _state._inventory.getActiveTool();
+					if (i != null && Std.is(i, Tool))
+					{
+						var t : Tool = cast i;
+						quality = t.toolQuality;
+						t.toolLifeTime -= r.toolUsage;
+					}
+					
+					r.takeDamage(0.2 * quality);
+					
 					if (r.x < x) 
 					{
 						this.scale.set( -1, 1);
@@ -248,8 +249,6 @@ class Player extends FlxSprite
 		dustparticles.draw();
 		
 		super.draw();
-
-		_hitArea.draw();
 	}
 
     //#################################################################

@@ -26,6 +26,7 @@ class Rock extends Destroyables
 		this.alpha = 0;
 		dropQuantity = 3;
 		health = 1.1;
+		toolUsage = 0.2;
 	}
 	
 }

@@ -181,7 +181,7 @@ class Level extends FlxObject
 	{
 		for (d in destroables)
 		{
-			var dx: Float = d.x - p.x - 8;
+			var dx: Float = d.x  - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
 			var dy: Float = d.y - p.y - 8;
@@ -224,7 +224,7 @@ class Level extends FlxObject
 			{
 				l = Math.sqrt(l);
 				
-				r.velocity.set( -dx/l * 100, -dy/l*100);
+				r.velocity.set( -dx/l * 30, -dy/l*30);
 			}
 			
 		}
@@ -312,7 +312,7 @@ class Level extends FlxObject
 			if (tile == null) continue;
 			if (tile.type == TileType.GRASS)
 			{
-				var t : Shrub = new Shrub((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
+				var t : Shrub = new Shrub((ix) * GP.TileSize, (iy) * GP.TileSize);
 				destroables.add(t);
 				collisionTiles.add(t);
 			}
@@ -425,13 +425,13 @@ class Level extends FlxObject
 		{
 			if (t.visited) continue;
 			var dx : Float = t.x - p.x;
-			if (dx > GP.PlayerViewRange * 1.2) continue;
+			if (dx > GP.PlayerViewRange * 1.5) continue;
 			
 			var dy : Float = t.y - p.y;
-			if (dy > GP.PlayerViewRange * 1.2) continue;
+			if (dy > GP.PlayerViewRange * 1.5) continue;
 			
 			var l = dx * dx + dy * dy;
-			if ( l < GP.PlayerViewRange * GP.PlayerViewRange * 1.2 * 1.2)
+			if ( l < GP.PlayerViewRange * GP.PlayerViewRange * 1.0 * 1.0)
 			{
 				t.visitMe(); 
 			}

@@ -17,13 +17,13 @@ class GP
     // ################################################################
     public static var PlayerMovementAcceleration  : Float    = 500.0;
     public static var PlayerMovementDrag          : FlxPoint = new FlxPoint(2000, 2000);
-    public static var PlayerMovementMaxVelocity  (default, null) : FlxPoint = new FlxPoint(95, 95);
+    public static var PlayerMovementMaxVelocity  (default, null) : FlxPoint = new FlxPoint(65, 65);
     public static var PlayerMovementDashCooldown  : Float    = 1.0;
 	public static var PlayerMovementMaxDashLength : Float    = 40.0;
 	public static var PlayerHealthMaxDefault      : Float    = 1.0;
 	static public var PlayerViewRange			  : Float = 4 * GP.TileSize;
 	static public var PlayerMagnetRange			  : Float = 3* GP.TileSize;
-	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150, 150, 150);
+	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(255, 255, 255);
 	
 	// ################################################################
     // # World  #######################################################

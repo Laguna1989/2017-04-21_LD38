@@ -22,7 +22,7 @@ class Flakes extends ScreenWrappingSpriteGroup
 	var _timer : Float = 0;
 	
 	
-	public function new(cam:FlxCamera, padding:Float=10, N : Int = 25) 
+	public function new(cam:FlxCamera, padding:Float=10, N : Int = 50) 
 	{
 		super(cam, padding);
 		_individualVelocity = new Array<FlxPoint>();

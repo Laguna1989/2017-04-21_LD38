@@ -14,6 +14,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
     private var _tweenHide : FlxTween;
 
     public var Slots : Array<InventorySlot>;
+	
+	
 
     public function new()
     {
@@ -103,4 +105,9 @@ class Inventory extends FlxTypedGroup<FlxSprite>
             slot.hide();
         }
     }
+	
+	public function getActiveTool() : Item
+	{
+		return null;
+	}
 }

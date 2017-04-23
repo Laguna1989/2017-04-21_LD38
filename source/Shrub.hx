@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.tweens.FlxTween;
 
 /**
  * ...
@@ -26,6 +27,7 @@ class Shrub extends Destroyables
 		fruitTimer = FlxG.random.floatNormal(20, 10);
 		dropItem = cast ItemManager.getItem("Wood");
 		dropQuantity = 1;
+		toolUsage = 0;
 		
 	}
 	
@@ -41,7 +43,9 @@ class Shrub extends Destroyables
 			{
 				hasFruit = true;
 				this.animation.play("fruit");
-				trace("bloom");
+				this.scale.set(1.4, 1.4);
+				FlxTween.tween(this.scale, { x:1, y:1 }, 0.25 );
+				//trace("bloom");
 			}
 		}
 		else
@@ -57,6 +61,8 @@ class Shrub extends Destroyables
 		alive = true;
 		fruitTimer = FlxG.random.floatNormal(40, 10);
 		hasFruit = false;
+		this.scale.set(0.8, 0.8);
+		FlxTween.tween(this.scale, { x:1, y:1 }, 0.25 );
 	}
 	
 	public override function destroyMe(state:PlayState) : Bool
