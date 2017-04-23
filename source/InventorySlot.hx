@@ -4,6 +4,8 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
+import flixel.text.FlxText;
+import openfl.display.BlendMode;
 
 class InventorySlot extends FlxSprite
 {
@@ -12,6 +14,8 @@ class InventorySlot extends FlxSprite
 
     private var _initialPosition : FlxPoint;
     private var _hidePosition    : FlxPoint;
+
+    private var _quantityText : FlxText;
 
     private var _tweenShow : FlxTween;
     private var _tweenHide : FlxTween;
@@ -22,12 +26,44 @@ class InventorySlot extends FlxSprite
 
         Quantity = 0;
 
+        _quantityText = new FlxText(xPos, yPos, 0, Std.string(Quantity), 8);
+        _quantityText.scrollFactor.set();
+        _quantityText.blend = BlendMode.MULTIPLY;
+
         var slotColor = FlxColor.fromRGB(180, 180, 180, 255);
         makeGraphic(GP.TileSize, GP.TileSize, slotColor);
         scrollFactor.set();
         setPosition(xPos, yPos + parentHeight);
         _initialPosition = new FlxPoint(xPos, yPos);
         _hidePosition    = new FlxPoint(xPos, yPos + parentHeight);
+    }
+
+    public override function draw()
+    {
+        super.draw();
+
+        if(Item != null)
+        {
+            Item.draw();
+            if(Quantity > 1)
+            {
+                _quantityText.draw();
+            }
+        }
+    }
+
+    public override function update(elapsed : Float)
+    {
+        super.update(elapsed);
+
+        _quantityText.update(elapsed);
+        _quantityText.text = Std.string(Quantity);
+
+        if(Item != null)
+        {
+            Item.setPosition(x, y);
+            _quantityText.setPosition(x, y);
+        }
     }
 
     public function show() : Void
