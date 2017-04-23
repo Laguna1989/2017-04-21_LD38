@@ -28,7 +28,6 @@ class CraftManager
         // Check item array against recipes
         for(r in _recipes)
         {
-            trace(r.Result.Name);
             var valid = true;
 
             for(offset in 0...9)
@@ -44,14 +43,12 @@ class CraftManager
 
                 for(i in 0...r.Ingredients.length)
                 {
-                    trace(r.Ingredients[i], items[i + offset]);
                     if(r.Ingredients[i] == null && items[i + offset] == null) continue;
 
                     if((r.Ingredients[i] == null && items[i + offset] != null)
                     || (r.Ingredients[i] != null && items[i + offset] == null)
                     || r.Ingredients[i].Name != items[i + offset].Name)
                     {
-                        trace("No match");
                         valid = false;
                         break;
                     }

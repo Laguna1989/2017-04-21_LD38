@@ -64,10 +64,21 @@ class PlayState extends FlxState
 		{
 			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
 		}
+
+		for (i in 0...24)
+		{
+			_inventory.pickupItem(ItemManager.getItem("Stone").clone());
+		}
+
+		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
+		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
+		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
+		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
+		_inventory.pickupItem(ItemManager.getItem("WoodenSticks").clone());
+
 		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
 		_inventory.pickupItem(ItemManager.getItem("Tent").clone());
 		_inventory.pickupItem(ItemManager.getItem("Food").clone());
-		_inventory.pickupItem(ItemManager.getItem("Fire").clone());
 
 		FlxG.mouse.visible = false;
 	}
