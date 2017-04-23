@@ -21,7 +21,8 @@ class GP
     public static var PlayerMovementDashCooldown  : Float    = 1.0;
 	public static var PlayerMovementMaxDashLength : Float    = 40.0;
 	public static var PlayerHealthMaxDefault      : Float    = 1.0;
-	static public var PlayerViewRange			  : Float = 4* GP.TileSize;
+	static public var PlayerViewRange			  : Float = 4 * GP.TileSize;
+	static public var PlayerMagnetRange			  : Float = 3* GP.TileSize;
 	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(150, 150, 150);
 	
 	// ################################################################

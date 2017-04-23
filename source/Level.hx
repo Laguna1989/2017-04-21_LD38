@@ -217,6 +217,40 @@ class Level extends FlxObject
 		return null;
 	}
 	
+	public function ResourceMagnet()
+	{
+		var p : Player = _state._player;
+		for (r in resources)
+		{
+			var dx: Float = r.x - p.x - 8;
+			if (dx > GP.PlayerMagnetRange) continue;
+			
+			var dy: Float = r.y - p.y - 8;
+			if (dy > GP.PlayerMagnetRange) continue;
+			
+			var l : Float = dx * dx  + dy * dy;
+			
+			if (l < GP.TileSize * GP.TileSize * 0.25)
+			{
+				r.velocity.set();
+				// touching
+				if (_state._inventory.hasFreeSlot(r))
+				{
+					r.alive = false;
+					_state._inventory.pickupItem(r);
+				}
+			}
+			
+			if (l < GP.PlayerMagnetRange * GP.PlayerMagnetRange)
+			{
+				l = Math.sqrt(l);
+				
+				r.velocity.set( -dx/l * 100, -dy/l*100);
+			}
+			
+		}
+	}
+	
 	function SpawnPostionOnMap () : FlxPoint
 	{
 		return new FlxPoint(FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize), FlxG.random.float(0, GP.WorldSizeInTiles * GP.TileSize));
@@ -373,6 +407,7 @@ class Level extends FlxObject
 		trees.update(elapsed);
 		rocks.update(elapsed);
 		resources.update(elapsed);
+		ResourceMagnet();
 	}
 	
 	public inline function updateVisibility(p:Player) 
