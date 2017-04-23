@@ -27,6 +27,8 @@ class IntroState extends FlxState
 	public override function create()
 	{
 		super.create();
+
+		MyInput.reset();
 		
 		//FlxG.camera.bgColor = Palette.primary3();
 		FlxG.mouse.visible = false;
@@ -59,10 +61,22 @@ class IntroState extends FlxState
 		onComplete:function(t) 
 		{
 			FlxG.camera.bgColor = FlxColor.BLACK;
-			FlxG.switchState(cast Type.createInstance(nextState, [])); 
+			FlxG.switchState(cast Type.createInstance(nextState, []));
 			
 		}} );
 		
+	}
+
+	public override function update(elapsed : Float)
+	{
+		MyInput.update();
+
+		if(MyInput.InteractButtonJustPressed
+		|| MyInput.EnterButtonJustPressed
+		|| MyInput.SpaceButtonJustPressed)
+		{
+			FlxG.switchState(cast Type.createInstance(nextState, []));
+		}
 	}
 	
 }
