@@ -286,19 +286,16 @@ class Player extends FlxSprite
 
 	private function getTired(amount : Float) : Void
 	{
-		trace("Getting tired", amount);
 		Exhaustion -= amount;
 	}
 
 	private function getHungry(amount : Float) : Void
 	{
-		trace("Getting hungry", amount);
 		Hunger -= amount;
 	}
 
 	private function getCold(amount : Float) : Void
 	{
-		trace("Getting cold", amount);
 		Warmth -= amount;
 	}
 
