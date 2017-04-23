@@ -12,7 +12,7 @@ class PlaceableTent extends Placeable
 	{
 		super(X, Y);
 		this.loadGraphic(AssetPaths.Tent__png, false, 64, 32);
-		this.scale.set(0.5, 0.5);
+		this.scale.set(0.75, 0.75);
 		
 	}
 	
