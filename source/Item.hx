@@ -35,6 +35,10 @@ class Item extends FlxSprite
 	
 	public override function clone () : Item
 	{
-		return new Item(Name, DisplayName, StackSize, ImageName);
+		
+		var i : Item = new Item(Name, DisplayName, StackSize, ImageName);
+		i.loadGraphicFromSprite(this);
+		
+		return i ;
 	}
 }
