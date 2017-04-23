@@ -16,9 +16,9 @@ class Pie extends Tool
 		toolQuality = 1;
 		toolLifeTime = 1;
 	}
-	public override function clone() : Berry
+	public override function clone() : Pie
 	{
-		return new Berry();
+		return new Pie();
 	}
 	
 	public override function UseTool(p : Player) : Void

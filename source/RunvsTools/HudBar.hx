@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -41,8 +42,10 @@ class HudBar extends FlxSprite
 			this.origin.set(0, height);
 		}
 		
-		_text = new FlxText(x, y, 0, text, 8);
+		_text = new FlxText(x, y - 1, 0, text, 8);
 		_text.scrollFactor.set();
+		_text.borderStyle = FlxTextBorderStyle.OUTLINE;
+		_text.borderColor = FlxColor.BLACK;
 	}
 	
 	override public function update(elapsed:Float):Void
@@ -51,6 +54,24 @@ class HudBar extends FlxSprite
 		var val : Float = health ;
 		if (val < 0 ) val = 0;
 		if (val > 1) val = 1;
+		
+		
+		if (val < 0.2)
+		{
+			_text.color = FlxColor.RED;
+			_text.offset.set(FlxG.random.float(-1,1),FlxG.random.float(-1,1));
+		}
+		else if (val < 0.5)
+		{
+			_text.color = FlxColor.YELLOW;
+			this.offset.set();
+		}
+		else
+		{
+			_text.color = FlxColor.WHITE;
+			this.offset.set();
+		}
+		
 			
 		if (_vertical)
 		{

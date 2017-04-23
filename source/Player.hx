@@ -79,9 +79,9 @@ class Player extends FlashSprite
 		Warmth     = 0.8;
 		
 		var barWidth = 60;
-		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GREEN , "stamina");
-		_hungerBar     = new HudBar(FlxG.width - barWidth, 12, barWidth, 10, false, FlxColor.GRAY,  "hunger");
-		_warmthBar     = new HudBar(FlxG.width - barWidth, 24, barWidth, 10, false, FlxColor.RED  , "warmth");
+		_exhaustionBar = new HudBar(FlxG.width - barWidth,  2, barWidth, 11, false, FlxColor.GREEN , "fatigue");
+		_hungerBar     = new HudBar(FlxG.width - barWidth, 18, barWidth, 11, false, FlxColor.GRAY,  "hunger");
+		_warmthBar     = new HudBar(FlxG.width - barWidth, 34, barWidth, 11, false, FlxColor.RED  , "warmth");
 		
 
 		_exhaustionTimer = GP.ExhaustionTimer;
