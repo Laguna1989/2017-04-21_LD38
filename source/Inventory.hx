@@ -147,6 +147,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 	{
 		return Std.is(ActiveSlot.Item, Tool);
 	}
+	
 	function handleActiveItem(elapsed : Float):Void 
 	{
 		if (!hasValidTool()) return;
@@ -160,7 +161,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 		
 		if (!t.alive)
 		{
-			trace("item destroyed 2");
+			trace("item destroyed 2: lt= " + t.toolLifeTime);
 			ActiveSlot.Item = null;
 			ActiveSlot.Quantity = 0;
 		}

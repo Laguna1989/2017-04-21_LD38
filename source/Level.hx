@@ -24,7 +24,7 @@ class Level extends FlxObject
 	
 	private var _state : PlayState;
 	
-	private var resources : FlxTypedGroup<Resource>;
+	private var resources : FlxTypedGroup<Item>;
 	private var placeables : FlxTypedGroup<Placeable>;
 	
 	public function new(state:PlayState) 
@@ -38,7 +38,7 @@ class Level extends FlxObject
 		placeables = new FlxTypedGroup<Placeable>();
 		CreateLevel();
 		
-		resources = new FlxTypedGroup<Resource>();
+		resources = new FlxTypedGroup<Item>();
 	}
 	
 	
@@ -466,11 +466,11 @@ class Level extends FlxObject
 	}
 	
 	
-	public function dropResourceInLevel(r:Resource)
+	public function dropResourceInLevel(r:Item)
 	{
 		if (r != null)
 		{
-			resources.add(r);
+			resources.add (r);
 		}
 	}
 	
@@ -478,7 +478,7 @@ class Level extends FlxObject
 	{
 		if (p != null)
 		{
-			trace("add placeable");
+			//trace("add placeable");
 			placeables.add(p);
 		}
 	}
@@ -493,22 +493,24 @@ class Level extends FlxObject
 					tl.add(t);
 				else
 				{
+					//trace("destroy");
 					if (t.destroyMe(_state))
 					{
 						tl.add(t);
+						//trace("and reuse");
 					}
 					else
 					{
 						t.destroy();
+						//trace("and kill");
 					}
-					
 				}
 			}
 			destroables = tl;
 		}
 		
 		{
-			var il : FlxTypedGroup<Resource> = new FlxTypedGroup<Resource>();
+			var il : FlxTypedGroup<Item> = new FlxTypedGroup<Item>();
 			for (i in resources)
 			{
 				if (i.alive)

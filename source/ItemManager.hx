@@ -14,12 +14,13 @@ class ItemManager
         _resources = new Array<Resource>();
 
         _tools = new Array<Tool>();
-		_tools.push(new Berry());
+		
 		_tools.push(new Fire());
 		_tools.push(new Food());
 		_tools.push(new Pie());
         _tools.push(new StonePickaxe());
 		_tools.push(new Tent());
+		_tools.push(new Berry());
 
         // Read resources from JSON files
         var list : Array<String> = FileList.getFileList("assets/data/", "resource.json");
@@ -40,8 +41,9 @@ class ItemManager
         item = getResource(itemName);
         if(item != null) return item;
 
-        item = getTool(itemName);
-        return item;
+        item = cast getTool(itemName);
+		//trace("item " + itemName + " found: " + item);
+        return  item;
     }
 
     private static function getResource(resourceName : String) : Resource
@@ -65,6 +67,7 @@ class ItemManager
         {
             if(t.Name == toolName)
             {
+				//trace("tool " + toolName + " found");
                 return t;
             }
         }
