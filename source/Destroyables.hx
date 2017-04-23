@@ -42,7 +42,7 @@ class Destroyables extends FlashSprite
 		health -= v;
 		if (health <= 0)
 		{
-			trace("take damage & alive = false");
+			//trace("take damage & alive = false");
 			this.alive = false;
 		}
 	}
