@@ -18,12 +18,12 @@ class CraftManager
         {
             var data:ParseRecipe = Json.parse(Assets.getText(s));
 
-            var r = new CraftRecipe(data.recipe, data.result);
+            var r = new CraftRecipe(data.recipe, data.result, data.quantity);
             _recipes.push(r);
         }
     }
 
-    public static function craft(items : Array<Item>) : Item
+    public static function craft(items : Array<Item>) : CraftRecipe
     {
         // Check item array against recipes
         for(r in _recipes)
@@ -68,7 +68,7 @@ class CraftManager
 
                 if(valid)
                 {
-                    return r.Result.clone();
+                    return r;
                 }
             }
         }
@@ -79,6 +79,7 @@ class CraftManager
 
 typedef ParseRecipe =
 {
-    var recipe : Array<String>;
-    var result : String;
+    var recipe   : Array<String>;
+    var result   : String;
+    var quantity : Int;
 }

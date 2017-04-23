@@ -8,8 +8,9 @@ class CraftRecipe
 {
     public var Ingredients : Array<Resource>;
     public var Result : Item;
+    public var Quantity : Int;
 
-    public function new(ingredients : Array<String>, result : String)
+    public function new(ingredients : Array<String>, result : String, quantity : Int)
     {
         Ingredients = new Array<Resource>();
 
@@ -19,5 +20,6 @@ class CraftRecipe
         }
 
         Result = ItemManager.getItem(result);
+        Quantity = quantity;
     }
 }

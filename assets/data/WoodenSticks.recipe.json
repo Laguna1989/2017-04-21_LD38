@@ -3,5 +3,6 @@
         "Wood", null, null,
         "Wood"
     ],
-    "result": "WoodenSticks"
+    "result": "WoodenSticks",
+    "quantity": 4
 }
