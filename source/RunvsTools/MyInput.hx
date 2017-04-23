@@ -19,26 +19,36 @@ class MyInput
 	public static var InteractButtonJustPressed  : Bool;
 	public static var SpecialButtonPressed       : Bool;
 	public static var InventoryButtonJustPressed : Bool;
+
+	public static var UpButtonJustPressed        : Bool;
+	public static var DownButtonJustPressed      : Bool;
+	
+	public static var EnterButtonJustPressed     : Bool;
+	public static var SpaceButtonJustPressed     : Bool;
 	
 	public static var GamePadConnected 			 : Bool;
 
 	public static function reset()
 	{
-		xVal = yVal =0;
-		DashButtonJustPressed = JumpButtonJustPressed = InteractButtonPressed = InteractButtonJustPressed = SpecialButtonPressed = InventoryButtonJustPressed = false;
-	}
-	
-	public static function update ()
-	{
+		xVal = 0;
+		yVal = 0;
+
 		DashButtonJustPressed      = false;
 		JumpButtonJustPressed      = false;
 		InteractButtonPressed      = false;
 		InteractButtonJustPressed  = false;
 		InventoryButtonJustPressed = false;
 		GamePadConnected           = false;
+		UpButtonJustPressed        = false;
+		DownButtonJustPressed      = false;
+		EnterButtonJustPressed     = false;
+		SpaceButtonJustPressed     = false;
+	}
+	
+	public static function update ()
+	{
+		reset();
 		
-		xVal = 0;
-		yVal = 0;
 		var gp : FlxGamepad = FlxG.gamepads.firstActive;
 		if (gp != null)
 		{
@@ -51,6 +61,15 @@ class MyInput
 			InteractButtonJustPressed = gp.justPressed.A;
 			SpecialButtonPressed = gp.pressed.B;
 			InventoryButtonJustPressed = gp.justPressed.Y;
+			EnterButtonJustPressed = gp.justPressed.START;
+			SpaceButtonJustPressed = gp.justPressed.START;
+
+			var l : Float = Math.sqrt(xVal * xVal + yVal * yVal);
+			if(l >= 25)
+			{
+				UpButtonJustPressed = yVal > 0;
+				DownButtonJustPressed = yVal < 0;
+			}
 		}
 		
 		if (FlxG.keys.pressed.D || FlxG.keys.pressed.RIGHT)
@@ -61,14 +80,22 @@ class MyInput
 		{
 			xVal = -1;
 		}
-		
-		if (FlxG.keys.pressed.W || FlxG.keys.pressed.UP)
+		if(FlxG.keys.pressed.W || FlxG.keys.pressed.UP)
 		{
 			yVal = -1;
 		}
-		if (FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
+		if(FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
 		{
 			yVal = 1;
+		}
+		
+		if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.UP)
+		{
+			UpButtonJustPressed = true;
+		}
+		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.DOWN)
+		{
+			DownButtonJustPressed = true;
 		}
 		if (FlxG.keys.justPressed.C)
 		{
@@ -89,6 +116,14 @@ class MyInput
 		if(FlxG.keys.justPressed.F)
 		{
 			InventoryButtonJustPressed = true;
+		}
+		if(FlxG.keys.justPressed.ENTER)
+		{
+			EnterButtonJustPressed = true;
+		}
+		if(FlxG.keys.justPressed.SPACE)
+		{
+			SpaceButtonJustPressed = true;
 		}
 	}
 }

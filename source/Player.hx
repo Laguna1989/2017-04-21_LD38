@@ -199,7 +199,6 @@ class Player extends FlashSprite
 
 		if (l >= 25)
 		{
-
 			if(vx > 0)
 			{
 				_facing = Facing.EAST;

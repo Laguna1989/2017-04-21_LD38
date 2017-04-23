@@ -7,11 +7,13 @@ import flash.system.System;
 class MenuState extends FlxState
 {
 	private var _ring : RingMenu;
-	private var _playSound : Bool;
+	private var _playSound : Bool = true;
 
 	override public function create():Void
 	{
 		super.create();
+
+		MyInput.reset();
 
 		_ring = new RingMenu();
 		_ring.setTitleText("LD38");
@@ -53,5 +55,6 @@ class MenuState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		MyInput.update();
 	}
 }
