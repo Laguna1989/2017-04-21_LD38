@@ -44,8 +44,14 @@ class CraftManager
 
                 for(i in 0...r.Ingredients.length)
                 {
-                    if(r.Ingredients[i] != items[i + offset])
+                    trace(r.Ingredients[i], items[i + offset]);
+                    if(r.Ingredients[i] == null && items[i + offset] == null) continue;
+
+                    if((r.Ingredients[i] == null && items[i + offset] != null)
+                    || (r.Ingredients[i] != null && items[i + offset] == null)
+                    || r.Ingredients[i].Name != items[i + offset].Name)
                     {
+                        trace("No match");
                         valid = false;
                         break;
                     }

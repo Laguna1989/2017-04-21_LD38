@@ -28,8 +28,6 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
 
         Slots = new Array<CraftSlot>();
 
-        var backgroundColor = FlxColor.fromRGB(200, 200, 200, 255);
-        //_sprBG = new FlxSprite().makeGraphic(120, 72, backgroundColor);
 		_sprBG = new FlxSprite();
 		_sprBG.loadGraphic(AssetPaths.Itemslots1__png, false, 120, 72);
         _sprBG.scrollFactor.set();
@@ -65,7 +63,28 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
     
     private function craft() : Void
     {
-        trace("Crafting!");
+        if(ResultSlot.Item != null) return;
+
+        var items : Array<Item> = new Array<Item>();
+
+        for(slot in Slots)
+        {
+            items.push(slot.Item);
+        }
+
+        var newItem = CraftManager.craft(items);
+        if(newItem != null)
+        {
+            for(slot in Slots)
+            {
+                if(slot.Item == null) continue;
+                
+                slot.Quantity--;
+                if(slot.Quantity == 0) slot.Item = null;
+            }
+
+            ResultSlot.Item = newItem;
+        }
     }
 
     public function show() : Void

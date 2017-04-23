@@ -27,6 +27,11 @@ class Item extends FlxSprite
 
         animation.play("anim" + FlxG.random.int(0, numberOfAnimations - 1));
     }
+
+    public override function toString()
+    {
+        return "Name: " + Name;
+    }
 	
 	public override function clone () : Item
 	{
