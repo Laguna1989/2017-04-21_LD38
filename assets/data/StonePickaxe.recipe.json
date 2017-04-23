@@ -4,5 +4,6 @@
         null, "Wood", null,
         null, "Wood", null
     ],
-    "result": "StonePickaxe"
+    "result": "StonePickaxe",
+    "quantity": 1
 }
