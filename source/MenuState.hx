@@ -7,6 +7,7 @@ import flash.system.System;
 class MenuState extends FlxState
 {
 	private var _ring : RingMenu;
+	private var _playSound : Bool;
 
 	override public function create():Void
 	{
@@ -39,7 +40,8 @@ class MenuState extends FlxState
 
 	public function toggleSound() : Bool 
 	{
-		return true;
+		_playSound = !_playSound;
+		return _playSound;
 	}
 	
 	public function quitGame() : Bool 

@@ -14,15 +14,13 @@ import flixel.util.FlxColor;
  */
 class RingMenu extends FlxSpriteGroup
 {
-
 	private var Title : FlxText;
 	private var CreditsText : FlxText;
 	private var itemGroup : FlxTypedGroup<RingItem>;
 	
-	private var selector : FlxSprite;
 	private var selectedItem : Int;
 	
-	private var leftXPos : Float = FlxG.width / 2 - 25;
+	private var leftXPos : Float = 0;
 	
 	private var itemOffsetX : Float;
 	
@@ -36,20 +34,9 @@ class RingMenu extends FlxSpriteGroup
 		CreditsText = new FlxText(0, 0, FlxG.width / 2, "", 8);
 		add(CreditsText);
 		
-		itemGroup = new FlxTypedGroup<RingItem>();		
-		selector = new FlxSprite();
-		selector.makeGraphic(16, 4);
-		selector.offset.set(32, -8);
-		selector.color = FlxColor.CYAN;
-		selector.alpha = 0;
-		FlxTween.tween(selector, { alpha: 1.0 }, 0.25, {startDelay: 1.75 } );
-		add(selector);
+		itemGroup = new FlxTypedGroup<RingItem>();
 		
 		selectedItem = 0;
-		
-		itemOffsetX = FlxG.width/2 + 32;
-
-		FlxTween.tween(this, { itemOffsetX: 0 }, 0.75, { ease:FlxEase.bounceOut, startDelay: 1.0 } );
 	}
 	
 	public function setTitleText (t : String)
@@ -65,6 +52,7 @@ class RingMenu extends FlxSpriteGroup
 	
 		FlxTween.tween(Title, { y: finalTitlePosition }, 0.6, { ease:FlxEase.bounceOut, startDelay: 0 } );
 	}
+
 	public function setCreditText (t : String)
 	{
 		CreditsText.text = t;
@@ -78,18 +66,21 @@ class RingMenu extends FlxSpriteGroup
 	public function addItem(name:String, notifyCallback:Void -> Bool)
 	{
 		var i : Int = itemGroup.length;
-		var t : RingItem = new RingItem(0, 0, 100, name, 12);
+		var t : RingItem = new RingItem(0, 0, FlxG.width, name, 12);
 		t.callback = notifyCallback;
 		t.screenCenter();
-		t.y += 32 * i;
+		t.y += 20 * i;
 		t.x = leftXPos;
-		itemGroup.add(t);
-		if (itemGroup.length == 1 )
-		{
-			itemGroup.members[0].x = leftXPos + 10;
-		}
 		
-	
+		t.alpha = 0.5;
+		t.size  = 10;
+
+		itemGroup.add(t);
+		if (i == 1)
+		{
+			itemGroup.members[0].alpha = 1.0;
+			itemGroup.members[0].size  = 12;
+		}
 	}
 	
 	public override function update(elapsed : Float)
@@ -98,8 +89,6 @@ class RingMenu extends FlxSpriteGroup
 		itemGroup.update(elapsed);
 		if (itemGroup.length >= 1)
 		{
-			selector.x = FlxG.width / 2 - 25;
-			selector.y = itemGroup.members[selectedItem].y;
 			if (itemGroup.length > 1)
 			{
 				getInput();
@@ -107,20 +96,19 @@ class RingMenu extends FlxSpriteGroup
 			for (i in 0...itemGroup.length)
 			{
 				var r : RingItem = itemGroup.members[i];
-				r.offset.x = -itemOffsetX;	// tween at the beginning
 				if (i == selectedItem)
 				{
 					if (r.result)
 					{
 						r.borderStyle = FlxTextBorderStyle.OUTLINE;
 						r.borderSize = 2;
-						r.borderColor = FlxColor.LIME;
+						r.borderColor = FlxColor.GRAY;
 					}
 					else
 					{
 						r.borderStyle = FlxTextBorderStyle.OUTLINE;
 						r.borderSize = 2;
-						r.borderColor = FlxColor.GREEN;
+						r.borderColor = FlxColor.RED;
 					}
 				}
 				else
@@ -168,8 +156,8 @@ class RingMenu extends FlxSpriteGroup
 		}
 		var rnew : RingItem = itemGroup.members[selectedItem];
 		
-		FlxTween.tween(rnew, { x:leftXPos + 10}, 0.1);
-		FlxTween.tween(rold, { x:leftXPos }, 0.1);
+		FlxTween.tween(rnew, { alpha: 1.0, size: 12 }, 0.1);
+		FlxTween.tween(rold, { alpha: 0.5, size: 10 }, 0.1);
 	}
 	
 	function MoveSelectorDown() 
@@ -182,8 +170,8 @@ class RingMenu extends FlxSpriteGroup
 		}
 		var rnew : RingItem = itemGroup.members[selectedItem];
 		
-		FlxTween.tween(rnew, { x:leftXPos + 10 }, 0.1);
-		FlxTween.tween(rold, { x:leftXPos}, 0.1);
+		FlxTween.tween(rnew, { alpha: 1.0, size: 12 }, 0.1);
+		FlxTween.tween(rold, { alpha: 0.5, size: 10 }, 0.1);
 	}
 	
 	public override function draw()
@@ -191,11 +179,4 @@ class RingMenu extends FlxSpriteGroup
 		super.draw();
 		itemGroup.draw();
 	}
-	
-	
-	
-	
-	
-	
-	
 }
