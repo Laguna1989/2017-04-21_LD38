@@ -1,0 +1,9 @@
+{
+    "recipe": [
+        null, null, "Cloth",
+        null, "Cloth", "WoodenStick",
+        "Cloth", null, "WoodenStick"
+    ],
+    "result": "Tent",
+    "quantity": 1
+}
