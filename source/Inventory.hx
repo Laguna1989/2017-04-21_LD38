@@ -24,7 +24,9 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         Slots = new Array<InventorySlot>();
 
         var backgroundColor = FlxColor.fromRGB(200, 200, 200, 255);
-        _sprBG = new FlxSprite().makeGraphic(FlxG.width - 20, 80, backgroundColor);
+        _sprBG = new FlxSprite();
+		//_sprBG.makeGraphic(FlxG.width - 20, 80, backgroundColor);
+		_sprBG.loadGraphic(AssetPaths.Itemslots2__png, false, 380, 80);
         _sprBG.scrollFactor.set();
         _sprBG.setPosition(10, FlxG.height);
         add(_sprBG);

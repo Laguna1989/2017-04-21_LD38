@@ -38,7 +38,7 @@ class InventorySlot extends FlxSprite
 
     public override function draw()
     {
-        super.draw();
+        //super.draw();
 
         if(Item != null)
         {
