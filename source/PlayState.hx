@@ -198,7 +198,7 @@ class PlayState extends FlxState
 	
 	function pickUpItem(s:InventorySlot) : Void
 	{
-		if (s.Item == null) continue;	// cant pickup nothing
+		if (s.Item == null) return;	// cant pickup nothing
 			
 			if (s.isMouseOver())
 			{
@@ -209,11 +209,11 @@ class PlayState extends FlxState
 				return;
 			}
 	}
-	function DropItem(s:Item, full : Bool = true)  : Void
+	function DropItem(s:InventorySlot, full : Bool = true)  : Void
 	{
 		if (_draggingItem == null) return;
 		
-		if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;	// cant drop if there is anything
+		if (s.Item != null && s.Item.Name != _draggingItem.Name) return;	// cant drop if there is anything
 			
 			if (s.isMouseOver())
 			{
@@ -231,7 +231,6 @@ class PlayState extends FlxState
 					s.Quantity += Std.int(_draggingItemQuantity / 2);
 					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
 				}
-				return;
 			}
 	}
 		

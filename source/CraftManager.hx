@@ -68,7 +68,7 @@ class CraftManager
 
                 if(valid)
                 {
-                    return r.Result;
+                    return r.Result.clone();
                 }
             }
         }

@@ -84,6 +84,7 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
             }
 
             ResultSlot.Item = newItem;
+			ResultSlot.Quantity = 1;
         }
     }
 
