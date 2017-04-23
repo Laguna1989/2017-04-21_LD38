@@ -180,42 +180,7 @@ class Player extends FlxSprite
 		acceleration.set(vx, vy);
 		
 		
-		if (inInteractionAnim < 0)
-		{
-			if (MyInput.InteractButtonPressed)
-			{
-				var r : Rock = _playState._level.getRockInRange(this);
-				if (r != null)
-				{
-					r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
-					this.animation.play("pick", true);
-					inInteractionAnim = 0.5;
-					r.takeDamage(0.2);
-					if (r.x < x) 
-					{
-						this.scale.set( -1, 1);
-						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
-					}
-					return;
-				}
-				
-				var t : Tree = _playState._level.getTreeInRange(this);
-				if (t != null)
-				{
-					t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
-					this.animation.play("axe", true);
-					inInteractionAnim = 0.5;
-					t.takeDamage(0.2);
-					if (t.x < x) 
-					{
-						this.scale.set( -1, 1);
-						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
-					}
-					return;
-				}
-				
-			}
-		}
+		handleInteraction();
     }
 
 
@@ -252,6 +217,46 @@ class Player extends FlxSprite
 		if (x > GP.TileSize * GP.WorldSizeInTiles - this.width) x = GP.TileSize * GP.WorldSizeInTiles - this.width;
 		if (y < 0) y = 0;
 		if (y > GP.TileSize * GP.WorldSizeInTiles - this.height) y = GP.TileSize * GP.WorldSizeInTiles - this.height;
+	}
+	
+	function handleInteraction():Void 
+	{
+		if (inInteractionAnim < 0)
+		{
+			if (MyInput.InteractButtonPressed)
+			{
+				var r : Rock = _playState._level.getRockInRange(this);
+				if (r != null)
+				{
+					r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+					this.animation.play("pick", true);
+					inInteractionAnim = 0.5;
+					r.takeDamage(0.2);
+					if (r.x < x) 
+					{
+						this.scale.set( -1, 1);
+						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					}
+					return;
+				}
+				
+				var t : Tree = _playState._level.getTreeInRange(this);
+				if (t != null)
+				{
+					t.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
+					this.animation.play("axe", true);
+					inInteractionAnim = 0.5;
+					t.takeDamage(0.2);
+					if (t.x < x) 
+					{
+						this.scale.set( -1, 1);
+						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+					}
+					return;
+				}
+				
+			}
+		}
 	}
 
  

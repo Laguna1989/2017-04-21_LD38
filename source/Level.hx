@@ -183,10 +183,10 @@ class Level extends FlxObject
 	{
 		for (t in trees)
 		{
-			var dx: Float = t.x - p.x;
+			var dx: Float = t.x - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = t.y - p.y;
+			var dy: Float = t.y - p.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;
@@ -202,10 +202,10 @@ class Level extends FlxObject
 	{
 		for (r in rocks)
 		{
-			var dx: Float = r.x - p.x;
+			var dx: Float = r.x - p.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = r.y - p.y;
+			var dy: Float = r.y - p.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;

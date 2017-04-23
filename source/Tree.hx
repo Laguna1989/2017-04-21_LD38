@@ -94,7 +94,7 @@ class Tree extends Destroyables
 	override public function draw ()
 	{
 		super.draw();
-		collisionSprite.draw();
+		//collisionSprite.draw();
 	}
 	
 }
