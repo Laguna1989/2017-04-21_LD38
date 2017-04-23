@@ -59,6 +59,11 @@ class PlayState extends FlxState
 		_vignette.scrollFactor.set();
 
 		_workbench = new Workbench(32, 32, this);
+		
+		for (i in 0...24)
+		{
+			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
+		}
 	}
 
 	override public function update(elapsed:Float):Void
@@ -214,22 +219,59 @@ class PlayState extends FlxState
 		if (_draggingItem == null) return;
 		
 		if (s.Item != null && s.Item.Name != _draggingItem.Name) return;	// cant drop if there is anything
-			
+		if (s.Item != null && s.Quantity == s.Item.StackSize)  return;
+		
+		
 			if (s.isMouseOver())
 			{
 				if (full || _draggingItemQuantity < 2)
 				{
-					s.Item = _draggingItem;
-					s.Quantity += _draggingItemQuantity;
-					_draggingItem = null;
-					_draggingItemQuantity = 0;
+					if (s.Item == null)
+					{
+						s.Item = _draggingItem;
+						s.Quantity = _draggingItemQuantity;
+						
+						_draggingItem = null;
+						_draggingItemQuantity = 0;
+					}
+					else
+					{
+						if (s.Item.Name == _draggingItem.Name)
+						{
+							if (_draggingItemQuantity + s.Quantity > s.Item.StackSize)
+							{
+								_draggingItemQuantity = _draggingItemQuantity + s.Quantity - s.Item.StackSize;
+								s.Quantity = s.Item.StackSize;
+							}
+							else
+							{
+								s.Quantity += _draggingItemQuantity;
+								
+								_draggingItem = null;
+								_draggingItemQuantity = 0;
+							}
+						}
+					}
+				
 				}
 				else
 				{
 					s.Item = _draggingItem.clone();
 					s.Item.animation.play("anim0");
 					s.Quantity += Std.int(_draggingItemQuantity / 2);
+					
 					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
+					while (s.Quantity > s.Item.StackSize)
+					{
+						s.Quantity--;
+						_draggingItemQuantity++;
+					}
+					
+					if (_draggingItemQuantity <= 0)
+					{
+						_draggingItemQuantity = 0;
+						_draggingItem = null;
+					}
 				}
 			}
 	}

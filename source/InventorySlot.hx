@@ -10,7 +10,7 @@ import flixel.text.FlxText;
 class InventorySlot extends FlxSprite
 {
     public var Item : Item;
-    public var Quantity : Int;
+    public var Quantity : Int = 0;
 
     private var _initialPosition : FlxPoint;
     private var _hidePosition    : FlxPoint;
