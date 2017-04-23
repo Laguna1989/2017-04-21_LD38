@@ -1,0 +1,9 @@
+{
+    "recipe": [
+        "Fibers", null, "Fibers",
+        null, "Fibers", null,
+        "Fibers", null, "Fibers"
+    ],
+    "result": "Fabric",
+    "quantity": 2
+}
