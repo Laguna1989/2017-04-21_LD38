@@ -64,6 +64,7 @@ class PlayState extends FlxState
 		{
 			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
 		}
+		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
 	}
 
 	override public function update(elapsed:Float):Void
@@ -289,6 +290,7 @@ class PlayState extends FlxState
 		_flakes.draw();
 		_vignette.draw();
 
+		
 		_inventory.draw();
 		_craftHud.draw();
 		
@@ -298,6 +300,8 @@ class PlayState extends FlxState
 			{
 				_draggingItem.draw();
 			}
+			if (_inventory.hasValidTool())
+				_inventory._activeToolLifeTime.draw();
 		}
 	}
 }
