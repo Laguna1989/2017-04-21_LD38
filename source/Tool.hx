@@ -5,7 +5,8 @@ class Tool extends Item
     public var toolQuality : Float = 0;
 	public var toolLifeTime : Float = 1;
 	
-	public var toolCanBeUsedForChopping : Bool = false;
+	public var toolCanBeUsedWithDestroyable : Bool = false;
+	public var toolCanBePlacedInWorld : Bool = false;
 	
 	public function new(name : String, displayName : String, stackSize : Int, imageName : String)
     {
@@ -16,7 +17,10 @@ class Tool extends Item
 	
 	public override function clone() : Tool
 	{
-		return new Tool(Name, DisplayName, StackSize, ImageName);
+		var t : Tool = new Tool(Name, DisplayName, StackSize, ImageName);
+		t.toolCanBePlacedInWorld = toolCanBePlacedInWorld;
+		t.toolCanBeUsedWithDestroyable = toolCanBeUsedWithDestroyable;
+		return t;
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -28,6 +32,11 @@ class Tool extends Item
 			trace("item destroyed 1");
 			alive = false;
 		}
+	}
+	
+	public function UseTool(p : Player) : Void
+	{
+		
 	}
 	
 }

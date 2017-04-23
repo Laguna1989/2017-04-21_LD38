@@ -19,7 +19,7 @@ class Player extends FlxSprite
 
     var _accelFactor    : Float;
 
-	var _state      : PlayState;
+	public var _state      : PlayState;
 
 	var _facing         : Facing;
 	
@@ -262,38 +262,88 @@ class Player extends FlxSprite
 		{
 			if (MyInput.InteractButtonPressed)
 			{
-				var d : Destroyables = _state._level.getDestroyableInRange(this);
-				if (d != null)
+				var i : Item  = _state._inventory.getActiveTool();
+				
+				if ( i == null)
 				{
-					this.animation.play("pick", true);
-					inInteractionAnim = 0.5;
-					
-					var quality : Float = 0.5;
-					
-					var i : Item  = _state._inventory.getActiveTool();
-					if (i != null && Std.is(i, Tool))
+					interactWithWorld(null);
+				}
+				else if (Std.is(i, Tool))
+				{
+					trace("u have tool");
+					var t : Tool = cast i;
+					if (t.toolCanBeUsedWithDestroyable)
 					{
-						var t : Tool = cast i;
-						quality = t.toolQuality;
-						t.toolLifeTime -= d.toolUsage * 0.75;
+						//trace("destroyable");
+						interactWithWorld(t);
 					}
-					
-					d.takeDamage(0.2 * quality);
-					getTired((1 - quality) * GP.ExhaustionFactor);
-					getHungry((1 - quality) * GP.HungerFactor);
-					getCold((1 - quality) * -GP.WarmthFactor);
-					
-					if (d.x < x) 
+					else if (t.toolCanBePlacedInWorld)
 					{
-						this.scale.set( -1, 1);
-						new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+						trace("place out");
+						PlaceItemInWorld(t);
 					}
-					return;
+				}
+				else
+				{
+					interactWithWorld(null);	// chop with stupid item
 				}
 			}
 		}
 	}
+	
+	function PlaceItemInWorld(t:Tool) 
+	{
+		if (t == null || !t.toolCanBePlacedInWorld) return;
+		
+		trace("placeItem");
+		_state._inventory.ActiveSlot.Item = null;
+		_state._inventory.ActiveSlot.Quantity = 0;
+		
+		t.UseTool(this);
 
+	}
+	
+	function interactWithWorld(t : Tool):Void 
+	{
+		InteractWithDestroyables(t);
+		InteractWithPlayceables();
+	}
+	
+	function InteractWithPlayceables() 
+	{
+		var p : Placeable = _state._level.getPlaceableInRange(this);
+		if (p == null) return;
+		
+		p.Use(this);
+		
+	}
+	function InteractWithDestroyables(t : Tool):Void 
+	{
+		var d : Destroyables = _state._level.getDestroyableInRange(this);
+		if (d == null) return;
+		
+		this.animation.play("pick", true);
+		inInteractionAnim = 0.5;
+	
+		var quality : Float = 0.5;
+	
+		if (t != null)
+		{
+			quality = t.toolQuality;
+			t.toolLifeTime -= d.toolUsage * 0.75;
+		}
+		
+		d.takeDamage(0.2 * quality);
+		getTired((1 - quality) * GP.ExhaustionFactor);
+		getHungry((1 - quality) * GP.HungerFactor);
+		getCold((1 - quality) * -GP.WarmthFactor);
+		
+		if (d.x < x) 
+		{
+			TurnPlayerLeftForInteraction();
+		}
+	}
+	
 	private function getTired(amount : Float) : Void
 	{
 		Exhaustion -= amount;
@@ -308,7 +358,14 @@ class Player extends FlxSprite
 	{
 		Warmth -= amount;
 	}
-
+	
+	function TurnPlayerLeftForInteraction():Void 
+	{
+		this.scale.set( -1, 1);
+		new FlxTimer().start(0.5, function(t) : Void {this.scale.set( 1, 1); } );
+	}
+	
+	
  
 	public override function draw() 
 	{
