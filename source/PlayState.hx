@@ -68,6 +68,8 @@ class PlayState extends FlxState
 		_inventory.pickupItem(ItemManager.getItem("Tent").clone());
 		_inventory.pickupItem(ItemManager.getItem("Food").clone());
 		_inventory.pickupItem(ItemManager.getItem("Fire").clone());
+
+		FlxG.mouse.visible = false;
 	}
 
 	override public function update(elapsed:Float):Void
@@ -78,7 +80,10 @@ class PlayState extends FlxState
 		
 		if (_draggingItem != null)
 		{
-			_draggingItem.setPosition(FlxG.mouse.getScreenPosition().x, FlxG.mouse.getScreenPosition().y);
+			_draggingItem.setPosition(
+				FlxG.mouse.getScreenPosition().x - GP.TileSize / 2,
+				FlxG.mouse.getScreenPosition().y - GP.TileSize / 2
+			);
 		}
 		
 		_level.update(elapsed);
@@ -206,20 +211,22 @@ class PlayState extends FlxState
 			ShowCraftHud = false;
 			_craftHud.hide();
 		}
+
+		FlxG.mouse.visible = (ShowInventory || ShowCraftHud) && _draggingItem == null;
 	}
 	
 	function pickUpItem(s:InventorySlot) : Void
 	{
 		if (s.Item == null) return;	// cant pickup nothing
-			
-			if (s.isMouseOver())
-			{
-				_draggingItem = s.Item;
-				_draggingItemQuantity = s.Quantity;
-				s.Item = null;
-				s.Quantity = 0;
-				return;
-			}
+		
+		if (s.isMouseOver())
+		{
+			_draggingItem = s.Item;
+			_draggingItemQuantity = s.Quantity;
+			s.Item = null;
+			s.Quantity = 0;
+			return;
+		}
 	}
 	function DropItem(s:InventorySlot, full : Bool = true)  : Void
 	{
