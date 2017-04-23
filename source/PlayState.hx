@@ -100,20 +100,41 @@ class PlayState extends FlxState
 				if (_draggingItem == null)
 				{
 					// pick up item
-					pickUpItem(_inventory.Slots);
-					pickUpItemCraft(_craftHud.Slots);
+					for (s in _inventory.Slots)
+					{
+						pickUpItem(s);
+					}
+					for (s in _craftHud.Slots)
+					{
+						pickUpItem(s);
+					}
+					pickUpItem(_craftHud.ResultSlot);
 				}
 				else
 				{
 					// drop Item
-					DropItem(_inventory.Slots);
-					DropItemCraft(_craftHud.Slots);
+					
+					// pick up item
+					for (s in _inventory.Slots)
+					{
+						DropItem(s);
+					}
+					for (s in _craftHud.Slots)
+					{
+						DropItem(s);
+					}
 				}
 			}
 			if (FlxG.mouse.justPressedRight)
 			{
-				DropItem(_inventory.Slots, false);
-				DropItemCraft(_craftHud.Slots, false);
+				for (s in _inventory.Slots)
+				{
+					DropItem(s, false);
+				}
+				for (s in _craftHud.Slots)
+				{
+					DropItem(s, false);
+				}
 			}
 		}
 	}
@@ -175,11 +196,9 @@ class PlayState extends FlxState
 		}
 	}
 	
-	function pickUpItem(arr: Array<InventorySlot>):Void 
+	function pickUpItem(s:InventorySlot) : Void
 	{
-		for (s in arr)
-		{
-			if (s.Item == null) continue;	// cant pickup nothing
+		if (s.Item == null) continue;	// cant pickup nothing
 			
 			if (s.isMouseOver())
 			{
@@ -189,31 +208,12 @@ class PlayState extends FlxState
 				s.Quantity = 0;
 				return;
 			}
-		}
 	}
-	function pickUpItemCraft(arr: Array<CraftSlot>):Void 
-	{
-		for (s in arr)
-		{
-			if (s.Item == null) continue;	// cant pickup nothing
-			
-			if (s.isMouseOver())
-			{
-				_draggingItem = s.Item;
-				_draggingItemQuantity = s.Quantity;
-				s.Item = null;
-				s.Quantity = 0;
-				return;
-			}
-		}
-	}
-	
-	function DropItem(arr:Array<InventorySlot>, full : Bool = true) 
+	function DropItem(s:Item, full : Bool = true)  : Void
 	{
 		if (_draggingItem == null) return;
-		for (s in arr)
-		{
-			if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;	// cant drop if there is anything
+		
+		if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;	// cant drop if there is anything
 			
 			if (s.isMouseOver())
 			{
@@ -233,35 +233,6 @@ class PlayState extends FlxState
 				}
 				return;
 			}
-		}
-	}
-	
-	function DropItemCraft(arr:Array<CraftSlot>, full : Bool = true) 
-	{
-		if (_draggingItem == null) return;
-		for (s in arr)
-		{
-			if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;
-			
-			if (s.isMouseOver())
-			{
-				if (full || _draggingItemQuantity < 2)
-				{
-					s.Item = _draggingItem;
-					s.Quantity = _draggingItemQuantity;
-					_draggingItem = null;
-					_draggingItemQuantity = 0;
-				}
-				else
-				{
-					s.Item = _draggingItem.clone();
-					s.Item.animation.play("anim0");
-					s.Quantity += Std.int(_draggingItemQuantity / 2);
-					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
-				}
-				return;
-			}
-		}
 	}
 		
 	override public function draw()
