@@ -249,7 +249,7 @@ class Level extends FlxObject
 			if (tile == null) continue;
 			if (tile.type == TileType.STONE)
 			{
-				var r : Rock = new Rock(ix * GP.TileSize, iy * GP.TileSize);
+				var r : Rock = new Rock(ix * GP.TileSize , iy * GP.TileSize);
 				rocks.add(r);
 				collisionTiles.add(r);
 			}
@@ -278,7 +278,7 @@ class Level extends FlxObject
 			if (tile == null) continue;
 			if (tile.type == TileType.GRASS)
 			{
-				var t : Tree = new Tree(ix * GP.TileSize, iy * GP.TileSize);
+				var t : Tree = new Tree((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
 				trees.add(t);
 				collisionTiles.add(t.collisionSprite);
 			}

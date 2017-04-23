@@ -21,32 +21,31 @@ class Tree extends Destroyables
 		dropItem = cast ItemManager.getItem("Wood");
 		
 		var r : Int = FlxG.random.int(1, 6);
-		
+
 		if (r == 1)
 		{
-			x -= 16;
-			y -= 16;
 			this.loadGraphic(AssetPaths.tree1__png, false, 32, 32);
-			collisionSprite = new FlxSprite(x + 10, y + 24);
-			collisionSprite.makeGraphic(10, 8);
+			this.offset.set(16, 32);
+			collisionSprite = new FlxSprite(x -5, y -4);
+			collisionSprite.makeGraphic(8, 4);
 			dropQuantity = 3;
 			health = 1.0;
 		}
 		else if (r == 2)
 		{
-			y -= 16;
 			this.loadGraphic(AssetPaths.tree2__png, false, 16, 32);
-			collisionSprite = new FlxSprite(x + 4, y + 24);
-			collisionSprite.makeGraphic(6, 9);
+			collisionSprite = new FlxSprite(x -3, y -4);
+			collisionSprite.makeGraphic(6, 4);
+			this.offset.set(8, 32);
 			dropQuantity = 2;
 			health = 0.8;
 		}
 		else if (r == 3)
 		{
-			y -= 16;
 			this.loadGraphic(AssetPaths.tree3__png, false, 16, 32);
-			collisionSprite = new FlxSprite(x + 4, y + 24);
-			collisionSprite.makeGraphic(6, 9);
+			collisionSprite = new FlxSprite(x -3, y -4);
+			collisionSprite.makeGraphic(6, 4 );
+			this.offset.set(8, 32);
 			dropQuantity = 2;
 			health = 0.8;
 		}
@@ -61,27 +60,28 @@ class Tree extends Destroyables
 		}
 		else if (r == 5)
 		{
-			x -= 24;
-			y -= 24;
 			this.loadGraphic(AssetPaths.tree5__png, false, 48, 48);
-			collisionSprite = new FlxSprite(x + 16, y + 32);
-			collisionSprite.makeGraphic(16, 16);
+			collisionSprite = new FlxSprite(x -6, y -8);
+			collisionSprite.makeGraphic(16, 8);
+			this.offset.set(24, 48);
 			dropQuantity = 5;
 			health = 1.5;
 		}
 		else if (r == 6)
 		{
-			x -= 24;
-			y -= 24;
 			this.loadGraphic(AssetPaths.tree6__png, false, 48, 48);
-			collisionSprite = new FlxSprite(x + 16, y + 32);
-			collisionSprite.makeGraphic(16, 16);
+			collisionSprite = new FlxSprite(x -6, y -8);
+			collisionSprite.makeGraphic(16, 8);
+			this.offset.set(24, 48);
 			dropQuantity = 5;
 			health = 1.5;
 		}
 		
 		this.immovable = true;
+		collisionSprite.updateHitbox();
 		this.collisionSprite.immovable = true;
+		collisionSprite.alpha = 0.5;
+		
 		this.alpha = 0;
 	}
 	
@@ -91,5 +91,10 @@ class Tree extends Destroyables
 		collisionSprite.setPosition( -5000, -5000);
 	}
 	
+	override public function draw ()
+	{
+		super.draw();
+		collisionSprite.draw();
+	}
 	
 }
