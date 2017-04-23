@@ -210,23 +210,25 @@ class PlayState extends FlxState
 	
 	function DropItem(arr:Array<InventorySlot>, full : Bool = true) 
 	{
+		if (_draggingItem == null) return;
 		for (s in arr)
 		{
-			if (s.Item != null) continue;	// cant pickup nothing
+			if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;	// cant drop if there is anything
 			
 			if (s.isMouseOver())
 			{
 				if (full || _draggingItemQuantity < 2)
 				{
 					s.Item = _draggingItem;
-					s.Quantity = _draggingItemQuantity;
+					s.Quantity += _draggingItemQuantity;
 					_draggingItem = null;
 					_draggingItemQuantity = 0;
 				}
 				else
 				{
 					s.Item = _draggingItem.clone();
-					s.Quantity = Std.int(_draggingItemQuantity / 2);
+					s.Item.animation.play("anim0");
+					s.Quantity += Std.int(_draggingItemQuantity / 2);
 					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
 				}
 				return;
@@ -236,9 +238,10 @@ class PlayState extends FlxState
 	
 	function DropItemCraft(arr:Array<CraftSlot>, full : Bool = true) 
 	{
+		if (_draggingItem == null) return;
 		for (s in arr)
 		{
-			if (s.Item != null) continue;	// cant pickup nothing
+			if (s.Item != null && s.Item.Name != _draggingItem.Name) continue;
 			
 			if (s.isMouseOver())
 			{
@@ -252,7 +255,8 @@ class PlayState extends FlxState
 				else
 				{
 					s.Item = _draggingItem.clone();
-					s.Quantity = Std.int(_draggingItemQuantity / 2);
+					s.Item.animation.play("anim0");
+					s.Quantity += Std.int(_draggingItemQuantity / 2);
 					_draggingItemQuantity =  Std.int(_draggingItemQuantity / 2 + (_draggingItemQuantity % 2));
 				}
 				return;
