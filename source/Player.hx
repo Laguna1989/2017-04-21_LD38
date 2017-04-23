@@ -73,9 +73,9 @@ class Player extends FlxSprite
 		
 		health = healthMax = GP.PlayerHealthMaxDefault;
 
-		Exhaustion = 1.0;
-		Hunger     = 1.0;
-		Warmth     = 1.0;
+		Exhaustion = 0.9;
+		Hunger     = 0.55;
+		Warmth     = 0.8;
 		
 		var barWidth = 60;
 		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GRAY );
@@ -281,6 +281,7 @@ class Player extends FlxSprite
 					r.takeDamage(0.2 * quality);
 					getTired((1 - quality) * GP.ExhaustionFactor);
 					getHungry((1 - quality) * GP.HungerFactor);
+					getCold((1 - quality) * -GP.WarmthFactor);
 					
 					if (r.x < x) 
 					{
