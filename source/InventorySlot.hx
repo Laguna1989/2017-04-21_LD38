@@ -28,7 +28,6 @@ class InventorySlot extends FlxSprite
 
         _quantityText = new FlxText(xPos, yPos, 0, Std.string(Quantity), 8);
         _quantityText.scrollFactor.set();
-        _quantityText.blend = BlendMode.MULTIPLY;
 
         var slotColor = FlxColor.fromRGB(180, 180, 180, 255);
         makeGraphic(GP.TileSize, GP.TileSize, slotColor);
@@ -47,6 +46,7 @@ class InventorySlot extends FlxSprite
             Item.draw();
             if(Quantity > 1)
             {
+				//trace("drawtext");
                 _quantityText.draw();
             }
         }
