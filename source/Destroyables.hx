@@ -13,7 +13,7 @@ class Destroyables extends FlashSprite
 {
 	public var visited : Bool = false;
 	
-	public var dropItem : Resource = null;
+	public var dropItem : Item = null;
 	public var dropQuantity : Int = 4;
 	
 	public var toolUsage : Float = 0;
@@ -37,10 +37,12 @@ class Destroyables extends FlashSprite
 	
 	public function takeDamage(v : Float) : Void
 	{
+		
 		this.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
 		health -= v;
 		if (health <= 0)
 		{
+			trace("take damage & alive = false");
 			this.alive = false;
 		}
 	}
@@ -48,10 +50,14 @@ class Destroyables extends FlashSprite
 	// return value is reuse
 	public function destroyMe(state:PlayState) : Bool
 	{
+		
 		var ao : Float = FlxG.random.float(0, Math.PI * 2);
+		//trace("destroyable: destroyME, N= " + dropQuantity + " , ao= " + ao);
 		for (i in 0 ... dropQuantity)
 		{
-			var r : Resource = dropItem.clone();
+			//trace("destroyable: destroyME: Drop item" );
+			//trace("destroyable: destroyME: Drop item Name: " + dropItem );
+			var r : Item = dropItem.clone();
 			r.x = x;
 			r.y = y;
 			
@@ -59,6 +65,7 @@ class Destroyables extends FlashSprite
 			r.velocity.set(Math.cos(a) * 150, Math.sin(a) * 150);
 			r.drag.set(500, 500);
 			
+			//trace("dropresource");
 			state._level.dropResourceInLevel(r);
 		}
 		
