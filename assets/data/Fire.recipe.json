@@ -1,7 +1,7 @@
 {
     "recipe": [
-        null, "WoodenStick", null,
-        "WoodenStick", null, "WoodenStick",
+        null, "WoodenSticks", null,
+        "WoodenSticks", null, "WoodenSticks",
         "Stone", "Stone", "Stone"
     ],
     "result": "Fire",
