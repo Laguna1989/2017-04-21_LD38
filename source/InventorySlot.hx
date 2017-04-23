@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
@@ -63,8 +64,16 @@ class InventorySlot extends FlxSprite
         {
             Item.setPosition(x, y);
             _quantityText.setPosition(x, y);
+			Item.scrollFactor.set();
         }
     }
+	
+	public function isMouseOver () : Bool
+	{
+		var mousePosition : FlxPoint = FlxG.mouse.getScreenPosition();
+		return (mousePosition.x >= x && mousePosition.x < x + width
+        && mousePosition.y >= y && mousePosition.y < y + height);
+	}
 
     public function show() : Void
     {
