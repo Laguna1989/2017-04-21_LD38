@@ -286,6 +286,8 @@ class PlayState extends FlxState
 		_flakes.draw();
 		_vignette.draw();
 
+		_player.drawHud();
+
 		_inventory.draw();
 		_craftHud.draw();
 		
