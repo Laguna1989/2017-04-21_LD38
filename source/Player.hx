@@ -21,9 +21,7 @@ class Player extends FlxSprite
 
 	var _state      : PlayState;
 
-	
 	var _facing         : Facing;
-	
 	
 	var dustparticles : MyParticleSystem;
 	var dustTime : Float = 0;
@@ -32,6 +30,17 @@ class Player extends FlxSprite
 	
 	var inInteractionAnim : Float = 0;
 
+	public var Exhaustion : Float;
+	public var Hunger     : Float;
+	public var Warmth     : Float;
+
+	private var _exhaustionBar : HudBar;
+	private var _hungerBar     : HudBar;
+	private var _warmthBar     : HudBar;
+
+	private var _exhaustionTimer : Float;
+	private var _hungerTimer     : Float;
+	private var _warmthTimer     : Float;
 	
     public function new(playState: PlayState)
     {
@@ -63,8 +72,19 @@ class Player extends FlxSprite
 		setPosition(8 * GP.TileSize, 2 * GP.TileSize);
 		
 		health = healthMax = GP.PlayerHealthMaxDefault;
+
+		Exhaustion = 0.9;
+		Hunger     = 0.55;
+		Warmth     = 0.8;
 		
-		
+		var barWidth = 60;
+		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GRAY );
+		_hungerBar     = new HudBar(FlxG.width - barWidth, 10, barWidth, 10, false, FlxColor.GREEN);
+		_warmthBar     = new HudBar(FlxG.width - barWidth, 20, barWidth, 10, false, FlxColor.RED  );
+
+		_exhaustionTimer = GP.ExhaustionTimer;
+		_hungerTimer = GP.HungerTimer;
+		_warmthTimer = GP.WarmthTimer;
     }
 
     //#################################################################
@@ -135,6 +155,36 @@ class Player extends FlxSprite
 		}
 		
 		handleInput();
+
+		_exhaustionTimer -= elapsed;
+		if(_exhaustionTimer <= 0.0)
+		{
+			_exhaustionTimer += GP.ExhaustionTimer;
+			getTired(GP.ExhaustionTickFactor);
+		}
+
+		_hungerTimer -= elapsed;
+		if(_hungerTimer <= 0.0)
+		{
+			_hungerTimer += GP.HungerTimer;
+			getHungry(GP.HungerTickFactor);
+		}
+
+		_warmthTimer -= elapsed;
+		if(_warmthTimer <= 0.0)
+		{
+			_warmthTimer += GP.WarmthTimer;
+			getCold(GP.WarmthTickFactor);
+		}
+
+		_exhaustionBar.health = Exhaustion;
+		_exhaustionBar.update(elapsed);
+
+		_hungerBar.health = Hunger;
+		_hungerBar.update(elapsed);
+
+		_warmthBar.health = Warmth;
+		_warmthBar.update(elapsed);
     }
 
     //#################################################################
@@ -171,8 +221,6 @@ class Player extends FlxSprite
 		
 		handleInteraction();
     }
-
-
 
 	function CreateDustParticles():Void 
 	{
@@ -227,10 +275,13 @@ class Player extends FlxSprite
 					{
 						var t : Tool = cast i;
 						quality = t.toolQuality;
-						t.toolLifeTime -= d.toolUsage;
+						t.toolLifeTime -= d.toolUsage * 0.75;
 					}
 					
 					d.takeDamage(0.2 * quality);
+					getTired((1 - quality) * GP.ExhaustionFactor);
+					getHungry((1 - quality) * GP.HungerFactor);
+					getCold((1 - quality) * -GP.WarmthFactor);
 					
 					if (d.x < x) 
 					{
@@ -241,6 +292,21 @@ class Player extends FlxSprite
 				}
 			}
 		}
+	}
+
+	private function getTired(amount : Float) : Void
+	{
+		Exhaustion -= amount;
+	}
+
+	private function getHungry(amount : Float) : Void
+	{
+		Hunger -= amount;
+	}
+
+	private function getCold(amount : Float) : Void
+	{
+		Warmth -= amount;
 	}
 
  
@@ -255,7 +321,9 @@ class Player extends FlxSprite
 
 	public function drawHud()
 	{
-		
+		_exhaustionBar.draw();
+		_hungerBar.draw();
+		_warmthBar.draw();
 	}
 
     //#################################################################

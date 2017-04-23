@@ -24,6 +24,15 @@ class GP
 	static public var PlayerViewRange			  : Float = 4 * GP.TileSize;
 	static public var PlayerMagnetRange			  : Float = 3* GP.TileSize;
 	static public var ColorDustParticles          : FlxColor = FlxColor.fromRGB(255, 255, 255);
+	static public var ExhaustionFactor            : Float = 0.05;
+	static public var HungerFactor                : Float = 0.035;
+	static public var WarmthFactor                : Float = 0.005;
+	static public var ExhaustionTimer             : Float = 10.0;
+	static public var ExhaustionTickFactor        : Float = ExhaustionFactor / 2;
+	static public var HungerTimer                 : Float = 5.0;
+	static public var HungerTickFactor            : Float = HungerFactor / 2;
+	static public var WarmthTimer                 : Float = 5.0;
+	static public var WarmthTickFactor            : Float = WarmthFactor / 2;
 	
 	// ################################################################
     // # World  #######################################################

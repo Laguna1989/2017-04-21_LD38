@@ -18,7 +18,6 @@ class Item extends FlxSprite
         ImageName = imageName;
 
         loadGraphic(imageName, true, 16, 16);
-        trace(name, imageName);
         var numberOfAnimations = Std.int(pixels.width / 16);
         for(i in 0...numberOfAnimations)
         {
