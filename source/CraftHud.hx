@@ -10,7 +10,6 @@ import flixel.tweens.FlxTween;
 class CraftHud extends FlxTypedGroup<FlxSprite>
 {
     private var _sprBG : FlxSprite;
-    private var _state : PlayState;
 
     private var _tweenShow : FlxTween;
     private var _tweenHide : FlxTween;
@@ -23,11 +22,9 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
     private var _tweenShowCraftButton : FlxTween;
     private var _tweenHideCraftButton : FlxTween;
 
-    public function new(state : PlayState)
+    public function new()
     {
         super();
-
-        _state = state;
 
         Slots = new Array<CraftSlot>();
 
@@ -69,27 +66,8 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         trace("Crafting!");
     }
 
-    public override function update(elapsed: Float) : Void
-    {
-        super.update(elapsed);
-        handleInput();
-    }
-
-    private function handleInput() : Void
-    {
-        if(MyInput.InteractButtonJustPressed && _state.PlayerIsNearWorkbench)
-        {
-            _state.ShowCraftHud = !_state.ShowCraftHud;
-
-            if(_state.ShowCraftHud) show();
-            else hide();
-        }
-    }
-
     public function show() : Void
     {
-        _state.ShowCraftHud  = true;
-        
         if(_tweenHide != null) _tweenHide.cancel();
         _tweenShow = FlxTween.tween(_sprBG, { x : 0 }, 0.25);
 
@@ -101,14 +79,10 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
 
         if(_tweenHideCraftButton != null) _tweenHideCraftButton.cancel();
         _tweenShowCraftButton = FlxTween.tween(_craftButton, { x: _craftButtonInitialPosition.x }, 0.25);
-
-        _state._inventory.show();
     }
 
     public function hide() : Void
     {
-        _state.ShowCraftHud  = false;
-
         if(_tweenShow != null) _tweenShow.cancel();
         _tweenHide = FlxTween.tween(_sprBG, { x : -_sprBG.width }, 0.25);
 
@@ -120,7 +94,5 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
 
         if(_tweenShowCraftButton != null) _tweenShowCraftButton.cancel();
         _tweenHideCraftButton = FlxTween.tween(_craftButton, { x: _craftButtonInitialPosition.x - _sprBG.width }, 0.25);
-
-        _state._inventory.hide();
     }
 }

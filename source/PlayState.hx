@@ -40,10 +40,10 @@ class PlayState extends FlxState
 		
 		_player = new Player(this);
 
-		_inventory = new Inventory(this);
+		_inventory = new Inventory();
 		ShowInventory = false;
 
-		_craftHud = new CraftHud(this);
+		_craftHud = new CraftHud();
 		ShowCraftHud  = false;
 		
 		FlxG.camera.follow(_player);
@@ -62,6 +62,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);	
 		MyInput.update();
+		handleInput();
 		
 		_level.update(elapsed);
 		_level.updateVisibility(_player);
@@ -72,6 +73,63 @@ class PlayState extends FlxState
 		_workbench.update(elapsed);
 		
 		FlxG.collide(_player, _level.collisionTiles);
+	}
+
+	private function handleInput()
+	{
+		if(MyInput.InventoryButtonJustPressed)
+		{
+			ShowInventory = !ShowInventory;
+			
+			if(ShowInventory)
+			{
+				_inventory.show();
+				if(PlayerIsNearWorkbench)
+				{
+					ShowCraftHud = true;
+					_craftHud.show();
+				}
+			}
+			else
+			{
+				_inventory.hide();
+				if(ShowCraftHud)
+				{
+					ShowCraftHud = false;
+					_craftHud.hide();
+				}
+			}
+		}
+
+		if(MyInput.InteractButtonJustPressed && PlayerIsNearWorkbench)
+		{
+			ShowCraftHud = !ShowCraftHud;
+
+			if(ShowCraftHud)
+			{
+				_craftHud.show();
+				if(!ShowInventory)
+				{
+					ShowInventory = true;
+					_inventory.show();
+				}
+			}
+			else
+			{
+				_craftHud.hide();
+				if(ShowInventory)
+				{
+					ShowInventory = false;
+					_inventory.hide();
+				}
+			}
+		}
+
+		if(ShowCraftHud && !PlayerIsNearWorkbench)
+		{
+			ShowCraftHud = false;
+			_craftHud.hide();
+		}
 	}
 	
 	override public function draw()

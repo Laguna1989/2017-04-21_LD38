@@ -3,25 +3,21 @@ package;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
-import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxTween;
 
 class Inventory extends FlxTypedGroup<FlxSprite>
 {
     private var _sprBG : FlxSprite;
-    private var _state : PlayState;
 
     private var _tweenShow : FlxTween;
     private var _tweenHide : FlxTween;
 
     public var Slots : Array<InventorySlot>;
 
-    public function new(state : PlayState)
+    public function new()
     {
         super();
-
-        _state = state;
 
         Slots = new Array<InventorySlot>();
 
@@ -85,29 +81,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         }
     }
 
-    public override function update(elapsed: Float)
-    {
-        super.update(elapsed);
-        handleInput();
-    }
-
-    private function handleInput() : Void
-    {
-        if(MyInput.InventoryButtonJustPressed)
-        {
-            _state.ShowInventory = !_state.ShowInventory;
-
-            if(_state.ShowInventory) show();
-            else hide();
-
-            if(_state.PlayerIsNearWorkbench) _state._craftHud.show();
-        }
-    }
-
     public function show() : Void
     {
-        _state.ShowInventory = true;
-
         if(_tweenHide != null) _tweenHide.cancel();
         _tweenShow = FlxTween.tween(_sprBG, { y : FlxG.height - _sprBG.height }, 0.25);
 
@@ -119,8 +94,6 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 
     public function hide() : Void
     {
-        _state.ShowInventory = false;
-
         if(_tweenShow != null) _tweenShow.cancel();
         _tweenHide = FlxTween.tween(_sprBG, { y : FlxG.height }, 0.25);
 
@@ -128,7 +101,5 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         {
             slot.hide();
         }
-
-        if(_state.ShowCraftHud) _state._craftHud.hide();
     }
 }
