@@ -1,4 +1,6 @@
 package;
+import flixel.FlxG;
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -14,7 +16,7 @@ class PlaceableFire extends Placeable
 	
 	public function doAppplySourroundingEffect(p : Player)
 	{
-		p.Warmth = 1.0;
+		p.Warmth += 0.3 * FlxG.elapsed;
+		p.Flash(0.25, FlxColor.fromRGB(255,0,0,10));
 	}
-	
 }

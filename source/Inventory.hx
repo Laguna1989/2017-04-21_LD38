@@ -6,6 +6,7 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxTween;
+import Tool;
 
 class Inventory extends FlxTypedGroup<FlxSprite>
 {

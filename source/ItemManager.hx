@@ -3,6 +3,7 @@ package;
 import FileList;
 import haxe.Json;
 import openfl.Assets;
+import Tool;
 
 class ItemManager
 {

@@ -10,10 +10,11 @@ import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import Tool;
 
 using flixel.util.FlxSpriteUtil;
 
-class Player extends FlxSprite
+class Player extends FlashSprite
 {
     //#################################################################
 
@@ -78,8 +79,8 @@ class Player extends FlxSprite
 		Warmth     = 0.8;
 		
 		var barWidth = 60;
-		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GRAY , "stamina");
-		_hungerBar     = new HudBar(FlxG.width - barWidth, 12, barWidth, 10, false, FlxColor.GREEN, "hunger");
+		_exhaustionBar = new HudBar(FlxG.width - barWidth,  0, barWidth, 10, false, FlxColor.GREEN , "stamina");
+		_hungerBar     = new HudBar(FlxG.width - barWidth, 12, barWidth, 10, false, FlxColor.GRAY,  "hunger");
 		_warmthBar     = new HudBar(FlxG.width - barWidth, 24, barWidth, 10, false, FlxColor.RED  , "warmth");
 		
 

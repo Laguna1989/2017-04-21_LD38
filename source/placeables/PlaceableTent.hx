@@ -1,4 +1,5 @@
 package;
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -14,8 +15,9 @@ class PlaceableTent extends Placeable
 	
 	public override function Use(p : Player)
 	{
-		trace("use tent");
+		p.Flash(0.25, FlxColor.fromRGB(0,255,0,10));
 		p.Exhaustion = 1;
+		
 	}
 	
 }
