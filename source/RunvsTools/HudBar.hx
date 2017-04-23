@@ -13,7 +13,7 @@ class HudBar extends FlxSprite
 	var _vertical : Bool;
 	public var _background : FlxSprite;
 	
-	public function new(X:Float=0, Y:Float=0, w : Float, h : Float, vertical: Bool =true) 
+	public function new(X:Float=0, Y:Float=0, w : Float, h : Float, vertical: Bool =true, col: FlxColor) 
 	{
 		super();
 		x = X;
@@ -21,19 +21,25 @@ class HudBar extends FlxSprite
 		_vertical = vertical;
 		if (w < 0) w *= -1;
 		if (h < 0) h *= -1;
-		makeGraphic(Std.int(w), Std.int(h), FlxColor.WHITE);
-		this.origin.set(0, 0);
-		//this.scrollFactor.set();
-		cameras = [GP.CameraMain];
 		
-		_background = new FlxSprite(x-1,y-1);
-		_background.makeGraphic(Std.int(w) + 2, Std.int(h) + 2, FlxColor.GRAY);
-		_background.alpha = 0.75;
-		//_background.scrollFactor.set();
-		_background.cameras = [GP.CameraMain];
+		this.origin.set(0, 0);
+		this.scrollFactor.set();
+
+		_background = new FlxSprite(x-2,y-2);
+		_background.makeGraphic(Std.int(w) + 4, Std.int(h) + 4, FlxColor.fromRGB( 100,100,100, 100));
+		_background.scrollFactor.set();
+		if (vertical)
+		{
+			this.origin.set(0, height);
+			makeGraphic(Std.int(w), Std.int(h), col);
+		}
+		else
+		{
+			SpriteFunctions.createHorizontalBar(this,Std.int(w), Std.int(h), Std.int(h/6.0), col);
+		}
 	}
 	
-	override public function update(elapsed):Void
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 		var val : Float = health ;
@@ -50,18 +56,9 @@ class HudBar extends FlxSprite
 		}
 	}
 	
-	public function setBarPosition (X : Float, Y: Float )
-	{
-		this.setPosition(X, Y);
-		_background.setPosition(X-1, Y-1);
-	}
-	
 	public override function draw() : Void 
 	{
-		if (health != 0)
-		{
-			_background.draw();
-		}
+		_background.draw();
 		super.draw();
 	}
 	
