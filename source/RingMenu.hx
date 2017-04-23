@@ -72,14 +72,16 @@ class RingMenu extends FlxSpriteGroup
 		t.y += 20 * i;
 		t.x = leftXPos;
 		
-		t.alpha = 0.5;
-		t.size  = 10;
+		t.alpha   = 0.5;
+		t.scale.x = 0.8;
+		t.scale.y = 0.8;
 
 		itemGroup.add(t);
 		if (i == 1)
 		{
-			itemGroup.members[0].alpha = 1.0;
-			itemGroup.members[0].size  = 12;
+			itemGroup.members[0].alpha   = 1.0;
+			itemGroup.members[0].scale.x = 1.0;
+			itemGroup.members[0].scale.y = 1.0;
 		}
 	}
 	
@@ -156,8 +158,10 @@ class RingMenu extends FlxSpriteGroup
 		}
 		var rnew : RingItem = itemGroup.members[selectedItem];
 		
-		FlxTween.tween(rnew, { alpha: 1.0, size: 12 }, 0.1);
-		FlxTween.tween(rold, { alpha: 0.5, size: 10 }, 0.1);
+		FlxTween.tween(rnew, { alpha: 1.0 }, 0.1);
+		FlxTween.tween(rnew.scale, { x: 1.0, y: 1.0}, 0.1);
+		FlxTween.tween(rold, { alpha: 0.5 }, 0.1);
+		FlxTween.tween(rold.scale, { x: 0.8, y: 0.8}, 0.1);
 	}
 	
 	function MoveSelectorDown() 
@@ -170,8 +174,10 @@ class RingMenu extends FlxSpriteGroup
 		}
 		var rnew : RingItem = itemGroup.members[selectedItem];
 		
-		FlxTween.tween(rnew, { alpha: 1.0, size: 12 }, 0.1);
-		FlxTween.tween(rold, { alpha: 0.5, size: 10 }, 0.1);
+		FlxTween.tween(rnew, { alpha: 1.0 }, 0.1);
+		FlxTween.tween(rnew.scale, { x: 1.0, y: 1.0}, 0.1);
+		FlxTween.tween(rold, { alpha: 0.5 }, 0.1);
+		FlxTween.tween(rold.scale, { x: 0.8, y: 0.8}, 0.1);
 	}
 	
 	public override function draw()
