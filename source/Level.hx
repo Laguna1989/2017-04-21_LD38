@@ -477,8 +477,6 @@ class Level extends FlxObject
 			{
 				if (i.alive)
 					il.add(i);
-				else
-					i.destroy();
 			}
 			resources = il;
 		}

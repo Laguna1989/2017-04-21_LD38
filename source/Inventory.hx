@@ -65,10 +65,11 @@ class Inventory extends FlxTypedGroup<FlxSprite>
         // Look first for stacks to fill up...
         for(slot in Slots)
         {
-			if (slot == null || slot.Item == null) continue;
+            if (slot.Item == null) continue;
             if(slot.Item.Name == item.Name && slot.Quantity < slot.Item.StackSize)
             {
                 slot.Quantity++;
+                trace(slot.Quantity);
                 return;
             }
         }
@@ -79,6 +80,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
             if(slot.Item == null)
             {
                 slot.Item = item;
+                slot.Item.animation.play("anim0");
+                slot.Item.scrollFactor.set();
                 return;
             }
         }
