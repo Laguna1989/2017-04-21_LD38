@@ -239,6 +239,7 @@ class Level extends FlxObject
 	{
 		CreateRocks();
 		CreateTrees();
+		CreateShrubs();
 		
 		// sort destroyables for correct drawing order
 		destroables.members.sort(function(a, b) : Int {
@@ -271,7 +272,7 @@ class Level extends FlxObject
 		}
 	}
 	
-	function CreateTrees():Void 
+	function CreateTrees() 
 	{
 		while(true)
 		{	
@@ -290,6 +291,30 @@ class Level extends FlxObject
 				var t : Tree = new Tree((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
 				destroables.add(t);
 				collisionTiles.add(t.collisionSprite);
+			}
+		}
+		
+	}
+	
+	function CreateShrubs() 
+	{
+		while(true)
+		{	
+			if (destroables.length - GP.WorldRockCount - GP.WorldWoodCount >= GP.WorldShrubCount)
+			{
+				break;
+			}
+			
+			var ix : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			var iy : Int = FlxG.random.int(0, GP.WorldSizeInTiles - 1);
+			
+			var tile : Tile = getTileAtIntPosition(ix, iy);
+			if (tile == null) continue;
+			if (tile.type == TileType.GRASS)
+			{
+				var t : Shrub = new Shrub((ix+0.5) * GP.TileSize, (iy+0.5) * GP.TileSize);
+				destroables.add(t);
+				collisionTiles.add(t);
 			}
 		}
 		
@@ -432,8 +457,15 @@ class Level extends FlxObject
 					tl.add(t);
 				else
 				{
-					t.destroyMe(_state);
-					t.destroy();
+					if (t.destroyMe(_state))
+					{
+						tl.add(t);
+					}
+					else
+					{
+						t.destroy();
+					}
+					
 				}
 			}
 			destroables = tl;

@@ -228,7 +228,6 @@ class Player extends FlxSprite
 				var r : Destroyables = _playState._level.getDestroyableInRange(this);
 				if (r != null)
 				{
-					r.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
 					this.animation.play("pick", true);
 					inInteractionAnim = 0.5;
 					r.takeDamage(0.2);

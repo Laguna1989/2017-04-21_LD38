@@ -32,6 +32,7 @@ class GP
 	static public var WorldWaterLevel			  : Float = 0.25;
 	static public var WorldStoneLevel			  : Float = 0.77;
 	static public var WorldLengthScale  		  : Float = 0.2;
-	static public var WorldWoodCount			  : Int = 100;
+	static public var WorldWoodCount			  : Int = 60;
 	static public var WorldRockCount			  : Int = 80;
+	static public var WorldShrubCount			  : Int = 60;
 }

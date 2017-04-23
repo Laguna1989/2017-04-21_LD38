@@ -85,10 +85,10 @@ class Tree extends Destroyables
 		this.alpha = 0;
 	}
 	
-	override public function destroyMe(state:PlayState) 
+	override public function destroyMe(state:PlayState) : Bool
 	{
-		super.destroyMe(state);
 		collisionSprite.setPosition( -5000, -5000);
+		return super.destroyMe(state);
 	}
 	
 	override public function draw ()

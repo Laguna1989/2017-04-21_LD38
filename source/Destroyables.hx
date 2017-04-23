@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -18,6 +19,8 @@ class Destroyables extends FlashSprite
 	{
 		super(X, Y);
 		health = 1;
+		this.immovable = true;
+		this.alpha = 0;
 	}
 	
 	public inline function visitMe()
@@ -28,6 +31,7 @@ class Destroyables extends FlashSprite
 	
 	public function takeDamage(v : Float) : Void
 	{
+		this.Flash(0.2, FlxColor.fromRGB(255, 255, 255, 10));
 		health -= v;
 		if (health <= 0)
 		{
@@ -35,7 +39,8 @@ class Destroyables extends FlashSprite
 		}
 	}
 	
-	public function destroyMe(state:PlayState)
+	// return value is reuse
+	public function destroyMe(state:PlayState) : Bool
 	{
 		var ao : Float = FlxG.random.float(0, Math.PI * 2);
 		for (i in 0 ... dropQuantity)
@@ -50,6 +55,7 @@ class Destroyables extends FlashSprite
 			
 			state._level.dropResourceInLevel(r);
 		}
+		return false;
 	}
 	
 	
