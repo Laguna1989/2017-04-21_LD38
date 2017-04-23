@@ -27,6 +27,8 @@ class GP
 	static public var ExhaustionFactor            : Float = 0.05;
 	static public var HungerFactor                : Float = 0.035;
 	static public var WarmthFactor                : Float = 0.005;
+	static public var ExhaustionTimer             : Float = 5.0;
+	static public var ExhaustionTickFactor        : Float = ExhaustionFactor / 2;
 	static public var HungerTimer                 : Float = 5.0;
 	static public var HungerTickFactor            : Float = HungerFactor / 2;
 	static public var WarmthTimer                 : Float = 5.0;

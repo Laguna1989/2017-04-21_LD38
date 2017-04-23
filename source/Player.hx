@@ -38,8 +38,9 @@ class Player extends FlxSprite
 	private var _hungerBar     : HudBar;
 	private var _warmthBar     : HudBar;
 
-	private var _hungerTimer : Float;
-	private var _warmthTimer : Float;
+	private var _exhaustionTimer : Float;
+	private var _hungerTimer     : Float;
+	private var _warmthTimer     : Float;
 	
     public function new(playState: PlayState)
     {
@@ -81,6 +82,7 @@ class Player extends FlxSprite
 		_hungerBar     = new HudBar(FlxG.width - barWidth, 10, barWidth, 10, false, FlxColor.GREEN);
 		_warmthBar     = new HudBar(FlxG.width - barWidth, 20, barWidth, 10, false, FlxColor.RED  );
 
+		_exhaustionTimer = GP.ExhaustionTimer;
 		_hungerTimer = GP.HungerTimer;
 		_warmthTimer = GP.WarmthTimer;
     }
@@ -153,6 +155,13 @@ class Player extends FlxSprite
 		}
 		
 		handleInput();
+
+		_exhaustionTimer -= elapsed;
+		if(_exhaustionTimer <= 0.0)
+		{
+			_exhaustionTimer += GP.ExhaustionTimer;
+			getTired(GP.ExhaustionTickFactor);
+		}
 
 		_hungerTimer -= elapsed;
 		if(_hungerTimer <= 0.0)
