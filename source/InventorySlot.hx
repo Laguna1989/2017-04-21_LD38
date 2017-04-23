@@ -6,7 +6,6 @@ import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
-import openfl.display.BlendMode;
 
 class InventorySlot extends FlxSprite
 {
@@ -47,7 +46,6 @@ class InventorySlot extends FlxSprite
             Item.draw();
             if(Quantity > 1)
             {
-				//trace("drawtext");
                 _quantityText.draw();
             }
         }
@@ -63,8 +61,8 @@ class InventorySlot extends FlxSprite
         if(Item != null)
         {
             Item.setPosition(x, y);
-            _quantityText.setPosition(x, y);
-			Item.scrollFactor.set();
+            _quantityText.setPosition(x - 2, y - 2);
+            Item.scrollFactor.set();
         }
     }
 	
