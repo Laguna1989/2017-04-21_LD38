@@ -63,8 +63,6 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
     
     private function craft() : Void
     {
-        if(ResultSlot.Item != null) return;
-
         var items : Array<Item> = new Array<Item>();
 
         for(slot in Slots)
@@ -75,6 +73,14 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         var newItem = CraftManager.craft(items);
         if(newItem != null)
         {
+            // Return if there's already a
+            // different item in the result slot
+            if(ResultSlot.Item != null && newItem.Result.Name != ResultSlot.Item.Name) return;
+
+            // Return if there's the same item but
+            // crafting would exceed the stack size
+            if(ResultSlot.Item != null && ResultSlot.Quantity + newItem.Quantity > ResultSlot.Item.StackSize) return;
+
             for(slot in Slots)
             {
                 if(slot.Item == null) continue;
@@ -83,8 +89,9 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
                 if(slot.Quantity == 0) slot.Item = null;
             }
 
-            ResultSlot.Item = newItem;
-			ResultSlot.Quantity = 1;
+            ResultSlot.Item = newItem.Result.clone();
+            ResultSlot.Item.animation.play("anim0");
+            ResultSlot.Quantity += newItem.Quantity;
         }
     }
 
