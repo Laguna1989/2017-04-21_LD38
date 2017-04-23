@@ -16,7 +16,7 @@ class Workbench extends FlxSprite
         _state = state;
 
         //makeGraphic(32, 16, FlxColor.CYAN);
-		this.loadGraphic(AssetPaths.Capsule_Bench__png, false, 64,48);
+		this.loadGraphic(AssetPaths.Capsule_Bench__png, false, 80,64 );
         _proximityRect = new FlxRect(xPos - width / 2, yPos - height / 2, width * 2, height * 2);
     }
 
