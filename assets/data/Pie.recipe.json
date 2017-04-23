@@ -1,0 +1,9 @@
+{
+    "recipe": [
+        null, "Berry", null,
+        "Berry", null, "Berry",
+        null, "Berry", null
+    ],
+    "result": "Pie",
+    "quantity": 1
+}

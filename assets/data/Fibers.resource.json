@@ -1,6 +1,6 @@
 {
-    "name": "Fibres",
-    "displayName": "Fibres",
+    "name": "Fibers",
+    "displayName": "Fibers",
     "stackSize": 16,
     "imageName": "assets/images/fiber1.png"
 }
