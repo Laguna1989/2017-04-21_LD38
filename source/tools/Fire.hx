@@ -25,7 +25,7 @@ class Fire extends Tool
 	
 	public override function UseTool(p : Player) : Void
 	{
-		trace("place fire");
+		//trace("place fire");
 		var t : PlaceableFire = new PlaceableFire(p.x + 16, p.y);
 		p._state._level.addPlaceable(t);
 	}

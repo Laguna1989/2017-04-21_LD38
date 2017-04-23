@@ -23,7 +23,7 @@ class Food extends Tool
 	
 	public override function UseTool(p : Player) : Void
 	{
-		trace("use food");
+		//trace("use food");
 		p.Flash(0.2, FlxColor.fromRGB(200, 200, 200, 10));
 		p.Hunger += 0.5;
 		if (p.Hunger > 1) p.Hunger = 1;

@@ -23,7 +23,7 @@ class Tent extends Tool
 	
 	public override function UseTool(p : Player) : Void
 	{
-		trace("place tent");
+		//trace("place tent");
 		var t : PlaceableTent = new PlaceableTent(p.x + 16, p.y);
 		p._state._level.addPlaceable(t);
 		

@@ -271,7 +271,7 @@ class Player extends FlashSprite
 				}
 				else if (Std.is(i, Tool))
 				{
-					trace("u have tool");
+					//trace("u have tool");
 					var t : Tool = cast i;
 					if (t.toolCanBeUsedWithDestroyable)
 					{
@@ -280,7 +280,7 @@ class Player extends FlashSprite
 					}
 					else if (t.toolCanBePlacedInWorld)
 					{
-						trace("place out");
+						//trace("place out");
 						PlaceItemInWorld(t);
 					}
 				}
@@ -296,7 +296,7 @@ class Player extends FlashSprite
 	{
 		if (t == null || !t.toolCanBePlacedInWorld) return;
 		
-		trace("placeItem");
+		//trace("placeItem");
 		_state._inventory.ActiveSlot.Item = null;
 		_state._inventory.ActiveSlot.Quantity = 0;
 		
