@@ -10,7 +10,7 @@ Luckily you could salvage a few spare parts from your escape pod and build a sma
 
 Recipes:
 
-    ☐ = empty
+    □ = empty
     W = Wood
     S = Stone
     | = Wooden Sticks
@@ -20,36 +20,36 @@ Recipes:
 
 Wooden Sticks:
 
-    W☐☐
-    W☐☐
-    ☐☐☐
+    W□□
+    W□□
+    □□□
 
 Fabric:
 
-    F☐F
-    ☐F☐
-    F☐F
+    F□F
+    □F□
+    F□F
 
 Fire:
 
-    ☐|☐
-    |☐|
+    □|□
+    |□|
     SSS
 
 Pie:
 
-    ☐B☐
-    B☐B
-    ☐B☐
+    □B□
+    B□B
+    □B□
 
 Stone pickaxe:
 
     SSS
-    ☐|☐
-    ☐|☐
+    □|□
+    □|□
 
 Tent:
 
-    ☐☐#
-    ☐#|
-    #☐|
+    □□#
+    □#|
+    #□|
