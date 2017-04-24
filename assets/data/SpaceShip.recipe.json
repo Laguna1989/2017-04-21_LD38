@@ -1,0 +1,9 @@
+{
+    "recipe": [
+        null, "Alloy", null,
+        "Alloy", null, "Alloy",
+        "Alloy", "Coal", "Alloy"
+    ],
+    "result": "SpaceShip",
+    "quantity": 3
+}

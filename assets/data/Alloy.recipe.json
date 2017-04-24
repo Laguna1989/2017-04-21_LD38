@@ -1,0 +1,10 @@
+{
+    "recipe": [
+        "CopperPlate", "IronPlate", "IronPlate",
+        "CopperPlate", "Coal", "IronPlate",
+        "CopperPlate", "CopperPlate", "CopperPlate"
+    ],
+    "result": "Alloy",
+	"level" : 1,
+    "quantity": 2
+}
