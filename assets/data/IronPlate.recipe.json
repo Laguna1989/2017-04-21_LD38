@@ -1,0 +1,10 @@
+{
+    "recipe": [
+        "IronOre", null, null,
+        "IronOre",null,null,
+		"Coal"
+    ],
+    "result": "IronPlate",
+	"level" : 1,
+    "quantity": 3
+}

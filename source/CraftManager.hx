@@ -18,8 +18,9 @@ class CraftManager
         for(s in list)
         {
             var data:ParseRecipe = Json.parse(Assets.getText(s));
-
-            var r = new CraftRecipe(data.recipe, data.result, data.quantity);
+	
+			
+            var r = new CraftRecipe(data.recipe, data.result, data.quantity, data.level);
             _recipes.push(r);
         }
 		extended = false;
@@ -31,6 +32,7 @@ class CraftManager
         for(r in _recipes)
         {
             var valid = true;
+			if (r.level > 0 && !extended) continue;
 
             for(offset in 0...9)
             {
@@ -81,4 +83,5 @@ typedef ParseRecipe =
     var recipe   : Array<String>;
     var result   : String;
     var quantity : Int;
+	var level : Int;
 }
