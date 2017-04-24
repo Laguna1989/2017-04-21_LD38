@@ -32,5 +32,6 @@ class Workbench extends FlxSprite
         {
             _state.PlayerIsNearWorkbench = false;
         }
+		
     }
 }

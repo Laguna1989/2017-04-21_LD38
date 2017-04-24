@@ -34,7 +34,7 @@ class Item extends FlxSprite
 	
 	public override function clone () : Item
 	{
-		
+		//trace("item clone");
 		var i : Item = new Item(Name, DisplayName, StackSize, ImageName);
 		i.loadGraphicFromSprite(this);
 		

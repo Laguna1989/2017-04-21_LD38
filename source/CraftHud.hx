@@ -69,9 +69,10 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
         {
             items.push(slot.Item);
         }
-
+		
         var newItem = CraftManager.craft(items);
-        if(newItem != null)
+        //trace("newItem finished");
+		if(newItem != null)
         {
             // Return if there's already a
             // different item in the result slot
@@ -81,6 +82,7 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
             // crafting would exceed the stack size
             if(ResultSlot.Item != null && ResultSlot.Quantity + newItem.Quantity > ResultSlot.Item.StackSize) return;
 
+			//trace("remove Items from Slots");
             for(slot in Slots)
             {
                 if(slot.Item == null) continue;
@@ -88,11 +90,25 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
                 slot.Quantity--;
                 if(slot.Quantity == 0) slot.Item = null;
             }
-
+			//trace("remove Items done");
+			//trace("start Clone");
+			if (newItem.Result == null) throw "Recipe Result is null";
             ResultSlot.Item = newItem.Result.clone();
             ResultSlot.Item.animation.play("anim0");
             ResultSlot.Quantity += newItem.Quantity;
         }
+		//trace("finished");
+		if (Std.is(ResultSlot.Item, Tool))
+		{
+			var t : Tool = cast ResultSlot.Item;
+			if (t.toolExtendsWorkBench)
+			{
+				trace("extended");
+				CraftManager.extended = true;
+				ResultSlot.Item = null;
+				ResultSlot.Quantity = 0;
+			}
+		}
     }
 
     public function show() : Void

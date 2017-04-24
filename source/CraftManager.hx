@@ -7,6 +7,7 @@ import openfl.Assets;
 class CraftManager
 {
     private static var _recipes : Array<CraftRecipe>;
+	public static var extended : Bool = false;
 
     public static function init() : Void
     {
@@ -21,6 +22,7 @@ class CraftManager
             var r = new CraftRecipe(data.recipe, data.result, data.quantity);
             _recipes.push(r);
         }
+		extended = false;
     }
 
     public static function craft(items : Array<Item>) : CraftRecipe

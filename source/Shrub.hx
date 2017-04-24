@@ -29,15 +29,15 @@ class Shrub extends Destroyables
 		if(FlxG.random.bool())
 		{
 			//trace("fibres");
-			dropItem = cast ItemManager.getItem("Fibers");
+			dropItem = ItemManager.getItem("Fibers");
 			dropQuantity = FlxG.random.int(3,5);
 		}
 		else
 		{
 			//trace("berry");
-			dropItem = cast ItemManager.getItem("Berry");
+			dropItem = ItemManager.getItem("Berry");
 			//trace("shrub: ctor: " + dropItem);
-			dropQuantity = 2;
+			dropQuantity = FlxG.random.int(2,6);
 		}
 	
 		

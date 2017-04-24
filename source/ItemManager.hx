@@ -17,6 +17,7 @@ class ItemManager
 		
 		_tools.push(new Fire());
 		_tools.push(new Food());
+		_tools.push(new Oven());
 		_tools.push(new Pie());
         _tools.push(new StonePickaxe());
 		_tools.push(new Tent());

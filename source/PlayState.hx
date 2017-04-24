@@ -68,6 +68,10 @@ class PlayState extends FlxState
 
 		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
 		
+		for (i in 0...24)
+		{
+			_inventory.pickupItem(ItemManager.getItem("Stone").clone());
+		}
 		
 
 		FlxG.mouse.visible = false;

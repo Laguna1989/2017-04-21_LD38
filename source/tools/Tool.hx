@@ -7,6 +7,7 @@ class Tool extends Item
 	
 	public var toolCanBeUsedWithDestroyable : Bool = false;
 	public var toolCanBePlacedInWorld : Bool = false;
+	public var toolExtendsWorkBench : Bool = false;
 	
 	public function new(name : String, displayName : String, stackSize : Int, imageName : String)
     {
@@ -17,6 +18,7 @@ class Tool extends Item
 	
 	public override function clone() : Tool
 	{
+		//trace("clone tool");
 		var t : Tool = new Tool(Name, DisplayName, StackSize, ImageName);
 		t.toolCanBePlacedInWorld = toolCanBePlacedInWorld;
 		t.toolCanBeUsedWithDestroyable = toolCanBeUsedWithDestroyable;

@@ -1,0 +1,9 @@
+{
+    "recipe": [
+        "Stone", "Stone", "Stone",
+        "Stone", null, "Stone",
+        "Stone", "Stone", "Stone"
+    ],
+    "result": "Oven",
+    "quantity": 1
+}
