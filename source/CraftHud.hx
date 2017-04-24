@@ -1,10 +1,9 @@
 package;
 
 import flixel.FlxG;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
-import flixel.math.FlxPoint;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 
 class CraftHud extends FlxTypedGroup<FlxSprite>
@@ -21,8 +20,9 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
     private var _craftButtonInitialPosition : FlxPoint;
     private var _tweenShowCraftButton : FlxTween;
     private var _tweenHideCraftButton : FlxTween;
+	private var _state : PlayState;
 
-    public function new()
+    public function new(state : PlayState)
     {
         super();
 
@@ -59,6 +59,7 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
 
         ResultSlot = new CraftSlot(cast xPos + 24, cast yPos, cast _sprBG.width, cast _sprBG.height);
         add(ResultSlot);
+		_state = state;
     }
     
     private function craft() : Void
@@ -104,6 +105,7 @@ class CraftHud extends FlxTypedGroup<FlxSprite>
 			if (t.toolExtendsWorkBench)
 			{
 				trace("extended");
+				t.UseTool(_state._player);
 				CraftManager.extended = true;
 				ResultSlot.Item = null;
 				ResultSlot.Quantity = 0;

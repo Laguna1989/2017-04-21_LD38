@@ -1,17 +1,14 @@
 package;
 
+import CraftManager;
+import ItemManager;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
-import flixel.ui.FlxButton;
-import flixel.math.FlxMath;
-import ItemManager;
-import CraftManager;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
@@ -36,6 +33,8 @@ class PlayState extends FlxState
 	private var _ending : Bool = false; 
 	private var _overlay : FlxSprite;
 	
+	private var _overlayText : FlxText;
+	
 	
 	
 	override public function create():Void
@@ -52,7 +51,7 @@ class PlayState extends FlxState
 		_inventory = new Inventory();
 		ShowInventory = false;
 
-		_craftHud = new CraftHud();
+		_craftHud = new CraftHud(this);
 		ShowCraftHud  = false;
 		
 		FlxG.camera.follow(_player);
@@ -64,37 +63,63 @@ class PlayState extends FlxState
 		_vignette = new Vignette(FlxG.camera);
 		_vignette.scrollFactor.set();
 
-		_workbench = new Workbench(32, 32, this);
+		_workbench = new Workbench(GP.WorldSizeInTiles /2 * GP.TileSize, GP.WorldSizeInTiles /2 * GP.TileSize, this);
 
 		_inventory.pickupItem(ItemManager.getItem("StonePickaxe").clone());
 		
-		for (i in 0...24)
-		{
-			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
-		}
-		for (i in 0...24)
-		{
-			_inventory.pickupItem(ItemManager.getItem("IronPlate").clone());
-		}
-		for (i in 0...24)
-		{
-			_inventory.pickupItem(ItemManager.getItem("Coal").clone());
-		}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("Stone").clone());
+		//}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("Fibers").clone());
+		//}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("Wood").clone());
+		//}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("IronOre").clone());
+		//}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("CopperOre").clone());
+		//}
+		//for (i in 0...24)
+		//{
+			//_inventory.pickupItem(ItemManager.getItem("Coal").clone());
+		//}
 
 		FlxG.mouse.visible = false;
 		
 		_overlay = new FlxSprite(0, 0);
 		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		_overlay.scrollFactor.set();
-		_overlay.alpha = 0;
-		_overlay.alpha = 1;
-		//_ending = true;
 		FlxTween.tween(_overlay, { alpha : 0 }, 0.25, { onComplete:function(t) { _ending = false; }} );
+		_overlay.alpha = 0;
+		
+		_overlayText = new FlxText(50, 80, 300, "", 12);
+		var t : String = "My escape Pod crashed on this Planet.\nI will name it afer me, @Dean's World@.\n\nI should search for food and shelter!";
+		var cf : flixel.text.FlxTextFormat = new flixel.text.FlxTextFormat(FlxColor.fromRGB(200,200,255), true);
+		var x1 = new FlxTextFormatMarkerPair(cf, "@");
+		_overlayText.applyMarkup(t, [x1]);
+		_overlayText.alpha = 1;
+		_overlayText.scrollFactor.set();
+		_overlayText.color = FlxColor.WHITE;
+		_overlayText.borderStyle = FlxTextBorderStyle.OUTLINE;
+		_overlayText.borderColor = FlxColor.GRAY;
+		FlxTween.tween(_overlayText, { alpha : 0 }, 2.5, { startDelay:6.5 } );
+		
+		
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);	
+		//trace(_overlay.alpha, _overlay.color.alpha);
+		_overlay.update(elapsed);
 		if (!_ending)
 		{
 			MyInput.update();
@@ -102,7 +127,10 @@ class PlayState extends FlxState
 			
 			if (_player.alive == false)
 			{
-				EndGame();
+				if (!_ending)
+				{
+					EndGame("You died on Dean's World.");
+				}
 			}
 			
 			if (_draggingItem != null)
@@ -125,11 +153,22 @@ class PlayState extends FlxState
 		}
 	}
 	
-	function EndGame() 
+	public function EndGame(message: String = "") 
 	{
+		_inventory.hide();
+		_craftHud.hide();
 		_ending = true;
-		FlxG.camera.fade(FlxColor.BLACK, 1, false, function() { FlxG.switchState(new MenuState()); } );
+		_overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK, true);
+		//FlxG.camera.fade(FlxColor.BLACK, 1, false );
+		FlxTween.tween(_overlay, { alpha : 1 }, 1 );
+		_overlayText.text = message;
+		FlxTween.tween(_overlayText, {alpha : 1}, 0.5);
+		
+		new FlxTimer().start(4.5, function(t) { FlxG.switchState(new MenuState()); } );
+		
 	}
+	
+	
 
 	private function handleInput()
 	{
@@ -349,5 +388,6 @@ class PlayState extends FlxState
 				_inventory._activeToolLifeTime.draw();
 		}
 		_overlay.draw();
+		_overlayText.draw();
 	}
 }

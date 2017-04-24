@@ -1,8 +1,6 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxTween;
 
 /**
@@ -37,7 +35,7 @@ class Shrub extends Destroyables
 			//trace("berry");
 			dropItem = ItemManager.getItem("Berry");
 			//trace("shrub: ctor: " + dropItem);
-			dropQuantity = FlxG.random.int(2,6);
+			dropQuantity = FlxG.random.int(3,7);
 		}
 	
 		

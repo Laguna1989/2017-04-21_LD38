@@ -31,7 +31,7 @@ class Rock extends Destroyables
 		toolUsage = 0.03;
 		
 		var ran : Int = FlxG.random.int(0, 2);
-		dropQuantity2 = 1;
+		dropQuantity2 = 2;
 		if (ran == 0)
 		{
 			dropItem2 = ItemManager.getItem("IronOre");
@@ -40,7 +40,7 @@ class Rock extends Destroyables
 		else if (ran == 1)
 		{
 			dropItem2 = ItemManager.getItem("Coal");
-			dropQuantity2 = 4;
+			dropQuantity2 = 5;
 			if (dropItem2 == null) throw "ERROR: could not create Coal";
 		}
 		else if (ran == 2)

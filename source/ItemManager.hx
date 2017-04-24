@@ -23,6 +23,7 @@ class ItemManager
         _tools.push(new StonePickaxe());
 		_tools.push(new Tent());
 		_tools.push(new Berry());
+		_tools.push(new SpaceShip());
 
         // Read resources from JSON files
         var list : Array<String> = FileList.getFileList("assets/data/", "resource.json");

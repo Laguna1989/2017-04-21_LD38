@@ -58,7 +58,7 @@ class RingMenu extends FlxSpriteGroup
 		CreditsText.text = t;
 		var finalCreditsPosition : Int = 0;
 		CreditsText.x = -FlxG.width / 2 - 64;
-		CreditsText.y = FlxG.height - 80 - 4;
+		CreditsText.y = FlxG.height - 96 - 4;
 
 		FlxTween.tween(CreditsText, { x: finalCreditsPosition }, 1, { ease:FlxEase.bounceOut, startDelay:0.35 } );
 	}

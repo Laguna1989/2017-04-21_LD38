@@ -198,18 +198,18 @@ class Level extends FlxObject
 		return null;
 	}
 	
-	public function getPlaceableInRange(pl : Player) : Placeable
+	public function getPlaceableInRange(playr : Player) : Placeable
 	{
 		for (p in placeables)
 		{
-			var dx: Float = p.x  - pl.x - 8;
+			var dx: Float = p.x + p.width/2  - playr.x - 8;
 			if (dx > GP.TileSize * 2) continue;
 			
-			var dy: Float = p.y - pl.y - 8;
+			var dy: Float = p.y  + p.height/2 - playr.y - 8;
 			if (dy > GP.TileSize * 2) continue;
 			
 			var l : Float = dx * dx  + dy * dy;
-			if (l < GP.TileSize * GP.TileSize * 1.4 * 1.4)
+			if (l < GP.TileSize * GP.TileSize * 2*2)
 			{
 				return p;
 			}

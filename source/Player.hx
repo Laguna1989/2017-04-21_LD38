@@ -1,16 +1,13 @@
 package;
 
-import flixel.FlxObject;
-import flixel.FlxSprite;
+import Tool;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVector;
-import flixel.text.FlxText;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import Tool;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -43,6 +40,12 @@ class Player extends FlashSprite
 	private var _hungerTimer     : Float;
 	private var _warmthTimer     : Float;
 	
+	private var _placeCoolDown : Float = 0;
+	
+	private var _chopSound : FlxSound;
+	
+	
+	
     public function new(playState: PlayState)
     {
         super();
@@ -70,7 +73,7 @@ class Player extends FlashSprite
 
 		_state = playState;
 
-		setPosition(8 * GP.TileSize, 2 * GP.TileSize);
+		setPosition(GP.WorldSizeInTiles /2 * GP.TileSize, GP.WorldSizeInTiles /2 * GP.TileSize);
 		
 		health = healthMax = GP.PlayerHealthMaxDefault;
 
@@ -87,6 +90,8 @@ class Player extends FlashSprite
 		_exhaustionTimer = GP.ExhaustionTimer;
 		_hungerTimer = GP.HungerTimer;
 		_warmthTimer = GP.WarmthTimer;
+		
+		_chopSound = FlxG.sound.load(AssetPaths.chop__ogg, 0.5);
     }
 
     //#################################################################
@@ -102,6 +107,8 @@ class Player extends FlashSprite
 		inInteractionAnim -= elapsed;
 		
 		CheckHealthCondition();
+		
+		_placeCoolDown -= elapsed;
 		
 		switch _facing
 		{
@@ -288,7 +295,7 @@ class Player extends FlashSprite
 					else if (t.toolCanBePlacedInWorld)
 					{
 						//trace("place out");
-						PlaceItemInWorld(t);
+						PlaceItemInWorld(_state._inventory.ActiveSlot);
 					}
 				}
 				else
@@ -299,16 +306,24 @@ class Player extends FlashSprite
 		}
 	}
 	
-	function PlaceItemInWorld(t:Tool) 
+	function PlaceItemInWorld(s:InventorySlot) 
 	{
-		if (t == null || !t.toolCanBePlacedInWorld) return;
-		
-		//trace("placeItem");
-		_state._inventory.ActiveSlot.Item = null;
-		_state._inventory.ActiveSlot.Quantity = 0;
-		
-		t.UseTool(this);
-
+		if (_placeCoolDown <= 0)
+		{
+			var i : Item = s.Item;
+			if (!Std.is(i, Tool)) return;
+			var t : Tool = cast i;
+			if (t == null || !t.toolCanBePlacedInWorld) return;
+			
+			t.UseTool(this);
+			
+			s.Quantity--;
+			if (s.Quantity == 0)
+			{
+				s.Item = null;
+			}
+			_placeCoolDown  = 0.5;
+		}
 	}
 	
 	function interactWithWorld(t : Tool):Void 
@@ -327,24 +342,39 @@ class Player extends FlashSprite
 	}
 	function InteractWithDestroyables(t : Tool):Void 
 	{
+		
 		var d : Destroyables = _state._level.getDestroyableInRange(this);
 		if (d == null) return;
 		
+		if (inInteractionAnim <= 0)
+		{
+			_chopSound.play();
+		}
 		this.animation.play("pick", true);
 		inInteractionAnim = 0.5;
 	
 		var quality : Float = 0.3;
-	
+		if (d.toolUsage == 0) quality *= 2;
 		if (t != null)
 		{
 			quality = t.toolQuality;
-			t.toolLifeTime -= d.toolUsage * 0.75;
+			t.toolLifeTime -= d.toolUsage * 0.85;
 		}
 		
-		d.takeDamage(0.2 * quality);
-		getTired((1 - quality) * GP.ExhaustionFactor);
-		getHungry((1 - quality) * GP.HungerFactor);
-		getCold((1 - quality) * -GP.WarmthFactor);
+		
+		d.takeDamage(0.35 * quality);
+		if (d.toolUsage == 0)	// Shrubs
+		{
+			getTired((1 - quality) * GP.ExhaustionFactor * 0.5);
+			getHungry((1 - quality) * GP.HungerFactor * 0.5);
+			getCold((1 - quality) * -GP.WarmthFactor * 0.5);
+		}
+		else// Rocks/Trees
+		{
+			getTired((1 - quality) * GP.ExhaustionFactor * 0.85);
+			getHungry((1 - quality) * GP.HungerFactor * 0.58);
+			getCold((1 - quality) * -GP.WarmthFactor * 0.85);
+		}
 		
 		if (d.x < x) 
 		{

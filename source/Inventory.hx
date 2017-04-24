@@ -1,12 +1,12 @@
 package;
 
+import Tool;
 import flixel.FlxG;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
-import Tool;
+import flixel.util.FlxColor;
 
 class Inventory extends FlxTypedGroup<FlxSprite>
 {
@@ -21,6 +21,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 	public var _activeToolLifeTime : HudBar;
 	
 
+	private var _snd : FlxSound;
+	
     public function new()
     {
         super();
@@ -54,6 +56,8 @@ class Inventory extends FlxTypedGroup<FlxSprite>
 		_activeToolLifeTime.scrollFactor.set();
 		
 		//add(_activeToolLifeTime);
+		
+		_snd = FlxG.sound.load(AssetPaths.pickup__ogg, 0.5);
     }
 
     public function hasFreeSlot(item : Item) : Bool
@@ -79,6 +83,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
             if (slot.Item == null) continue;
             if(slot.Item.Name == item.Name && slot.Quantity < slot.Item.StackSize)
             {
+				_snd.play();
                 slot.Quantity++;
                 return;
             }
@@ -92,6 +97,7 @@ class Inventory extends FlxTypedGroup<FlxSprite>
                 slot.Item = item;
                 slot.Item.animation.play("anim0");
                 slot.Item.scrollFactor.set();
+				_snd.play();
                 return;
             }
         }

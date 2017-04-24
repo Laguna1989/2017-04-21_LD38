@@ -17,12 +17,13 @@ class MenuState extends FlxState
 		MyInput.reset();
 
 		_ring = new RingMenu();
-		_ring.setTitleText("LD38");
+		_ring.setTitleText("Dean's World");
 		_ring.setCreditText(
 			"A game by\n" +
 			"  Julian Dinges (@Thunraz)\n" +
 			"  Simon Weis (@Laguna_999)\n" +
 			"  @BloodyOrange\n" +
+			"  Music 'Survival' by Lee Rosevere (licensed under CC BY NC) \n"+
 			"Visit us at https://runvs.io\n" +
 			"\n" +
 			"Created April 2017"
@@ -33,6 +34,8 @@ class MenuState extends FlxState
 		_ring.addItem("Exit", quitGame);
 		
 		add(_ring);
+		
+		FlxG.sound.playMusic(AssetPaths.music__ogg, 0.35, true);
 	}
 	
 	public function startGame() : Bool
@@ -43,8 +46,18 @@ class MenuState extends FlxState
 
 	public function toggleSound() : Bool 
 	{
-		_playSound = !_playSound;
-		return _playSound;
+		if (FlxG.sound.volume != 0)
+		{
+			_playSound = false;
+			FlxG.sound.volume = 0;
+			return false;
+		}
+		else
+		{
+			_playSound = true;
+			FlxG.sound.volume = 1;
+			return true;
+		}
 	}
 	
 	public function quitGame() : Bool 
