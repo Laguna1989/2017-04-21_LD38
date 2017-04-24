@@ -28,6 +28,11 @@ class CraftManager
 
     public static function craft(items : Array<Item>) : CraftRecipe
     {
+		trace("items");
+		for (i in items)
+		{
+			trace(i);
+		}
         // Check item array against recipes
         for(r in _recipes)
         {
@@ -38,7 +43,7 @@ class CraftManager
             {
                 valid = true;
 
-                trace("offset " + offset + " too big? " + (9 - offset < r.Ingredients.length));
+                //trace("offset " + offset + " too big? " + (9 - offset < r.Ingredients.length));
                 if(9 - offset < r.Ingredients.length)
                 {
                     valid = false;

@@ -1,9 +1,10 @@
 {
     "recipe": [
-        "Stone", "Stone", "Stone",
+        "IronPlate", "IronPlate", "IronPlate",
         null, "WoodenSticks", null,
         null, "WoodenSticks", null
     ],
-    "result": "StonePickaxe",
+    "result": "IronPickaxe",
+	"level" : 0,
     "quantity": 1
 }

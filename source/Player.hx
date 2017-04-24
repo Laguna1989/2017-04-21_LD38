@@ -333,7 +333,7 @@ class Player extends FlashSprite
 		this.animation.play("pick", true);
 		inInteractionAnim = 0.5;
 	
-		var quality : Float = 0.5;
+		var quality : Float = 0.3;
 	
 		if (t != null)
 		{

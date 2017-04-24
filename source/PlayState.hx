@@ -70,11 +70,11 @@ class PlayState extends FlxState
 		
 		for (i in 0...24)
 		{
-			_inventory.pickupItem(ItemManager.getItem("Stone").clone());
+			_inventory.pickupItem(ItemManager.getItem("Wood").clone());
 		}
 		for (i in 0...24)
 		{
-			_inventory.pickupItem(ItemManager.getItem("IronOre").clone());
+			_inventory.pickupItem(ItemManager.getItem("IronPlate").clone());
 		}
 		for (i in 0...24)
 		{
